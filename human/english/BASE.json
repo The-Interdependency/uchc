@@ -1,0 +1,15 @@
+{
+  "schema": "the-interdependency.stack-research-base",
+  "version": "1.0.0",
+  "project": "english-gonol",
+  "source_repository": "The-Interdependency/edcm",
+  "source_commit": "7951ca32ba0f2494dc68ff9b7f6a80151918a56d",
+  "ucns_prerequisite": {
+    "repository": "The-Interdependency/ucns",
+    "commit": "1975fe70cf4e0826a8020c2da3047569e277af64",
+    "relation": "English Gonol Construction consumes UCNS geometry; UCNS owns geometry and representation"
+  },
+  "canon_path": "../../libs/edcm",
+  "authority": "stack-local research component (extracted from The-Interdependency/edcm)",
+  "standing": "stack-local-research"
+}

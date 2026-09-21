@@ -1,0 +1,18 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Earlier full-corpus affixiation records are reproducible generated state.
+experiments/oewn-affixiation-v0/records.jsonl
+experiments/oewn-affixiation-v0/records.worker-*.jsonl
+
+# Current verified full construct: normalized DB is generated locally; compact
+# manifest/evidence/resource receipts are committed.
+experiments/full-construct-v2/construct.db
+
+# Superseded v1 generated DB, if a local copy survives.
+experiments/full-construct-v1/construct.db
+
+# Deleted falsified singleton-atlas experiment. Any surviving local directory
+# is obsolete generated state and must not be recommitted.
+experiments/full-singleton-v0/

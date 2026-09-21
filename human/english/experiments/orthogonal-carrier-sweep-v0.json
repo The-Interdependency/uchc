@@ -1,0 +1,290 @@
+{
+  "config": {
+    "angle_cells": 16,
+    "epicycle_levels": 1,
+    "max_carriers": 7,
+    "seed": "english-gonol.orthogonal-carrier-sweep/v0"
+  },
+  "diminishing_returns_carriers": null,
+  "first_zero_collision_carriers": 5,
+  "fixture": {
+    "primitives": 59,
+    "recursive_chains": 14,
+    "relations": 47,
+    "source": "development fixture; not OEWN evidence"
+  },
+  "hmmm": [
+    "what each carrier represents must emerge from evidence, not be imposed",
+    "the angle-cell discretization is an experimental convenience, not a geometric law",
+    "whether a larger OEWN-derived relation set changes the smallest useful carrier count"
+  ],
+  "nonclaims": [
+    "no carrier index is assigned a semantic meaning",
+    "not UCNS geometry canon",
+    "not an English lexical truth claim",
+    "not a word embedding",
+    "not a measurement of semantic quality"
+  ],
+  "report_digest": "ce9ef4509a478042db354a744115379b9c0367f92c71b1842b7702c9a894079a",
+  "rows": [
+    {
+      "base_colliding_edges": 3,
+      "carrier_entropy": 0.0,
+      "carrier_occupancy": [
+        59
+      ],
+      "carriers": 1,
+      "colliding_edges": [
+        [
+          "cat",
+          "siamese",
+          "hypernym"
+        ],
+        [
+          "food",
+          "fruit",
+          "hypernym"
+        ],
+        [
+          "siamese",
+          "cat",
+          "hyponym"
+        ]
+      ],
+      "epicycle_edges": 3,
+      "epicycle_preserved_edges": 47,
+      "marginal_rank_gain": 1.969161650868787,
+      "max_chain_epicycle_depth_needed": 1,
+      "primitives": 59,
+      "rank_gain_ratio": 0.0,
+      "recursive_chains": 14,
+      "recursive_chains_preserved": 14,
+      "relation_pairs_resolved_at_this_k": [],
+      "relations": 47,
+      "resolved_from_k1": 0,
+      "stable_rank": 1.969161650868787
+    },
+    {
+      "base_colliding_edges": 3,
+      "carrier_entropy": 0.9528588097297789,
+      "carrier_occupancy": [
+        37,
+        22
+      ],
+      "carriers": 2,
+      "colliding_edges": [
+        [
+          "cat",
+          "siamese",
+          "hypernym"
+        ],
+        [
+          "food",
+          "fruit",
+          "hypernym"
+        ],
+        [
+          "siamese",
+          "cat",
+          "hyponym"
+        ]
+      ],
+      "epicycle_edges": 3,
+      "epicycle_preserved_edges": 47,
+      "marginal_rank_gain": 1.7312462390119667,
+      "max_chain_epicycle_depth_needed": 1,
+      "primitives": 59,
+      "rank_gain_ratio": 0.8656231195059834,
+      "recursive_chains": 14,
+      "recursive_chains_preserved": 14,
+      "relation_pairs_resolved_at_this_k": [],
+      "relations": 47,
+      "resolved_from_k1": 0,
+      "stable_rank": 3.7004078898807538
+    },
+    {
+      "base_colliding_edges": 2,
+      "carrier_entropy": 0.9916267160978617,
+      "carrier_occupancy": [
+        22,
+        21,
+        16
+      ],
+      "carriers": 3,
+      "colliding_edges": [
+        [
+          "cat",
+          "siamese",
+          "hypernym"
+        ],
+        [
+          "siamese",
+          "cat",
+          "hyponym"
+        ]
+      ],
+      "epicycle_edges": 2,
+      "epicycle_preserved_edges": 47,
+      "marginal_rank_gain": 2.0512022700129253,
+      "max_chain_epicycle_depth_needed": 1,
+      "primitives": 59,
+      "rank_gain_ratio": 1.0256011350064627,
+      "recursive_chains": 14,
+      "recursive_chains_preserved": 14,
+      "relation_pairs_resolved_at_this_k": [],
+      "relations": 47,
+      "resolved_from_k1": 1,
+      "stable_rank": 5.751610159893679
+    },
+    {
+      "base_colliding_edges": 3,
+      "carrier_entropy": 0.93398439284124,
+      "carrier_occupancy": [
+        19,
+        17,
+        18,
+        5
+      ],
+      "carriers": 4,
+      "colliding_edges": [
+        [
+          "cat",
+          "siamese",
+          "hypernym"
+        ],
+        [
+          "food",
+          "fruit",
+          "hypernym"
+        ],
+        [
+          "siamese",
+          "cat",
+          "hyponym"
+        ]
+      ],
+      "epicycle_edges": 3,
+      "epicycle_preserved_edges": 47,
+      "marginal_rank_gain": 1.020375543128794,
+      "max_chain_epicycle_depth_needed": 1,
+      "primitives": 59,
+      "rank_gain_ratio": 0.510187771564397,
+      "recursive_chains": 14,
+      "recursive_chains_preserved": 14,
+      "relation_pairs_resolved_at_this_k": [
+        [
+          "food",
+          "fruit",
+          "hypernym"
+        ]
+      ],
+      "relations": 47,
+      "resolved_from_k1": 0,
+      "stable_rank": 6.771985703022473
+    },
+    {
+      "base_colliding_edges": 0,
+      "carrier_entropy": 0.993217751132753,
+      "carrier_occupancy": [
+        11,
+        13,
+        14,
+        9,
+        12
+      ],
+      "carriers": 5,
+      "colliding_edges": [],
+      "epicycle_edges": 0,
+      "epicycle_preserved_edges": 47,
+      "marginal_rank_gain": 2.3715262987136114,
+      "max_chain_epicycle_depth_needed": 0,
+      "primitives": 59,
+      "rank_gain_ratio": 1.1857631493568057,
+      "recursive_chains": 14,
+      "recursive_chains_preserved": 14,
+      "relation_pairs_resolved_at_this_k": [],
+      "relations": 47,
+      "resolved_from_k1": 3,
+      "stable_rank": 9.143512001736084
+    },
+    {
+      "base_colliding_edges": 2,
+      "carrier_entropy": 0.9601006738817769,
+      "carrier_occupancy": [
+        12,
+        9,
+        13,
+        10,
+        12,
+        3
+      ],
+      "carriers": 6,
+      "colliding_edges": [
+        [
+          "cat",
+          "siamese",
+          "hypernym"
+        ],
+        [
+          "siamese",
+          "cat",
+          "hyponym"
+        ]
+      ],
+      "epicycle_edges": 2,
+      "epicycle_preserved_edges": 47,
+      "marginal_rank_gain": 1.0007173871075672,
+      "max_chain_epicycle_depth_needed": 1,
+      "primitives": 59,
+      "rank_gain_ratio": 0.5003586935537836,
+      "recursive_chains": 14,
+      "recursive_chains_preserved": 14,
+      "relation_pairs_resolved_at_this_k": [
+        [
+          "cat",
+          "siamese",
+          "hypernym"
+        ],
+        [
+          "siamese",
+          "cat",
+          "hyponym"
+        ]
+      ],
+      "relations": 47,
+      "resolved_from_k1": 1,
+      "stable_rank": 10.144229388843652
+    },
+    {
+      "base_colliding_edges": 0,
+      "carrier_entropy": 0.9853493163321142,
+      "carrier_occupancy": [
+        9,
+        9,
+        8,
+        9,
+        12,
+        5,
+        7
+      ],
+      "carriers": 7,
+      "colliding_edges": [],
+      "epicycle_edges": 0,
+      "epicycle_preserved_edges": 47,
+      "marginal_rank_gain": 1.637221172767207,
+      "max_chain_epicycle_depth_needed": 0,
+      "primitives": 59,
+      "rank_gain_ratio": 0.8186105863836035,
+      "recursive_chains": 14,
+      "recursive_chains_preserved": 14,
+      "relation_pairs_resolved_at_this_k": [],
+      "relations": 47,
+      "resolved_from_k1": 3,
+      "stable_rank": 11.781450561610859
+    }
+  ],
+  "schema": "english-gonol.orthogonal-carrier-sweep",
+  "smallest_useful_carriers": 7,
+  "sustained_zero_collision_carriers": 7,
+  "version": "0.1.0"
+}

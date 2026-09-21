@@ -1,0 +1,49 @@
+{
+  "boundaries": {
+    "agent_scope": "cross-repository-work-graph",
+    "authority_transfer": false,
+    "hmmm": [
+      "exact UCNS Public Gonol function operations remain unresolved",
+      "exact UCNS Mobius-carrier affixiation/coupling law remains unresolved",
+      "deeper geometric functions and admission of arbitrary Unicode source characters remain unresolved; preserved without invention"
+    ],
+    "measurement_status_transfer": false,
+    "proof_status_transfer": false,
+    "semantic_mapping": "external-provenance"
+  },
+  "repositories": [
+    {
+      "authority": "stack-local Python Gonol implementation owner",
+      "commit": "d24b05bfbf6a893f7acf40c571dd9be280d37f2c",
+      "relation": "construction workspace and implementation owner",
+      "repository": "The-Interdependency/stack"
+    },
+    {
+      "authority": "affixiation semantic authority",
+      "commit": "510e0171f4ecc6d1889e66bb66a8734c49c3b1fa",
+      "relation": "defines identity-preserving recursive affixiation meaning",
+      "repository": "The-Interdependency/metapat"
+    },
+    {
+      "authority": "geometry and Public Gonol position authority",
+      "commit": "62e08ee1cf3b5d7b6e48c927b1047509e6328b5c",
+      "relation": "geometry and Public Gonol position authority",
+      "repository": "The-Interdependency/ucns"
+    },
+    {
+      "authority": "organization-wide construction and evidence discipline",
+      "commit": "22c2c5702d14fb4b0faeb717777ecab2665770a1",
+      "relation": "gonol-build, work-graph, module, test, and hmmm discipline",
+      "repository": "The-Interdependency/skill-lib"
+    },
+    {
+      "authority": "Python 3.12.14 language and CPython recognition witness",
+      "commit": "2d7d957248038635334b62b27f650220213d8e5d",
+      "relation": "exact Python language profile source at tag v3.12.14",
+      "repository": "python/cpython"
+    }
+  ],
+  "schema": "the-interdependency.stack-manifest",
+  "version": "1.0.0",
+  "work_graph_sha256": "1460f0b437d8edc68d91280d4e8fdbef63d68e410857af8ba92897d4681748f2"
+}

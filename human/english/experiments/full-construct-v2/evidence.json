@@ -1,0 +1,25 @@
+{
+  "construct_db_bytes": 306331648,
+  "construct_db_sha256": "af609bbba504f95e349f3c1a30aa42923acc8e48c1e67bb481521dbf7e49162b",
+  "counts": {
+    "characters": 118,
+    "definition_components": 3535375,
+    "definitions": 185155,
+    "semantic_evidence": 866183,
+    "unresolved_semantic_evidence": 0,
+    "word_characters": 1739949,
+    "words": 164864
+  },
+  "definition_component_rule": "exact ordered source: each maximal non-whitespace run reuses one shared word identity; each whitespace scalar reuses one shared character identity; no normalization",
+  "definition_topologies": [
+    "direct",
+    "chain"
+  ],
+  "geometry_state": "hmmm",
+  "hmmm": "the exact UCNS law mapping ordinal + semantic + sentence-context evidence to geometric displacement is unresolved; no weight, direction, distance, vector, coordinate, center, radius, tangency, motion, or substitute geometry is synthesized",
+  "invented_geometry": false,
+  "receipt_sha256": "12277b4959c0c72b7af12097b8a77bf91866bbf669e7f4ac07b6a5f1426ebb57",
+  "schema": "english-gonol.full-construct",
+  "sqlite_integrity": "ok",
+  "version": "2.0.0"
+}

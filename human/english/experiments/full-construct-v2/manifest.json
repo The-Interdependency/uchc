@@ -1,0 +1,45 @@
+{
+  "construct_file": "construct.db",
+  "corpus": {
+    "commit": "dc343f2683279ecbb13fab4e2fd778d7b162d287",
+    "lexeme_count": 135969,
+    "relation_count": 244727,
+    "repository": "globalwordnet/english-wordnet",
+    "sense_count": 185129,
+    "source_file_count": 73,
+    "source_tree_sha256": "3a46546a1ffbb4aed98990535ad5155c69be12ad09fdf093701b257d2a3e468f",
+    "synset_count": 107519,
+    "tag": "2025-edition"
+  },
+  "counts": {
+    "characters": 118,
+    "definition_components": 3535375,
+    "definitions": 185155,
+    "semantic_evidence": 866183,
+    "unresolved_semantic_evidence": 0,
+    "word_characters": 1739949,
+    "words": 164864
+  },
+  "definition_component_rule": "exact ordered source: each maximal non-whitespace run reuses one shared word identity; each whitespace scalar reuses one shared character identity; no normalization",
+  "definition_topologies": [
+    "direct",
+    "chain"
+  ],
+  "evidence_channels": [
+    "ordinal",
+    "semantic",
+    "sentence-context"
+  ],
+  "geometry_state": "hmmm",
+  "hmmm": "the exact UCNS law mapping ordinal + semantic + sentence-context evidence to geometric displacement is unresolved; no weight, direction, distance, vector, coordinate, center, radius, tangency, motion, or substitute geometry is synthesized",
+  "invented_geometry": false,
+  "receipt_sha256": "12277b4959c0c72b7af12097b8a77bf91866bbf669e7f4ac07b6a5f1426ebb57",
+  "resolution_rule": "preponderance relative to the rest of the sentence in which the word appears",
+  "schema": "english-gonol.full-construct",
+  "ucns": {
+    "commit": "4f863ad37096b7baab8f62820ad5cb937b62a3a7",
+    "public_gonol_module_sha256": "2da287ce9691b494fc921d14684a3bf7e0633f3a579ea040e3b6ddbaf0d92f27",
+    "public_gonol_sha256": "55d10c84529a4d7bc7714786357e977b68d9df2ac3f73d20e229580b552c2ef5"
+  },
+  "version": "2.0.0"
+}

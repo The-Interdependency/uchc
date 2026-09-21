@@ -1,0 +1,26 @@
+# UCHC License
+
+Licensor: The Interdependency LLC
+
+Copyright: The Interdependency LLC
+
+This repository is licensed under the **Functional Source License, Version 1.1**
+(**FSL-1.1**), with the **Apache License, Version 2.0** (**ALv2**) as the
+Change License.
+
+Change Date: two years after the date each file was first published in this
+repository.
+
+After the Change Date for a given file, that file is available under the
+Apache License, Version 2.0.
+
+Canonical license texts:
+
+- FSL-1.1-ALv2: https://fsl.software/FSL-1.1-ALv2.template.md
+- Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+SPDX expression for this repository:
+
+```text
+FSL-1.1-ALv2
+```

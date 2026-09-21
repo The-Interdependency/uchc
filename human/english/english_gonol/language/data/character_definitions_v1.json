@@ -1,0 +1,59 @@
+{
+  "schema": "english-gonol.character-definitions",
+  "version": "v1",
+  "source": "curated ASCII character definition table: English letter classes/pronunciations, digit number names, traditional single-word numerology meanings, and operator/punctuation classes. Candidate construction evidence; not linguistic, orthographic, or cultural canon.",
+  "letters": {
+    "a": { "classes": ["vowel"], "pronunciation": "ay" },
+    "b": { "classes": ["consonant"], "pronunciation": "bee" },
+    "c": { "classes": ["consonant"], "pronunciation": "see" },
+    "d": { "classes": ["consonant"], "pronunciation": "dee" },
+    "e": { "classes": ["vowel"], "pronunciation": "ee" },
+    "f": { "classes": ["consonant"], "pronunciation": "eff" },
+    "g": { "classes": ["consonant"], "pronunciation": "gee" },
+    "h": { "classes": ["consonant"], "pronunciation": "aitch" },
+    "i": { "classes": ["vowel"], "pronunciation": "eye" },
+    "j": { "classes": ["consonant"], "pronunciation": "jay" },
+    "k": { "classes": ["consonant"], "pronunciation": "kay" },
+    "l": { "classes": ["consonant"], "pronunciation": "el" },
+    "m": { "classes": ["consonant"], "pronunciation": "em" },
+    "n": { "classes": ["consonant"], "pronunciation": "en" },
+    "o": { "classes": ["vowel"], "pronunciation": "oh" },
+    "p": { "classes": ["consonant"], "pronunciation": "pee" },
+    "q": { "classes": ["consonant"], "pronunciation": "cue" },
+    "r": { "classes": ["consonant"], "pronunciation": "ar" },
+    "s": { "classes": ["consonant"], "pronunciation": "ess" },
+    "t": { "classes": ["consonant"], "pronunciation": "tee" },
+    "u": { "classes": ["vowel"], "pronunciation": "you" },
+    "v": { "classes": ["consonant"], "pronunciation": "vee" },
+    "w": { "classes": ["consonant"], "pronunciation": "double-u" },
+    "x": { "classes": ["consonant"], "pronunciation": "ex" },
+    "y": {
+      "classes": ["vowel", "consonant"],
+      "pronunciation": "why",
+      "orthographic": [
+        {
+          "behavior": "final-y-after-consonant",
+          "rules": [
+            { "before_suffix": "ing", "realization": "preserve-y" },
+            { "before_suffix": "*", "realization": "y-to-i" }
+          ]
+        }
+      ]
+    },
+    "z": { "classes": ["consonant"], "pronunciation": "zee" }
+  },
+  "digits": {
+    "0": { "number_name": "zero", "numerology": ["potential", "wholeness"] },
+    "1": { "number_name": "one", "numerology": ["independence", "leadership"] },
+    "2": { "number_name": "two", "numerology": ["partnership", "balance"] },
+    "3": { "number_name": "three", "numerology": ["creativity", "expression"] },
+    "4": { "number_name": "four", "numerology": ["stability", "order"] },
+    "5": { "number_name": "five", "numerology": ["change", "freedom"] },
+    "6": { "number_name": "six", "numerology": ["harmony", "care"] },
+    "7": { "number_name": "seven", "numerology": ["insight", "analysis"] },
+    "8": { "number_name": "eight", "numerology": ["power", "achievement"] },
+    "9": { "number_name": "nine", "numerology": ["completion", "compassion"] }
+  },
+  "operators": ["+", "-", "*", "/", "=", "<", ">"],
+  "punctuation": [".", ",", "!", "?", ";", ":", "(", ")", "[", "]", "\"", "'", "-"]
+}

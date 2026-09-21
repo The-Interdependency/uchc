@@ -8,11 +8,11 @@ Applications consume UCHC; applications do not define UCHC.
 
 ```text
 human/
-  english/       active; migration from Stack pending
+  english/       extracted from Stack; migration gates 1-5 passed
   spanish/       forthcoming
 
 programming/
-  python/        active; migration from Stack pending
+  python/        extracted from Stack; migration gates 1-5 passed
   typescript/    forthcoming
   rust/          forthcoming
 ```
@@ -82,14 +82,18 @@ Migration order:
 5. update the former Stack workspace to consume the released UCHC artifact;
 6. only then declare that domain graduated.
 
+## Immutable English artifact
+
+- construct file: `human/english/experiments/full-construct-v2-local/construct.db`
+- sha256: `af609bbba504f95e349f3c1a30aa42923acc8e48c1e67bb481521dbf7e49162b`
+- full-corpus receipt: `38b51ab5ebcf7d3e95f3b29700a170d1e7b6d3342dd6088171c5c078a08753d2`
+
 ## hmmm
 
 - exact geometry of definition-axis orthogonality;
 - cross-origin angles and attachment geometry beyond the implemented construction-derived attachment relation;
 - continuum lift-selection law;
 - release/distribution format for UCHC;
-- repository license;
-- full skill-lib propagation into this new repository;
 - Spanish, TypeScript, and Rust admission/construction profiles.
 
 The scaffold preserves these boundaries rather than filling them with invented structure.

@@ -29,6 +29,20 @@ skill-lib
   9a04120686ee4e03338eaf14a81073e467aecfe8
 ```
 
+## Progress
+
+Gates 1-5 passed for English and Python as of 2026-09-21:
+
+1. source files and tests copied with provenance: done (Stack ca19020);
+2. imports/dependencies repaired without semantic redesign: none required;
+3. existing local tests pass: English 92 passed, Python 5 passed;
+4. replay/receipt behavior matches the pinned forge baseline: English
+   hyperspace receipt 38b51ab5..., construct.db sha256 af609bbb...;
+5. clean build/install: importable via PYTHONPATH from each domain root.
+
+Gates 6-11 (license, immutable artifact release, Stack reconsumption,
+authority receipt) are recorded as next steps.
+
 ## English
 
 The pinned Stack head contains the implemented
@@ -76,7 +90,7 @@ Until then, Stack remains the implementation owner for that domain.
 
 ## hmmm
 
-- repository license: unresolved;
+- repository license: resolved (FSL-1.1-ALv2, licensor The Interdependency LLC, two-year Apache-2.0 conversion);
 - distribution kind and package naming: unresolved;
 - immutable release identity: not yet applicable;
 - downstream reconsumption: not yet applicable;

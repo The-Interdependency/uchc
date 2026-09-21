@@ -1,19 +1,18 @@
-# skill-lib source
+# Local agent skills
 
-Canonical source: `The-Interdependency/skill-lib@9a04120686ee4e03338eaf14a81073e467aecfe8`.
+This directory contains repo-local copies of canonical skills from
+`The-Interdependency/skill-lib`.
 
-This new repository has not yet received the complete repo-local skill-lib
-propagation. Agents must resolve the canonical skill-lib before acting.
+Source commit: `22c2c5702d14fb4b0faeb717777ecab2665770a1`
 
-Required at the current migration boundary include at least:
+Repo-local copies are not the source of truth. Edit `skill-lib` first,
+then propagate from the canonical source.
 
-- `the-interdependency`
-- `gonol-build`
-- `interdependent-work-graph`
-- `project-incubation-graduation`
-- `domain-claims`
-- `skill-usage`
+Skills refreshed from the source commit above:
 
-Do not treat this README as a replacement for those skills.
-
-hmmm: full canonical propagation remains pending.
+- `the-interdependency/`
+- `gonol-build/`
+- `interdependent-work-graph/`
+- `project-incubation-graduation/`
+- `domain-claims/`
+- `skill-usage/`
