@@ -3,7 +3,7 @@
 name: English full-corpus replay
 on:
   push:
-    branches: [main, work/zfae-inference-contract]
+    branches: [main]
     paths: ['.github/workflows/english-full-corpus.yml', 'human/**', 'programming/**', 'pyproject.toml', 'README.md', 'LICENSE', 'tools/**']
   pull_request:
     paths: ['.github/workflows/english-full-corpus.yml', 'human/**', 'programming/**', 'pyproject.toml', 'README.md', 'LICENSE', 'tools/**']
@@ -50,7 +50,7 @@ jobs:
           export UCNS_SOURCE_ROOT="$PWD/ucns"
           export ENGLISH_GONOL_UCNS_ROOT="$PWD/ucns-relational"
           .venv/bin/python -m pytest -q source/human/english/tests --ignore=source/human/english/tests/test_language_relational_bridge.py --junitxml=evidence/english.xml
-          .venv/bin/python -m pytest -q source/human/english/tests/test_language_relational_bridge.py --junitxml=evidence/relational.xml
+          (cd source/human/english && ../../../.venv/bin/python -m pytest -q tests/test_language_relational_bridge.py --junitxml=../../../evidence/relational.xml)
           PYTHONPATH="$PWD/source/programming/python" .venv/bin/python -m pytest -q source/programming/python/tests --junitxml=evidence/python.xml
           for file in source/human/english/english_gonol/inference_input.py source/human/english/tests/test_inference_input.py source/tools/verify_inference_corpus.py; do
             .venv/bin/python doctrine/ratios/ratios_check.py "$file"
