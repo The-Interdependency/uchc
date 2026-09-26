@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools==82.0.1", "wheel==0.46.3", "packaging==26.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "uchc"
+version = "0.1.0a1"
+description = "Unit Circle Hyperspace Constructs: exact language construction and receipt-bound inference inputs"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "FSL-1.1-ALv2"
+license-files = ["LICENSE"]
+authors = [{name = "The Interdependency LLC"}]
+dependencies = []
+
+[project.optional-dependencies]
+corpus-build = ["PyYAML==6.0.2"]
+test = ["pytest==8.3.5"]
+
+[tool.setuptools]
+packages = ["english_gonol", "english_gonol.language", "python_gonol"]
+package-dir = {english_gonol = "human/english/english_gonol", python_gonol = "programming/python/python_gonol"}
+
+[tool.pytest.ini_options]
+testpaths = ["human/english/tests", "programming/python/tests"]
