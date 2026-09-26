@@ -1,0 +1,47 @@
+# Usage: push this workflow on work/zfae-inference-contract to materialize the
+# exact public producer/consumer sources for offline review and local tests.
+# This job does not publish a release, run a deployment, or claim inference readiness.
+# The artifact contains git-tracked public source only, never checkout credentials.
+name: Inference source contact
+on:
+  push:
+    branches: [work/zfae-inference-contract]
+    paths: [.github/workflows/inference-source-contact.yml]
+permissions:
+  contents: read
+jobs:
+  sources:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Pin and archive public work-graph sources
+        shell: bash
+        env:
+          UCHC_HEAD: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          mkdir -p sources evidence
+          fetch_source() {
+            local name="$1" sha="$2"
+            [[ "$sha" =~ ^[0-9a-f]{40}$ ]]
+            git init -q "sources/$name"
+            git -C "sources/$name" remote add origin "https://github.com/The-Interdependency/$name.git"
+            git -C "sources/$name" fetch --quiet --depth=1 origin "$sha"
+            git -C "sources/$name" checkout -q --detach FETCH_HEAD
+            test "$(git -C "sources/$name" rev-parse HEAD)" = "$sha"
+            git -C "sources/$name" archive --format=tar.gz --prefix="$name/" HEAD > "evidence/$name.tar.gz"
+            printf '%s %s\n' "$name" "$sha" >> evidence/source-identities.txt
+          }
+          fetch_source uchc "$UCHC_HEAD"
+          fetch_source skill-lib 0981aed7695ba2675d5de35ef43ba734e94adea0
+          fetch_source a0-betatest 5d51d70a0ae6044d1386d72bd0cada9d48887f77
+          fetch_source stack 4a03f68c1ea841da5767813c6a65c41620f561f6
+          fetch_source ucns 1cf10c2df2541a332a77f2ed3feda0c6bef4abcc
+          sha256sum evidence/*.tar.gz > evidence/SHA256SUMS
+          du -h evidence/*.tar.gz
+      - name: Retain exact public source inputs
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: inference-source-contact
+          path: evidence/
+          retention-days: 7
+          if-no-files-found: error
