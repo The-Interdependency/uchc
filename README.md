@@ -8,11 +8,11 @@ Applications consume UCHC; applications do not define UCHC.
 
 ```text
 human/
-  english/       extracted from Stack; migration gates 1-5 passed
+  english/       extracted from Stack; see migration gate evidence
   spanish/       forthcoming
 
 programming/
-  python/        extracted from Stack; migration gates 1-5 passed
+  python/        extracted from Stack; see migration gate evidence
   typescript/    forthcoming
   rust/          forthcoming
 ```
@@ -30,7 +30,7 @@ The construct is the implementation. UCHC does not separate a nominal specificat
 
 Repository placement transfers none of UCNS geometry, METAPAT semantics, proof status, measurement validity, or empirical status.
 
-## Current source identities
+## Extraction source identities
 
 Scaffold baseline:
 
@@ -71,7 +71,13 @@ No shared `core/` gonol geometry is defined here. Shared geometry is consumed fr
 
 ## Usage guidance
 
-This scaffold is **not yet a released runtime dependency**. Until implementation migration is complete, consumers must not treat the empty domain directories as equivalent to the live Stack implementations.
+English and Python implementations have been extracted, but domain graduation is incomplete.
+The new receipt-bound English input API is a release candidate, not evidence of a
+completed neural inference engine. See [inference input usage](docs/INFERENCE_INPUT.md).
+Build the candidate with `python -m pip wheel --no-deps . --wheel-dir dist`,
+verify its SHA-256, and install that exact wheel without an editable/source-tree path.
+The [input work graph](docs/work-graphs/inference-input.json) records the exact
+source authorities used for this extension.
 
 Migration order:
 
@@ -84,7 +90,7 @@ Migration order:
 
 ## Immutable English artifact
 
-- construct file: `human/english/experiments/full-construct-v2-local/construct.db`
+- generated construct file: `construct.db` (not tracked in Git; full-corpus CI materializes and verifies it)
 - sha256: `af609bbba504f95e349f3c1a30aa42923acc8e48c1e67bb481521dbf7e49162b`
 - full-corpus receipt: `38b51ab5ebcf7d3e95f3b29700a170d1e7b6d3342dd6088171c5c078a08753d2`
 
@@ -93,7 +99,7 @@ Migration order:
 - exact geometry of definition-axis orthogonality;
 - cross-origin angles and attachment geometry beyond the implemented construction-derived attachment relation;
 - continuum lift-selection law;
-- release/distribution format for UCHC;
+- stable release, published-artifact reconsumption, and domain graduation;
 - Spanish, TypeScript, and Rust admission/construction profiles.
 
-The scaffold preserves these boundaries rather than filling them with invented structure.
+The implementation preserves these boundaries rather than filling them with invented structure.

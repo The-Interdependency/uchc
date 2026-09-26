@@ -1,0 +1,144 @@
+# Usage: this gate tests source contracts, a clean wheel, and the complete English
+# corpus. Artifacts are verified candidates, not automatic stable publication.
+name: English full-corpus replay
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/english-full-corpus.yml', 'human/**', 'programming/**', 'pyproject.toml', 'README.md', 'LICENSE', 'tools/**']
+  pull_request:
+    paths: ['.github/workflows/english-full-corpus.yml', 'human/**', 'programming/**', 'pyproject.toml', 'README.md', 'LICENSE', 'tools/**']
+permissions:
+  contents: read
+jobs:
+  complete-corpus:
+    runs-on: ubuntu-24.04
+    env:
+      SOURCE_DATE_EPOCH: '1790308800'
+    steps:
+      - name: Resolve exact inputs and preflight resources
+        shell: bash
+        env:
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          test "$(df --output=avail -B1 . | tail -1)" -gt 8589934592
+          test "$(awk '/MemTotal/ {print $2}' /proc/meminfo)" -gt 5000000
+          fetch_source() {
+            local repository="$1" directory="$2" sha="$3"
+            [[ "$sha" =~ ^[0-9a-f]{40}$ ]]
+            git init -q "$directory"
+            git -C "$directory" remote add origin "https://github.com/$repository.git"
+            git -C "$directory" fetch --quiet origin "$sha"
+            git -C "$directory" checkout -q --detach FETCH_HEAD
+            test "$(git -C "$directory" rev-parse HEAD)" = "$sha"
+          }
+          fetch_source The-Interdependency/uchc source "$SOURCE_SHA"
+          fetch_source globalwordnet/english-wordnet oewn dc343f2683279ecbb13fab4e2fd778d7b162d287
+          fetch_source The-Interdependency/ucns ucns 1cf10c2df2541a332a77f2ed3feda0c6bef4abcc
+          git -C ucns fetch --quiet origin 4f863ad37096b7baab8f62820ad5cb937b62a3a7
+          git -C ucns worktree add --detach ../ucns-build 4f863ad37096b7baab8f62820ad5cb937b62a3a7
+          git -C ucns fetch --quiet origin d7c6f51304ed6c32d48badf63132bea6de8af497
+          git -C ucns worktree add --detach ../ucns-relational d7c6f51304ed6c32d48badf63132bea6de8af497
+          fetch_source The-Interdependency/skill-lib doctrine 0981aed7695ba2675d5de35ef43ba734e94adea0
+          python3 -m venv .venv
+          .venv/bin/python -m pip install pytest==8.3.5 PyYAML==6.0.2 setuptools==82.0.1 wheel==0.46.3 packaging==26.0
+          mkdir -p evidence
+      - name: Run all existing domain tests and new reader contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          export UCNS_SOURCE_ROOT="$PWD/ucns"
+          export ENGLISH_GONOL_UCNS_ROOT="$PWD/ucns-relational"
+          .venv/bin/python -m pytest -q source/human/english/tests --ignore=source/human/english/tests/test_language_relational_bridge.py --junitxml=evidence/english.xml
+          (cd source/human/english && ../../../.venv/bin/python -m pytest -q tests/test_language_relational_bridge.py --junitxml=../../../evidence/relational.xml)
+          PYTHONPATH="$PWD/source/programming/python" .venv/bin/python -m pytest -q source/programming/python/tests --junitxml=evidence/python.xml
+          for file in source/human/english/english_gonol/inference_input.py source/human/english/tests/test_inference_input.py source/tools/verify_inference_corpus.py; do
+            .venv/bin/python doctrine/ratios/ratios_check.py "$file"
+          done
+      - name: Build and clean-install the immutable candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          .venv/bin/python -m pip wheel --no-deps --no-build-isolation ./source -w evidence/dist
+          python3 -m venv .clean
+          .clean/bin/python -m pip install pytest==8.3.5 PyYAML==6.0.2
+          .clean/bin/python -m pip install --no-index --no-deps evidence/dist/uchc-0.1.0a1-py3-none-any.whl
+          mkdir -p isolated-tests
+          cp source/human/english/tests/test_inference_input.py isolated-tests/test_input.py
+          cp source/programming/python/tests/test_construct.py isolated-tests/test_python.py
+          UCNS_SOURCE_ROOT="$PWD/ucns" .clean/bin/python -I -m pytest -q isolated-tests --junitxml=evidence/installed.xml
+          .clean/bin/python -I - <<'PY'
+          from pathlib import Path
+          from importlib.metadata import version
+          import english_gonol.inference_input as reader
+          import python_gonol
+          assert '/.clean/' in str(Path(reader.__file__).resolve())
+          assert '/.clean/' in str(Path(python_gonol.__file__).resolve())
+          assert version('uchc') == '0.1.0a1'
+          PY
+      - name: Build all pinned corpus rows through the installed artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          .clean/bin/python -I -m english_gonol.full_construct_run \
+            --source-root "$PWD/oewn/src/yaml" --ucns-source-root "$PWD/ucns-build" \
+            --out-dir "$PWD/evidence/full-construct"
+          .clean/bin/python -I - <<'PY'
+          from pathlib import Path
+          import hashlib, json
+          from english_gonol.full_construct_run import verify_replay
+          from english_gonol.hyperspace_construct import hyperspace_receipt
+          root = Path('evidence/full-construct')
+          logical = verify_replay(root)
+          assert logical['receipt_sha256'] == '12277b4959c0c72b7af12097b8a77bf91866bbf669e7f4ac07b6a5f1426ebb57'
+          hyper = hyperspace_receipt(root)
+          assert hyper['limit'] is None
+          assert hyper['receipt_sha256'] == '38b51ab5ebcf7d3e95f3b29700a170d1e7b6d3342dd6088171c5c078a08753d2'
+          with (root / 'construct.db').open('rb') as stream:
+              assert hashlib.file_digest(stream, 'sha256').hexdigest() == 'af609bbba504f95e349f3c1a30aa42923acc8e48c1e67bb481521dbf7e49162b'
+          Path('evidence/hyperspace-replay.json').write_text(json.dumps(hyper, indent=2) + '\n')
+          PY
+      - name: Exhaust the native input reader and seal verification evidence
+        shell: bash
+        env:
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          .clean/bin/python -I source/tools/verify_inference_corpus.py \
+            --database evidence/full-construct/construct.db \
+            --database-sha256 af609bbba504f95e349f3c1a30aa42923acc8e48c1e67bb481521dbf7e49162b \
+            --logical-receipt 12277b4959c0c72b7af12097b8a77bf91866bbf669e7f4ac07b6a5f1426ebb57 \
+            --output evidence/input-acceptance.json
+          .clean/bin/python -I - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          tests = {}
+          for path in Path('evidence').glob('*.xml'):
+              suites = list(ET.parse(path).getroot().iter('testsuite'))
+              counts = {key: sum(int(s.get(key, 0)) for s in suites) for key in ('tests', 'failures', 'errors', 'skipped')}
+              assert counts['tests'] > 0 and not any(counts[k] for k in ('failures', 'errors', 'skipped')), counts
+              tests[path.stem] = counts
+          wheel = Path('evidence/dist/uchc-0.1.0a1-py3-none-any.whl')
+          with wheel.open('rb') as stream:
+              digest = hashlib.file_digest(stream, 'sha256').hexdigest()
+          record = {'source_commit': os.environ['SOURCE_SHA'], 'wheel': wheel.name, 'wheel_sha256': digest, 'tests': tests, 'input_acceptance': json.loads(Path('evidence/input-acceptance.json').read_text())['receipt_sha256'], 'standing': 'verified release candidate; not neural inference or completed domain graduation'}
+          Path('evidence/candidate.json').write_text(json.dumps(record, indent=2) + '\n')
+          print(json.dumps(record))
+          PY
+          mkdir -p evidence/corpus-attribution
+          git -C oewn ls-files | grep -Ei '(^|/)(licen[sc]e|copying|notice|readme)(\.|$)' | while IFS= read -r path; do
+            mkdir -p "evidence/corpus-attribution/$(dirname "$path")"
+            cp "oewn/$path" "evidence/corpus-attribution/$path"
+          done
+          cp source/LICENSE evidence/UCHC-LICENSE
+          printf '%s\n' "UCHC $SOURCE_SHA" 'OEWN dc343f2683279ecbb13fab4e2fd778d7b162d287' 'UCNS build 4f863ad37096b7baab8f62820ad5cb937b62a3a7' > evidence/PROVENANCE.txt
+          git -C source archive --format=tar.gz --prefix=uchc/ HEAD > evidence/uchc-source.tar.gz
+          sha256sum evidence/dist/*.whl evidence/full-construct/construct.db > evidence/SHA256SUMS
+      - name: Retain complete candidate, data and verification evidence
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: uchc-input-candidate
+          path: evidence/
+          retention-days: 14
+          if-no-files-found: error

@@ -4,7 +4,7 @@
 
 - name: UCHC
 - forge: `The-Interdependency/stack`
-- current state: `stabilizing`
+- current state: `extracted`; new input-contract release candidate under verification
 - intended independent authority: `The-Interdependency/uchc`
 - mode: execution
 
@@ -31,17 +31,21 @@ skill-lib
 
 ## Progress
 
-Gates 1-5 passed for English and Python as of 2026-09-21:
+Historical extraction reported gates 1-5 passed on 2026-09-21. Gate 5
+required stronger evidence than the original PYTHONPATH check:
 
 1. source files and tests copied with provenance: done (Stack ca19020);
 2. imports/dependencies repaired without semantic redesign: none required;
 3. existing local tests pass: English 92 passed, Python 5 passed;
 4. replay/receipt behavior matches the pinned forge baseline: English
    hyperspace receipt 38b51ab5..., construct.db sha256 af609bbb...;
-5. clean build/install: importable via PYTHONPATH from each domain root.
+5. historical evidence was PYTHONPATH importability, not a clean package install.
+   The new root `pyproject.toml` supplies a wheel; clean-install and full-corpus
+   acceptance are now executable gates, distinct from the earlier claim.
 
-Gates 6-11 (license, immutable artifact release, Stack reconsumption,
-authority receipt) are recorded as next steps.
+License gate 6 is resolved. Gates 7-11 (immutable candidate, exact forge
+verification, release, reconsumption and authority receipt) remain separate
+terminal states. Candidate consumption alone does not transfer authority.
 
 ## English
 
@@ -91,7 +95,7 @@ Until then, Stack remains the implementation owner for that domain.
 ## hmmm
 
 - repository license: resolved (FSL-1.1-ALv2, licensor The Interdependency LLC, two-year Apache-2.0 conversion);
-- distribution kind and package naming: unresolved;
-- immutable release identity: not yet applicable;
-- downstream reconsumption: not yet applicable;
+- candidate package: `uchc`, version `0.1.0a1`, Python wheel; stable publication pending;
+- immutable release identity: pending exact-candidate release evidence;
+- downstream reconsumption: active Stack ZFAE input consumer under candidate verification;
 - full skill-lib propagation: pending.

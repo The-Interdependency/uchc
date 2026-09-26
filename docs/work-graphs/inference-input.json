@@ -1,0 +1,60 @@
+{
+  "schema": "the-interdependency.stack-manifest",
+  "version": "1.0.0",
+  "work_graph_sha256": "0d3c699781565ebc0debbc4249de8b18e814fdb7c441cb426ce99b853927c259",
+  "repositories": [
+    {
+      "repository": "The-Interdependency/uchc",
+      "commit": "118b48802b20509afa556cf3ce68cee915628af0",
+      "authority": "extracted language construction",
+      "relation": "input implementation baseline"
+    },
+    {
+      "repository": "The-Interdependency/stack",
+      "commit": "4a03f68c1ea841da5767813c6a65c41620f561f6",
+      "authority": "composition forge",
+      "relation": "active ZFAE input research consumer baseline"
+    },
+    {
+      "repository": "The-Interdependency/ucns",
+      "commit": "4f863ad37096b7baab8f62820ad5cb937b62a3a7",
+      "authority": "gonol geometry",
+      "relation": "full-corpus construction producer"
+    },
+    {
+      "repository": "globalwordnet/english-wordnet",
+      "commit": "dc343f2683279ecbb13fab4e2fd778d7b162d287",
+      "authority": "bounded source corpus",
+      "relation": "complete OEWN 2025 evidence"
+    },
+    {
+      "repository": "The-Interdependency/ptcna",
+      "commit": "a06a049cd8722adaad32dbc9c36d9c87b0204236",
+      "authority": "neural construction",
+      "relation": "intended construction requires upstream neural audit"
+    },
+    {
+      "repository": "The-Interdependency/zfae",
+      "commit": "95fd37ef0e1775643399c8a9e8292190abf05c04",
+      "authority": "conceptual inference boundary",
+      "relation": "no fixed-width numerical projection authorized here"
+    },
+    {
+      "repository": "The-Interdependency/skill-lib",
+      "commit": "0981aed7695ba2675d5de35ef43ba734e94adea0",
+      "authority": "build and evidence discipline",
+      "relation": "source governing this implementation"
+    }
+  ],
+  "boundaries": {
+    "authority_transfer": false,
+    "proof_status_transfer": false,
+    "measurement_status_transfer": false,
+    "semantic_mapping": "external-provenance",
+    "agent_scope": "cross-repository-work-graph",
+    "hmmm": [
+      "neural audit, propagation, learning and readout remain producer-owned; this task implements input consumption",
+      "stable release and domain authority transition require separate terminal evidence"
+    ]
+  }
+}
