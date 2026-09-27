@@ -1,0 +1,17 @@
+UCHC
+Copyright 2026 Erin Spencer
+
+This repository is licensed under the Functional Source License, Version 1.1,
+ALv2 Future License (FSL-1.1-ALv2). See LICENSE. Each version converts to the
+Apache License, Version 2.0 on the second anniversary of the date it is made
+available.
+
+Prior publication under MPL-2.0: portions of the English Gonol code in this
+repository were previously published under the Mozilla Public License 2.0 in
+The-Interdependency/edcm (edcm/gonol.py, edcm/language/*) before moving through
+The-Interdependency/stack (research/english-gonol/) into this repository.
+Those portions remain available under MPL-2.0 from those earlier publications.
+
+Third-party input: the Open English WordNet 2025
+(globalwordnet/english-wordnet@dc343f2683279ecbb13fab4e2fd778d7b162d287) is
+used as lexical evidence under the Princeton WordNet License plus CC BY 4.0.
