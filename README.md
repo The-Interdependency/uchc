@@ -99,7 +99,7 @@ Migration order:
 uchc is licensed under the Functional Source License, Version 1.1, ALv2 Future
 License (SPDX: `FSL-1.1-ALv2`). The licensor is Erin Spencer. The full terms are
 in [`LICENSE`](LICENSE). Under its Grant of Future License, each version converts
-to the ALv2 change license on the second anniversary of the date it is made
+to the ALv2 Future License on the second anniversary of the date it is made
 available. [`NOTICE`](NOTICE) records that parts of the English Gonol code were
 published earlier under other terms in The-Interdependency/edcm, and it credits
 the Open English WordNet input. This section is a licensing map, not legal advice.
