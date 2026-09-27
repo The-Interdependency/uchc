@@ -45,7 +45,7 @@ changes, work in the consumer repository.
 
 ## hmmm
 
-- repository license resolved: FSL-1.1-ALv2; preserve the notice and inherited obligations;
+- repository license resolved: FSL-1.1-ALv2 (licensor Erin Spencer; each version converts to Apache-2.0 two years after it is made available); preserve the notice, `NOTICE`, and inherited obligations;
 - release/distribution surface;
 - full repo-local skill-lib propagation;
 - unresolved geometry inherited from UCNS or the active domain.

@@ -94,6 +94,16 @@ Migration order:
 - sha256: `af609bbba504f95e349f3c1a30aa42923acc8e48c1e67bb481521dbf7e49162b`
 - full-corpus receipt: `38b51ab5ebcf7d3e95f3b29700a170d1e7b6d3342dd6088171c5c078a08753d2`
 
+## License
+
+uchc is licensed under the Functional Source License, Version 1.1, ALv2 Future
+License (SPDX: `FSL-1.1-ALv2`). The licensor is Erin Spencer. The full terms are
+in [`LICENSE`](LICENSE). Under its Grant of Future License, each version converts
+to the ALv2 Future License on the second anniversary of the date it is made
+available. [`NOTICE`](NOTICE) records that parts of the English Gonol code were
+published earlier under other terms in The-Interdependency/edcm, and it credits
+the Open English WordNet input. This section is a licensing map, not legal advice.
+
 ## hmmm
 
 - exact geometry of definition-axis orthogonality;

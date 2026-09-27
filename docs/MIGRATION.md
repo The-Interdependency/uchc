@@ -94,7 +94,7 @@ Until then, Stack remains the implementation owner for that domain.
 
 ## hmmm
 
-- repository license: resolved (FSL-1.1-ALv2, licensor The Interdependency LLC, two-year Apache-2.0 conversion);
+- repository license: resolved (FSL-1.1-ALv2, licensor Erin Spencer; each version converts to Apache-2.0 on the second anniversary of the date it is made available);
 - candidate package: `uchc`, version `0.1.0a1`, Python wheel; stable publication pending;
 - immutable release identity: pending exact-candidate release evidence;
 - downstream reconsumption: active Stack ZFAE input consumer under candidate verification;
