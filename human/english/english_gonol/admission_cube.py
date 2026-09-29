@@ -1,46 +1,46 @@
 # === MODULE_BUILD ===
-# id: uchc_english_construct_tensor
-#   module_name: construct_tensor
+# id: uchc_english_admission_cube
+#   module_name: admission_cube
 #   module_kind: candidate
-#   summary: the construct-axis tensor - one tensor whose modes ARE the construct axes g, w, d, tau, pi; every mode present in every stored object, missing modes are named holes
+#   summary: the admission cube - one cube whose modes ARE the construct axes g, w, d, tau, pi; every mode present in every stored object, missing modes are named holes
 #   owner: Erin Spencer
-#   public_surface: SCHEMA, VERSION, MODES, TensorError, HOLE, TensorRecord, build_tensor, write_full_index_record, read_full_index_record, TensorWeights, tensor_phone_card
+#   public_surface: SCHEMA, VERSION, MODES, AdmissionCubeError, HOLE, AdmissionCube, build_admission_cube, write_full_index_record, read_full_index_record, AdmissionWeights, admission_cube_phone_card
 #   internal_surface: full infer() consumption, named index spaces, circle-plus-cover tau, canonical full-index serialization
 #   auth_boundary: none
 #   storage_boundary: immutable records only; the full-index record is the stored object
 #   network_boundary: none
 #   user_data_boundary: read
 #   admin_only: false
-#   tests: tests.test_construct_tensor
-#   rollout: candidate tensor; weights live on the same modes; no ablation, no subset, no probe contest
+#   tests: tests.test_admission_cube
+#   rollout: candidate admission cube; weights live on the same modes; no harmonic T, no attention, no growth
 #   rollback: remove this module and its tests
 #   requires: uchc_english_inference_input, uchc_english_inference_v0
 #   since: 2026-09-28
 #   unresolved: no low-rank success is declared; no axis is deletable without breaking the record
 # === END MODULE_BUILD ===
 # === CONTRACTS ===
-# id: construct_tensor_has_all_modes
-#   given: a built tensor
+# id: admission_cube_has_all_modes
+#   given: a built cube
 #   then: exactly the modes g, w, d, tau, pi are present in the axes and in every stored entry
 #   class: correctness
-# id: construct_tensor_holes_are_named
+# id: admission_cube_holes_are_named
 #   given: a missing mode
 #   then: the entry carries a named hole, never a dropped index
 #   class: doctrine
-# id: construct_tensor_tau_is_circle_plus_cover
+# id: admission_cube_tau_is_circle_plus_cover
 #   given: a tau mode value
 #   then: the value is (cos 2πp/157, sin 2πp/157, epsilon), not a degree scalar
 #   class: correctness
-# id: construct_tensor_flattening_forbidden
+# id: admission_cube_flattening_forbidden
 #   given: the stored object
-#   then: the full-index record keeps named axes and five-mode entries; flattening happens only in a phone card after the tensor exists
+#   then: the full-index record keeps named axes and five-mode entries; flattening happens only in a phone card after the cube exists
 #   class: doctrine
-# id: construct_tensor_weights_share_modes
+# id: admission_cube_weights_share_modes
 #   given: a weights candidate
 #   then: every weight factor names only tensor modes and has no unnamed width
 #   class: doctrine
 # === END CONTRACTS ===
-"""The construct-axis tensor.
+"""The admission cube.
 
 Modes:
   g    glyph origin
@@ -52,7 +52,7 @@ Modes:
 Filled from the full admitted frame and unreduced definition_ids over the
 full O x S x C receipts. Missing modes are named holes in the construct,
 never dropped indices. Flattening is forbidden as representation; a phone
-card may contract only after the tensor exists.
+card may contract only after the cube exists.
 """
 
 from __future__ import annotations
@@ -67,17 +67,17 @@ from typing import Any
 from .inference_input import EnglishConstruct, InferenceFrame
 from .inference_v0 import Bundle, infer
 
-SCHEMA = "uchc.english.construct-tensor"
+SCHEMA = "uchc.admission-cube-v0"
 VERSION = "0.1.0"
 MODES = ("g", "w", "d", "tau", "pi")
 _MODULUS = 157
 HOLE = "hole"
 
-_HMMM = "if you can delete an index and the code still runs, you did not build the tensor"
+_HMMM = "if you can delete an index and the code still runs, you did not build the cube"
 
 
-class TensorError(ValueError):
-    """Raised when the tensor fails closed."""
+class AdmissionCubeError(ValueError):
+    """Raised when the cube fails closed."""
 
 
 def _canonical(value: object) -> bytes:
@@ -128,7 +128,8 @@ def _first_glyph_occurrence(frame: InferenceFrame, word_id: int) -> int | None:
 
 
 @dataclass(frozen=True)
-class TensorRecord:
+class AdmissionCube:
+    """One sentence fiber: admission indices per construct axis."""
     axes: dict[str, list[Any]]
     axis_holes: dict[str, list[str]]
     entries: tuple[dict[str, Any], ...]
@@ -148,7 +149,7 @@ class TensorRecord:
         return _canonical(self.as_dict())
 
     def contract(self) -> dict[str, Any]:
-        """Phone-card contraction: allowed only after the tensor exists."""
+        """Phone-card contraction: allowed only after the cube exists."""
 
         return {
             "schema": SCHEMA,
@@ -165,13 +166,13 @@ def _hole(axis: str, reason: str) -> dict[str, str]:
     return {HOLE: reason, "axis": axis}
 
 
-def build_tensor(
+def build_admission_cube(
     frame: InferenceFrame,
     corpus: EnglishConstruct,
     ucns_source_root: Path,
     *,
     extra_definition_ids: tuple[int, ...] = (),
-) -> TensorRecord:
+) -> AdmissionCube:
     """Build T from the full admitted frame and the full O x S x C receipts."""
 
     frame = frame.require_complete()
@@ -271,10 +272,10 @@ def build_tensor(
     for mode in MODES:
         axis_holes[mode] = sorted(holes[mode])
 
-    return TensorRecord(axes=axes, axis_holes=axis_holes, entries=tuple(entries))
+    return AdmissionCube(axes=axes, axis_holes=axis_holes, entries=tuple(entries))
 
 
-def write_full_index_record(tensor: TensorRecord, path: Path) -> Path:
+def write_full_index_record(tensor: AdmissionCube, path: Path) -> Path:
     """Write the full-index record; this is the stored object, never a summary."""
 
     path = Path(path)
@@ -282,47 +283,47 @@ def write_full_index_record(tensor: TensorRecord, path: Path) -> Path:
     return path
 
 
-def read_full_index_record(data: bytes) -> TensorRecord:
+def read_full_index_record(data: bytes) -> AdmissionCube:
     """Read a full-index record and refuse anything contracted or partial."""
 
     if not isinstance(data, bytes):
-        raise TensorError("full-index record must be bytes")
+        raise AdmissionCubeError("full-index record must be bytes")
     try:
         value = json.loads(data.decode("utf-8"))
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
-        raise TensorError("full-index record is not valid canonical JSON") from exc
+        raise AdmissionCubeError("full-index record is not valid canonical JSON") from exc
     if value.get("schema") != SCHEMA or value.get("version") != VERSION:
-        raise TensorError("full-index record schema or version mismatch")
+        raise AdmissionCubeError("full-index record schema or version mismatch")
     if set(value.get("axes", {})) != set(MODES):
-        raise TensorError("full-index record is missing a tensor mode")
+        raise AdmissionCubeError("full-index record is missing a tensor mode")
     for entry in value.get("entries", []):
         if set(entry) < {"g", "w", "d", "tau", "pi"}:
-            raise TensorError("full-index record has an entry missing a mode")
-    tensor = TensorRecord(
+            raise AdmissionCubeError("full-index record has an entry missing a mode")
+    tensor = AdmissionCube(
         axes=value["axes"],
         axis_holes=value["axis_holes"],
         entries=tuple(value["entries"]),
         hmmm=value.get("hmmm", _HMMM),
     )
     if _canonical(value) != data:
-        raise TensorError("full-index record does not replay byte-identically")
+        raise AdmissionCubeError("full-index record does not replay byte-identically")
     return tensor
 
 
 @dataclass(frozen=True)
-class TensorWeights:
-    """Candidate weights living on the tensor: factors of the same modes only."""
+class AdmissionWeights:
+    """Candidate weights living on the cube: factors of the same modes only."""
 
     factors: dict[str, list[Any]]
     modes: tuple[str, ...] = MODES
 
     def __post_init__(self) -> None:
         if set(self.factors) - set(MODES):
-            raise TensorError("weight factors must name only tensor modes")
+            raise AdmissionCubeError("weight factors must name only tensor modes")
         if "unnamed" in self.factors or any(
             not isinstance(name, str) or name not in MODES for name in self.factors
         ):
-            raise TensorError("no unnamed width; every weight factor names a tensor mode")
+            raise AdmissionCubeError("no unnamed width; every weight factor names a tensor mode")
 
     def as_dict(self) -> dict[str, Any]:
         return {
@@ -335,8 +336,8 @@ class TensorWeights:
         }
 
 
-def tensor_phone_card(tensor: TensorRecord) -> dict[str, Any]:
-    """A contracted phone card; only valid after the tensor exists."""
+def admission_cube_phone_card(tensor: AdmissionCube) -> dict[str, Any]:
+    """A contracted phone card; only valid after the cube exists."""
 
     return tensor.contract()
 
@@ -347,11 +348,11 @@ __all__ = [
     "MODES",
     "HOLE",
     "_HMMM",
-    "TensorError",
-    "TensorRecord",
-    "build_tensor",
+    "AdmissionCubeError",
+    "AdmissionCube",
+    "build_admission_cube",
     "write_full_index_record",
     "read_full_index_record",
-    "TensorWeights",
-    "tensor_phone_card",
+    "AdmissionWeights",
+    "admission_cube_phone_card",
 ]
