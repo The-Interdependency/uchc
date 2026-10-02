@@ -18,7 +18,9 @@ not authority to choose a 53-dimensional projection here.
 | File | Purpose and risk | Required verification |
 |---|---|---|
 | `human/english/english_gonol/inference_input.py` | Read-only, receipt-bound text resolution; source/identity loss is the main risk. | Exact source/occurrence recovery, candidate-definition completeness, snapshot and replay tamper rejection. |
-| `human/english/tests/test_inference_input.py` | Focused adversarial contract witnesses. | Unknowns, repeated identities, Unicode, full definition records, closed handles and altered receipts. |
+| `human/english/english_gonol/hilbert_inference.py` | Axis-native mathematical state over the verified input; coordinate substitution or loss of tensor order is the main risk. | UCHC axes as basis, origin-local inner product, recursive word promotion, exact occurrence order, fail-closed cross-origin operations. |
+| `human/english/tests/test_inference_input.py` | Focused adversarial reader witnesses. | Unknowns, repeated identities, Unicode, full definition records, closed handles and altered receipts. |
+| `human/english/tests/test_hilbert_inference.py` | Focused Hilbert-state witnesses. | Basis orthogonality, word order/multiplicity, frame tensor order, explicit scalar field, cross-origin refusal. |
 | `tools/verify_inference_corpus.py` | Exhaustive reader acceptance, not a sample or task-quality claim. | Every admitted glyph, word and definition, all ordered components and semantic evidence rows. |
 | `pyproject.toml` | Build the existing domain implementations as an immutable wheel. | Clean wheel installation and tests with source directories absent from imports. |
 | `docs/INFERENCE_INPUT.md` | Usage, authority and remaining gates. | Commands replay against the same artifact identities. |
@@ -60,12 +62,43 @@ Unknown words and scalars preserve their exact spelling, order and spans;
 not evidence that its meaning was resolved. Empty input is structurally empty,
 not an inference result. No ready flag here authorizes neural inference.
 
+## Hilbert-state bridge
+
+A complete frame can now be lifted into its native mathematical inference
+state without introducing an external coordinate system:
+
+```text
+exact source occurrences
+  -> admitted word / glyph identities
+  -> existing UCHC axes
+  -> ordered tensor basis state
+```
+
+`frame_basis_state(frame, construct)` maps each admitted non-whitespace
+occurrence to its existing word axis and each whitespace scalar to its glyph
+axis. It preserves occurrence order and multiplicity exactly.
+
+For an admitted word, `word_promotion` exposes the lower-scale ordered
+glyph-axis tensor and the word axis into which that closed construction
+promotes. Thus the word axis is not a numerical embedding synthesized from the
+glyphs; it is the higher-scale axis produced by closure while the glyph
+construction remains recoverable.
+
+The bridge chooses no O/S/C channel, semantic sense, weight, amplitude, or
+phase. Origin-local vector arithmetic requires an explicit scalar field
+(`R` or `C`), because the canonical inference field remains unresolved.
+Cross-origin inner products fail closed.
+
+See [`HILBERT_INFERENCE.md`](HILBERT_INFERENCE.md) for the mathematical
+contract and failure conditions.
+
 ## Usage guidance
 
 Install the exact built wheel (verify its SHA-256 first), then:
 
 ```python
 from pathlib import Path
+from english_gonol.hilbert_inference import frame_basis_state
 from english_gonol.inference_input import EnglishConstruct
 
 with EnglishConstruct(
@@ -74,14 +107,16 @@ with EnglishConstruct(
     logical_receipt='<verified full-construct logical receipt>',
 ) as construct:
     frame = construct.resolve_text('alpha letter alpha.', source_id='request:1')
-    print(frame.to_dict())
+    frame.require_complete()
+    state = frame_basis_state(frame, construct)
+    print(state.space_signature)
+
     for word in frame.words:
         for definition_id in word.definition_ids:
             definition = construct.definition(definition_id)
             print(definition.text, definition.evidence)
+
     assert construct.replay(frame.to_bytes()) == frame
-    # Raises AdmissionError rather than claiming unknown input is constructed.
-    frame.require_complete()
 ```
 
 The complete pinned English artifact has logical receipt
@@ -89,8 +124,15 @@ The complete pinned English artifact has logical receipt
 Use the actual database byte digest delivered with its verified artifact;
 this logical receipt does not substitute for that physical identity.
 
-Run the focused witnesses with `python -m pytest -q
-human/english/tests/test_inference_input.py`. Exhaustive acceptance is
+Run the focused witnesses with:
+
+```bash
+python -m pytest -q \
+  human/english/tests/test_inference_input.py \
+  human/english/tests/test_hilbert_inference.py
+```
+
+Exhaustive reader acceptance is
 `python tools/verify_inference_corpus.py --database /data/construct.db
 --database-sha256 <digest> --logical-receipt <receipt> --output /tmp/input-receipt.json`.
 It requires all corpus rows, never a smaller sample.
@@ -100,13 +142,21 @@ It requires all corpus rows, never a smaller sample.
 Build and clean-install the candidate, run the same bytes in the Stack consumer,
 and retain their immutable identity. Release/reconsumption and authority
 transition must still follow `docs/MIGRATION.md`; this contract alone does not
-graduate UCHC. Rollback removes this consumer path and the new public module;
-existing constructed data and historical evidence remain intact. Do not restore
-hash-derived values as the sole language representation.
+graduate UCHC.
+
+The Hilbert layer is additive over the existing immutable construction: it does
+not change `construct.db` or the existing full-corpus hyperspace receipt.
+Rollback removes `hilbert_inference.py`, its tests, and its documentation; the
+verified source construction remains intact.
 
 ## hmmm
 
-The UCNS neural audit required by PTCNA, the resulting propagation/learning and
-readout laws, context-dependent sense selection, broader admission, and useful
-held-out inference remain separate work. No coordinates or weight dimensions
-are invented to conceal those boundaries.
+- canonical scalar field (`R` or `C`);
+- cross-origin inner products and angles;
+- propagation/learning and readout laws;
+- amplitude and phase assignment;
+- context-dependent sense selection;
+- sentence-axis promotion and later recursive scales;
+- broader admission and useful held-out inference.
+
+No coordinate or weight dimension is invented to conceal those boundaries.
