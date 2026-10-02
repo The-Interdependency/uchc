@@ -1,0 +1,43 @@
+{
+  "schema": "the-interdependency.stack-manifest",
+  "version": "1.0.0",
+  "work_graph_sha256": "6206eeed28c7cd9fa5abd31a5fe1eef5453efc263b76774f6fc129cd98de6ba1",
+  "repositories": [
+    {
+      "repository": "The-Interdependency/uchc",
+      "commit": "0b3ada9ef2f8e32bba10daf104fc0d38730c3a77",
+      "authority": "language hyperspace implementation",
+      "relation": "exact implementation baseline repaired by this work"
+    },
+    {
+      "repository": "The-Interdependency/ucns",
+      "commit": "380ce7b7ec6b8b45ffa53ea4210070f0b3129747",
+      "authority": "Public Gonol carrier and geometry",
+      "relation": "provides the admitted glyph-axis geometry consumed without redefinition"
+    },
+    {
+      "repository": "The-Interdependency/metapat",
+      "commit": "1cdfb09dd00a451cee30eec2e78624df8c682662",
+      "authority": "semantic distinctions for state, vector and transformation",
+      "relation": "constrains placement of vector/state language without supplying Hilbert mathematics"
+    },
+    {
+      "repository": "The-Interdependency/skill-lib",
+      "commit": "ad895d2f756fc315c0b83856b2042796c3ad781d",
+      "authority": "build, canon and cross-repository discipline",
+      "relation": "governing workflow source"
+    }
+  ],
+  "boundaries": {
+    "authority_transfer": false,
+    "proof_status_transfer": false,
+    "measurement_status_transfer": false,
+    "semantic_mapping": "declared mapping",
+    "agent_scope": "cross-repository-work-graph",
+    "hmmm": [
+      "canonical Hilbert scalar field (R or C), cross-origin inner products and angles remain undefined",
+      "amplitude, phase, sense-selection and learned inference operators remain unresolved",
+      "no sentence axis is promoted until its constitutive relation is separately licensed"
+    ]
+  }
+}
