@@ -59,6 +59,32 @@ At the pinned Stack baseline, the completed English hyperspace construction repo
 
 Carrier position and axis participation are distinct roles of a glyph gonol.
 
+## Hilbert inference state
+
+UCHC inference now has an explicit axis-native Hilbert-state contract.
+
+```text
+glyph axes
+  -> ordered glyph-axis tensor
+  -> closed word
+  -> word axis
+  -> ordered higher-scale tensor
+```
+
+The basis comes from the already-declared UCHC axes rather than external
+Cartesian `x/y` coordinates. A word is not flattened into glyph coordinates:
+its ordered glyph construction closes and promotes to its existing word axis.
+A complete input frame is an ordered tensor of admitted word axes and
+whitespace glyph axes.
+
+Origin-local inner products are orthonormal. Cross-origin inner products remain
+`hmmm` and fail closed. The canonical scalar field (`R` or `C`) is not silently
+chosen; vector arithmetic requires it explicitly. See
+[`docs/HILBERT_INFERENCE.md`](docs/HILBERT_INFERENCE.md).
+
+The current O/S/C inference and epicyclic graph paths are downstream candidate
+operators/readouts. They do not define the Hilbert basis.
+
 ## Repository layout
 
 - `human/` — human-language UCHC implementations.
@@ -72,12 +98,15 @@ No shared `core/` gonol geometry is defined here. Shared geometry is consumed fr
 ## Usage guidance
 
 English and Python implementations have been extracted, but domain graduation is incomplete.
-The new receipt-bound English input API is a release candidate, not evidence of a
-completed neural inference engine. See [inference input usage](docs/INFERENCE_INPUT.md).
+The receipt-bound English input API is a release candidate, not evidence of a
+completed neural inference engine. See [inference input usage](docs/INFERENCE_INPUT.md)
+and [Hilbert inference state](docs/HILBERT_INFERENCE.md).
 Build the candidate with `python -m pip wheel --no-deps . --wheel-dir dist`,
 verify its SHA-256, and install that exact wheel without an editable/source-tree path.
 The [input work graph](docs/work-graphs/inference-input.json) records the exact
-source authorities used for this extension.
+source authorities used for the input extension; the
+[Hilbert work graph](docs/work-graphs/hilbert-inference.json) records the exact
+authorities for the axis-native state correction.
 
 Migration order:
 
@@ -94,6 +123,9 @@ Migration order:
 - sha256: `af609bbba504f95e349f3c1a30aa42923acc8e48c1e67bb481521dbf7e49162b`
 - full-corpus receipt: `38b51ab5ebcf7d3e95f3b29700a170d1e7b6d3342dd6088171c5c078a08753d2`
 
+The Hilbert-state layer consumes this existing construction; it does not alter
+the full-corpus construction receipt.
+
 ## License
 
 uchc is licensed under the Functional Source License, Version 1.1, ALv2 Future
@@ -106,8 +138,11 @@ the Open English WordNet input. This section is a licensing map, not legal advic
 
 ## hmmm
 
+- canonical Hilbert scalar field (`R` or `C`);
 - exact geometry of definition-axis orthogonality;
-- cross-origin angles and attachment geometry beyond the implemented construction-derived attachment relation;
+- cross-origin inner products, angles, and attachment geometry beyond the implemented construction-derived attachment relation;
+- amplitude/phase, sense-selection, and learned inference operators;
+- sentence-axis promotion relation;
 - continuum lift-selection law;
 - stable release, published-artifact reconsumption, and domain graduation;
 - Spanish, TypeScript, and Rust admission/construction profiles.
