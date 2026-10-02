@@ -18,9 +18,8 @@ not authority to choose a 53-dimensional projection here.
 | File | Purpose and risk | Required verification |
 |---|---|---|
 | `human/english/english_gonol/inference_input.py` | Read-only, receipt-bound text resolution; source/identity loss is the main risk. | Exact source/occurrence recovery, candidate-definition completeness, snapshot and replay tamper rejection. |
-| `human/english/english_gonol/hilbert_inference.py` | Axis-native mathematical state over the verified input; coordinate substitution or loss of tensor order is the main risk. | UCHC axes as basis, origin-local inner product, recursive word promotion, exact occurrence order, fail-closed cross-origin operations. |
+| `docs/HILBERT_INFERENCE.md` | Migration target for the Stack-forged axis-native Hilbert candidate; premature duplicate implementation is the main risk. | Exact forge identity, domain-qualified terms, construct-bound axes, and remaining graduation gates. |
 | `human/english/tests/test_inference_input.py` | Focused adversarial reader witnesses. | Unknowns, repeated identities, Unicode, full definition records, closed handles and altered receipts. |
-| `human/english/tests/test_hilbert_inference.py` | Focused Hilbert-state witnesses. | Basis orthogonality, word order/multiplicity, frame tensor order, explicit scalar field, cross-origin refusal. |
 | `tools/verify_inference_corpus.py` | Exhaustive reader acceptance, not a sample or task-quality claim. | Every admitted glyph, word and definition, all ordered components and semantic evidence rows. |
 | `pyproject.toml` | Build the existing domain implementations as an immutable wheel. | Clean wheel installation and tests with source directories absent from imports. |
 | `docs/INFERENCE_INPUT.md` | Usage, authority and remaining gates. | Commands replay against the same artifact identities. |
@@ -62,43 +61,51 @@ Unknown words and scalars preserve their exact spelling, order and spans;
 not evidence that its meaning was resolved. Empty input is structurally empty,
 not an inference result. No ready flag here authorizes neural inference.
 
-## Hilbert-state bridge
+## Hilbert-state bridge migration target
 
-A complete frame can now be lifted into its native mathematical inference
-state without introducing an external coordinate system:
+A complete input frame is intended to lift into an axis-native mathematical
+state without an external coordinate system:
 
 ```text
 exact source occurrences
   -> admitted word / glyph identities
-  -> existing UCHC axes
+  -> existing language axes
   -> ordered tensor basis state
 ```
 
-`frame_basis_state(frame, construct)` maps each admitted non-whitespace
-occurrence to its existing word axis and each whitespace scalar to its glyph
-axis. It preserves occurrence order and multiplicity exactly.
+That bridge is **not implemented in UCHC yet**. The executable Hilbert candidate
+is being forged in Stack's authoritative English Gonol workspace. UCHC records
+the requirements that must survive migration.
 
-For an admitted word, `word_promotion` exposes the lower-scale ordered
-glyph-axis tensor and the word axis into which that closed construction
-promotes. Thus the word axis is not a numerical embedding synthesized from the
-glyphs; it is the higher-scale axis produced by closure while the glyph
-construction remains recoverable.
+A future `frame_basis_state(frame, construct)` must:
 
-The bridge chooses no O/S/C channel, semantic sense, weight, amplitude, or
-phase. Origin-local vector arithmetic requires an explicit scalar field
-(`R` or `C`), because the canonical inference field remains unresolved.
-Cross-origin inner products fail closed.
+1. verify `frame.construct == construct.identity` before dereferencing any
+   corpus-local ID;
+2. retain both the logical construct receipt and physical artifact SHA-256 in
+   every emitted axis/state identity;
+3. map admitted non-whitespace occurrences to existing word axes and whitespace
+   scalars to existing glyph axes;
+4. preserve exact occurrence order and multiplicity;
+5. choose no O/S/C channel, semantic sense, weight, amplitude, phase, or learned
+   operator;
+6. require an explicit scalar field until `R` versus `C` is canonized;
+7. fail closed on unlicensed cross-origin or cross-construct inner products.
 
-See [`HILBERT_INFERENCE.md`](HILBERT_INFERENCE.md) for the mathematical
-contract and failure conditions.
+The Stack candidate already falsifies Cartesian substitution, construct-identity
+loss, glyph order/multiplicity loss, expensive member-reconstructing dimension
+queries, and implicit scalar-field mixing at the construction boundary. The
+input-frame bridge remains a migration obligation rather than a second
+implementation here.
+
+See [`HILBERT_INFERENCE.md`](HILBERT_INFERENCE.md).
 
 ## Usage guidance
 
-Install the exact built wheel (verify its SHA-256 first), then:
+Install the exact built UCHC wheel (verify its SHA-256 first) and use the
+existing receipt-bound input API:
 
 ```python
 from pathlib import Path
-from english_gonol.hilbert_inference import frame_basis_state
 from english_gonol.inference_input import EnglishConstruct
 
 with EnglishConstruct(
@@ -108,8 +115,6 @@ with EnglishConstruct(
 ) as construct:
     frame = construct.resolve_text('alpha letter alpha.', source_id='request:1')
     frame.require_complete()
-    state = frame_basis_state(frame, construct)
-    print(state.space_signature)
 
     for word in frame.words:
         for definition_id in word.definition_ids:
@@ -121,15 +126,13 @@ with EnglishConstruct(
 
 The complete pinned English artifact has logical receipt
 `12277b4959c0c72b7af12097b8a77bf91866bbf669e7f4ac07b6a5f1426ebb57`.
-Use the actual database byte digest delivered with its verified artifact;
-this logical receipt does not substitute for that physical identity.
+Use the actual database byte digest delivered with its verified artifact; this
+logical receipt does not substitute for that physical identity.
 
-Run the focused witnesses with:
+Run the current focused input witnesses with:
 
 ```bash
-python -m pytest -q \
-  human/english/tests/test_inference_input.py \
-  human/english/tests/test_hilbert_inference.py
+python -m pytest -q human/english/tests/test_inference_input.py
 ```
 
 Exhaustive reader acceptance is
@@ -139,15 +142,15 @@ It requires all corpus rows, never a smaller sample.
 
 ## Rollout and rollback
 
-Build and clean-install the candidate, run the same bytes in the Stack consumer,
-and retain their immutable identity. Release/reconsumption and authority
-transition must still follow `docs/MIGRATION.md`; this contract alone does not
-graduate UCHC.
+Build and clean-install the existing UCHC candidate, run the same bytes in the
+Stack consumer, and retain their immutable identity. The new Hilbert
+implementation remains in Stack until its exact candidate is migrated through
+the same release/reconsumption/authority-transition sequence in
+[`MIGRATION.md`](MIGRATION.md).
 
-The Hilbert layer is additive over the existing immutable construction: it does
-not change `construct.db` or the existing full-corpus hyperspace receipt.
-Rollback removes `hilbert_inference.py`, its tests, and its documentation; the
-verified source construction remains intact.
+The earlier premature UCHC Hilbert source/test copy has been removed from this
+branch. The verified `construct.db`, input reader, and full-corpus hyperspace
+receipt remain unchanged.
 
 ## hmmm
 
@@ -157,6 +160,8 @@ verified source construction remains intact.
 - amplitude and phase assignment;
 - context-dependent sense selection;
 - sentence-axis promotion and later recursive scales;
+- exact implementation and validation of the construct-bound input-frame bridge;
+- migration of the Stack-forged Hilbert candidate into UCHC;
 - broader admission and useful held-out inference.
 
 No coordinate or weight dimension is invented to conceal those boundaries.
