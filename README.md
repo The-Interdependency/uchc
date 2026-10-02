@@ -59,9 +59,11 @@ At the pinned Stack baseline, the completed English hyperspace construction repo
 
 Carrier position and axis participation are distinct roles of a glyph gonol.
 
-## Hilbert inference state
+## Hilbert inference target
 
-UCHC inference now has an explicit axis-native Hilbert-state contract.
+The axis-native Hilbert correction is currently forged in Stack, which remains
+the implementation owner until UCHC graduation completes. UCHC records the
+migration target without duplicating a second writable implementation.
 
 ```text
 glyph axes
@@ -71,19 +73,19 @@ glyph axes
   -> ordered higher-scale tensor
 ```
 
-The basis comes from the already-declared UCHC axes rather than external
-Cartesian `x/y` coordinates. A word is not flattened into glyph coordinates:
-its ordered glyph construction closes and promotes to its existing word axis.
-A complete input frame is an ordered tensor of admitted word axes and
-whitespace glyph axes.
+The target basis comes from the already-declared language axes rather than
+external Cartesian `x/y/z` coordinates. A word preserves its exact ordered
+glyph construction when closure promotes it into its own higher-scale word
+axis.
 
-Origin-local inner products are orthonormal. Cross-origin inner products remain
-`hmmm` and fail closed. The canonical scalar field (`R` or `C`) is not silently
-chosen; vector arithmetic requires it explicitly. See
-[`docs/HILBERT_INFERENCE.md`](docs/HILBERT_INFERENCE.md).
+The Stack candidate binds every axis to the exact construct artifact, requires
+an explicit scalar field (`R` or `C`), defines only origin-local
+orthonormal inner products, and fails closed on cross-origin/cross-construct
+products. See [the migration target](docs/HILBERT_INFERENCE.md).
 
-The current O/S/C inference and epicyclic graph paths are downstream candidate
-operators/readouts. They do not define the Hilbert basis.
+The current UCHC O/S/C inference and epicyclic graph paths remain downstream
+candidate operators/readouts. Their executable channel tuples do not define
+the Hilbert basis.
 
 ## Repository layout
 
@@ -100,7 +102,7 @@ No shared `core/` gonol geometry is defined here. Shared geometry is consumed fr
 English and Python implementations have been extracted, but domain graduation is incomplete.
 The receipt-bound English input API is a release candidate, not evidence of a
 completed neural inference engine. See [inference input usage](docs/INFERENCE_INPUT.md)
-and [Hilbert inference state](docs/HILBERT_INFERENCE.md).
+and [Hilbert inference target](docs/HILBERT_INFERENCE.md).
 Build the candidate with `python -m pip wheel --no-deps . --wheel-dir dist`,
 verify its SHA-256, and install that exact wheel without an editable/source-tree path.
 The [input work graph](docs/work-graphs/inference-input.json) records the exact
@@ -123,8 +125,9 @@ Migration order:
 - sha256: `af609bbba504f95e349f3c1a30aa42923acc8e48c1e67bb481521dbf7e49162b`
 - full-corpus receipt: `38b51ab5ebcf7d3e95f3b29700a170d1e7b6d3342dd6088171c5c078a08753d2`
 
-The Hilbert-state layer consumes this existing construction; it does not alter
-the full-corpus construction receipt.
+The Stack-forged Hilbert candidate consumes this same construction without
+altering its receipt. UCHC does not copy that new implementation until the
+release/reconsumption/authority-transition gates license the migration.
 
 ## License
 
@@ -143,6 +146,7 @@ the Open English WordNet input. This section is a licensing map, not legal advic
 - cross-origin inner products, angles, and attachment geometry beyond the implemented construction-derived attachment relation;
 - amplitude/phase, sense-selection, and learned inference operators;
 - sentence-axis promotion relation;
+- migration of the Stack-forged Hilbert candidate into UCHC;
 - continuum lift-selection law;
 - stable release, published-artifact reconsumption, and domain graduation;
 - Spanish, TypeScript, and Rust admission/construction profiles.
