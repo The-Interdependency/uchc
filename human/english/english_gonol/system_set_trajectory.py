@@ -25,6 +25,23 @@ evidence. METAPAT owns recurrence adjudication.
 #   unresolved: automatic extraction from complete inference frames
 # === END MODULE_BUILD ===
 
+# === CONTRACTS ===
+# id: trajectory_preserves_order_and_multiplicity
+#   given: an ordered semantic trajectory is recorded
+#   then: exact step order and repeated relations remain distinct in the record and receipt
+#   class: correctness
+#
+# id: trajectory_does_not_assert_equivalence
+#   given: two trajectories expose the same relation signature
+#   then: the UCHC record and UCNS comparison input assert no equivalence analogy or recurrence outcome
+#   class: boundary_contract
+#
+# id: trajectory_origin_is_explicit
+#   given: a trajectory is emitted for downstream comparison
+#   then: construct origin path structure and provenance identities remain explicit
+#   class: provenance_contract
+# === END CONTRACTS ===
+
 from dataclasses import asdict, dataclass
 from hashlib import sha256
 import json
