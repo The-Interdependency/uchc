@@ -10,7 +10,8 @@ METAPAT affixiation semantics ----+--> UCHC domain implementations --> consumer 
 bounded language/corpus sources --+
 ```
 
-UCHC is the implementation of the construct. A consumer visualization, editor,
+UCHC is the intended independent implementation home of the construct;
+Stack retains authority for domains whose graduation remains incomplete. A consumer visualization, editor,
 browser, or Grok application belongs outside this repository.
 
 ## Domain families
@@ -85,7 +86,9 @@ that UCHC does not contain.
 
 Treat [`HILBERT_INFERENCE.md`](HILBERT_INFERENCE.md) as the UCHC migration
 target and provenance boundary, not as an implemented public API. The executable
-candidate remains in Stack's `research/english-gonol/` forge. Continue using
+candidate remains in Stack's `research/english-gonol/` forge at
+`6504ed963d93836f66fc88e354fe52809a1a3b7a`, pinned in the
+[shared work graph](work-graphs/hilbert-inference.json). Continue using
 the existing receipt-bound UCHC input API only for the contracts it currently
 implements.
 

@@ -7,7 +7,8 @@ language: admitted native glyphs and words, local definition origins, both
 definition topologies, exact components, and source evidence. This is an input
 contract, not a neural inference operator or a sense-selection algorithm.
 
-The owning language implementation is `human/english/english_gonol/`.
+The extracted input implementation is `human/english/english_gonol/`; Stack
+retains domain implementation/public-contract authority until graduation.
 UCNS retains geometry; METAPAT retains its semantics. Stack's current
 `research/zfae/README.md` makes PTCNA the eventual neural-construction owner and
 a0 the runtime owner. The a0p fixed-width hash/signature path is a comparison,
@@ -74,8 +75,10 @@ exact source occurrences
 ```
 
 That bridge is **not implemented in UCHC yet**. The executable Hilbert candidate
-is being forged in Stack's authoritative English Gonol workspace. UCHC records
-the requirements that must survive migration.
+is merged in Stack's authoritative English Gonol workspace at
+`6504ed963d93836f66fc88e354fe52809a1a3b7a`. The exact source and domain claims
+are in [HILBERT_INFERENCE.md](HILBERT_INFERENCE.md). UCHC records the requirements
+that must survive migration; the frame bridge is not present in that producer either.
 
 A future `frame_basis_state(frame, construct)` must:
 
@@ -91,7 +94,7 @@ A future `frame_basis_state(frame, construct)` must:
 6. require an explicit scalar field until `R` versus `C` is canonized;
 7. fail closed on unlicensed cross-origin or cross-construct inner products.
 
-The Stack candidate already falsifies Cartesian substitution, construct-identity
+The Stack candidate has regression witnesses against Cartesian substitution, construct-identity
 loss, glyph order/multiplicity loss, expensive member-reconstructing dimension
 queries, and implicit scalar-field mixing at the construction boundary. The
 input-frame bridge remains a migration obligation rather than a second

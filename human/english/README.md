@@ -1,9 +1,11 @@
 # English Gonol Construction
 
-UCHC implementation home: `human/english/`. Extracted from
+Extracted UCHC implementation copy: `human/english/`. Source:
 `The-Interdependency/stack@ca190204de25de240662bb438af80c8dc405cea6`
-(`research/english-gonol/`); migration gates 1-5 passed 2026-09-21
-(92 tests passed). Stack remains the research forge.
+(`research/english-gonol/`). The historical 2026-09-21 extraction reported
+92 passing tests; current gate qualifications are in
+[the migration record](../../../docs/MIGRATION.md). Stack retains implementation
+and public-contract authority until graduation completes.
 
 ## Authority
 
@@ -34,8 +36,8 @@ Once closed, a gonol is atomic at an admissible consuming scale. Reuse preserves
 identity while order, multiplicity, relation, source position, and provenance
 remain recoverable.
 
-For inference, admitted glyph and word axes are also the mathematical basis
-directions of the UCHC Hilbert state. This does not replace Public Gonol carrier
+The Stack-owned Hilbert candidate uses admitted glyph and word axes as its
+mathematical basis. This is an unimplemented UCHC migration target. This does not replace Public Gonol carrier
 geometry with Cartesian coordinates. A word's ordered glyph-axis tensor remains
 recoverable when the closed word promotes to its own word axis.
 
@@ -44,8 +46,8 @@ independent gonols. Definitions are word-anchored constructions: each retains
 the shared word origin, exact ordered constituent word/whitespace-character
 identities, source ordinal, direct binding, and chain predecessor.
 
-See [`../../docs/HILBERT_INFERENCE.md`](../../docs/HILBERT_INFERENCE.md) for the
-inference-state contract.
+See [`../../../docs/HILBERT_INFERENCE.md`](../../../docs/HILBERT_INFERENCE.md) for the
+provisional migration contract and exact Stack producer identity.
 
 ## Full construct v2
 
@@ -73,8 +75,8 @@ tangencies, attention frames, or duplicate JSON copies of the database. It does
 not synthesize weights, Cartesian coordinates, centers, radii, displacement
 vectors, motion, or tangency.
 
-The separate Hilbert-state layer does form mathematical basis vectors from the
-axes already declared by the construction. Those basis vectors are not an
+The separate Stack Hilbert candidate forms mathematical basis vectors from the
+axes already declared by the construction; it is not part of the UCHC package. Those basis vectors are not an
 English-layer displacement law and do not assign geometric direction, distance,
 weight, amplitude, or phase.
 

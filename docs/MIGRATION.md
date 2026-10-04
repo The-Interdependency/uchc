@@ -66,6 +66,26 @@ Migration must preserve, at minimum:
 
 Do not redesign English during extraction.
 
+## Subsequent Hilbert candidate
+
+Stack PR #65 merged at `6504ed963d93836f66fc88e354fe52809a1a3b7a`, containing
+reviewed candidate `2a36a69c30a8395516cf6dc4ffae21ed9908e1bd`. This updates the
+Hilbert migration target, not the historical extraction baseline above or the
+existing immutable candidate-wheel lock. The shared
+[Hilbert work graph](work-graphs/hilbert-inference.json) pins that implementation.
+
+The producer's `research/english-gonol/MIGRATION.json` records `extracted` and
+supersedes `GRADUATION.json`. It records existing input-candidate build/forge
+verification separately from outstanding stable release, released-artifact
+reconsumption, forge-path severance, and scoped authority-transition evidence.
+Those input-candidate gates do not establish Hilbert migration or graduation.
+
+UCHC carries only the [provisional migration contract](HILBERT_INFERENCE.md),
+including domain-qualified mathematical terms and remaining falsifiers. No
+Hilbert implementation or frame bridge is introduced here. To replay or prepare
+migration, resolve the exact Stack commit through that graph and run its linked
+candidate checks before attempting the lifecycle gates below.
+
 ## Python
 
 The pinned Stack Python implementation remains the active source. Migration must

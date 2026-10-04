@@ -1,13 +1,19 @@
 {
   "schema": "the-interdependency.stack-manifest",
   "version": "1.0.0",
-  "work_graph_sha256": "6206eeed28c7cd9fa5abd31a5fe1eef5453efc263b76774f6fc129cd98de6ba1",
+  "work_graph_sha256": "b619d20175193db2c7d5d451409708edcd405856967ee7e8236d2531d8fe1b1b",
   "repositories": [
     {
       "repository": "The-Interdependency/uchc",
-      "commit": "0b3ada9ef2f8e32bba10daf104fc0d38730c3a77",
-      "authority": "language hyperspace implementation",
-      "relation": "exact implementation baseline repaired by this work"
+      "commit": "7ab46c5df37fce9612eed9948fb4500f191f6746",
+      "authority": "extracted future independent language-hyperspace repository; graduation incomplete",
+      "relation": "exact pre-repair UCHC baseline; documents the Stack-owned Hilbert migration target without implementation duplication"
+    },
+    {
+      "repository": "The-Interdependency/stack",
+      "commit": "6504ed963d93836f66fc88e354fe52809a1a3b7a",
+      "authority": "current English Gonol implementation and public-contract forge",
+      "relation": "merged PR #65 contains reviewed Hilbert candidate 2a36a69c30a8395516cf6dc4ffae21ed9908e1bd at research/english-gonol/english_gonol/hilbert_inference.py; MIGRATION.json state is extracted; UCHC consumes this exact source as a migration target only"
     },
     {
       "repository": "The-Interdependency/ucns",
@@ -23,7 +29,7 @@
     },
     {
       "repository": "The-Interdependency/skill-lib",
-      "commit": "ad895d2f756fc315c0b83856b2042796c3ad781d",
+      "commit": "3024df2b91a2cf7f103dc60640081ec03505335a",
       "authority": "build, canon and cross-repository discipline",
       "relation": "governing workflow source"
     }
@@ -32,12 +38,15 @@
     "authority_transfer": false,
     "proof_status_transfer": false,
     "measurement_status_transfer": false,
-    "semantic_mapping": "declared mapping",
+    "semantic_mapping": "domain-qualified borrowed mathematics; provisional UCHC migration contract; no METAPAT Vector or Tensor equivalence",
     "agent_scope": "cross-repository-work-graph",
     "hmmm": [
       "canonical Hilbert scalar field (R or C), cross-origin inner products and angles remain undefined",
       "amplitude, phase, sense-selection and learned inference operators remain unresolved",
-      "no sentence axis is promoted until its constitutive relation is separately licensed"
+      "no sentence axis is promoted until its constitutive relation is separately licensed",
+      "input-frame bridge implementation and equivalence replay",
+      "immutable public identity of operator design conversation",
+      "stable UCHC release, released-artifact reconsumption, forge-path severance and scoped authority-transition receipt"
     ]
   }
 }

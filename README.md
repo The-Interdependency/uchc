@@ -81,7 +81,10 @@ axis.
 The Stack candidate binds every axis to the exact construct artifact, requires
 an explicit scalar field (`R` or `C`), defines only origin-local
 orthonormal inner products, and fails closed on cross-origin/cross-construct
-products. See [the migration target](docs/HILBERT_INFERENCE.md).
+products. The exact merged producer is
+`The-Interdependency/stack@6504ed963d93836f66fc88e354fe52809a1a3b7a`.
+See [the provisional migration contract](docs/HILBERT_INFERENCE.md); these
+Hilbert helpers and the future frame bridge are not available in this UCHC package.
 
 The current UCHC O/S/C inference and epicyclic graph paths remain downstream
 candidate operators/readouts. Their executable channel tuples do not define
