@@ -1,25 +1,31 @@
 {
   "schema": "the-interdependency.stack-manifest",
   "version": "1.0.0",
-  "work_graph_sha256": "74489c1f753acf520452ad1271ee37c0824aac8b7a048172fc9438eb061e984b",
+  "work_graph_sha256": "6022b338ed3dc5679cfaa73d55d0f158b29b08ce60305e70cead730332bc4e3c",
   "repositories": [
     {
       "repository": "The-Interdependency/metapat",
-      "commit": "c9131e02493947e6fa84caaf31be639491de50bb",
+      "commit": "7443791e6fd6641555102fe86b7d603c90ff5d1a",
       "authority": "cross-domain semantic recurrence adjudication",
       "relation": "adjudicates UCNS structural evidence without semantic transfer"
     },
     {
       "repository": "The-Interdependency/ucns",
-      "commit": "bfffbf734639a3bc5f1edaa9a9e05eb5b68cc042",
+      "commit": "f755b94d0d2d887c5b0ac46302355c053859f260",
       "authority": "geometry and domain-neutral structural convergence evidence",
       "relation": "records paths mappings invariants replay ancestry and proof identity"
     },
     {
+      "repository": "The-Interdependency/stack",
+      "commit": "566383d9000c836bb5b84cda382418e8855c505a",
+      "authority": "current Stack-forged English semantic trajectory implementation",
+      "relation": "constructs ordered provenance-bearing system-set trajectory candidates"
+    },
+    {
       "repository": "The-Interdependency/uchc",
-      "commit": "c60eb8240469164c8bc0e6090837db378b6b9212",
-      "authority": "language semantic trajectory construction",
-      "relation": "produces ordered provenance-bearing comparison inputs"
+      "commit": "82964778f7b1c4acc59cdc8c5d815ab43c776bb5",
+      "authority": "intended independent UCHC authority after graduation",
+      "relation": "migration target only; no current system-set trajectory implementation authority"
     },
     {
       "repository": "The-Interdependency/edcm",
@@ -36,7 +42,8 @@
     "agent_scope": "cross-repository-work-graph",
     "hmmm": [
       "UCNS has no universal path-distance metric or structural-equivalence theorem",
-      "UCHC automatic extraction from complete sense-selected inference trajectories is unresolved",
+      "exact closure criterion for higher-order system-set identity is unresolved",
+      "UCHC graduation and authority transfer remain incomplete",
       "EDCM metrics remain candidate measurement evidence and do not select canon"
     ]
   }
