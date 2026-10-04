@@ -4,7 +4,7 @@ Extracted UCHC implementation copy: `human/english/`. Source:
 `The-Interdependency/stack@ca190204de25de240662bb438af80c8dc405cea6`
 (`research/english-gonol/`). The historical 2026-09-21 extraction reported
 92 passing tests; current gate qualifications are in
-[the migration record](../../../docs/MIGRATION.md). Stack retains implementation
+[the migration record](../../docs/MIGRATION.md). Stack retains implementation
 and public-contract authority until graduation completes.
 
 ## Authority
@@ -46,7 +46,7 @@ independent gonols. Definitions are word-anchored constructions: each retains
 the shared word origin, exact ordered constituent word/whitespace-character
 identities, source ordinal, direct binding, and chain predecessor.
 
-See [`../../../docs/HILBERT_INFERENCE.md`](../../../docs/HILBERT_INFERENCE.md) for the
+See [`../../docs/HILBERT_INFERENCE.md`](../../docs/HILBERT_INFERENCE.md) for the
 provisional migration contract and exact Stack producer identity.
 
 ## Full construct v2

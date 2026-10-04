@@ -129,8 +129,13 @@ Migration order:
 - full-corpus receipt: `38b51ab5ebcf7d3e95f3b29700a170d1e7b6d3342dd6088171c5c078a08753d2`
 
 The Stack-forged Hilbert candidate consumes this same construction without
-altering its receipt. UCHC does not copy that new implementation until the
-release/reconsumption/authority-transition gates license the migration.
+altering its receipt. This PR copies no Hilbert implementation. A future migration
+must first copy the source and tests from the exact pinned Stack candidate with
+provenance, then pass the [migration gates](docs/MIGRATION.md): test and replay
+verification, clean build/install, exact-candidate forge verification, release,
+released-artifact reconsumption, and the scoped authority-transition receipt.
+Stack retains implementation and public-contract authority until those gates
+complete.
 
 ## License
 
