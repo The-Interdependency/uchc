@@ -1,0 +1,76 @@
+# Usage: read-only checks for docs/work-graphs; reproduce digest checks from
+# docs/MIGRATION.md. Passing this gate grants no implementation authority.
+name: Work-graph integrity
+on:
+  push:
+    branches: [main]
+    paths: ['docs/**', '.agents/skills/**', '.github/workflows/work-graphs.yml']
+  pull_request:
+    paths: ['docs/**', '.agents/skills/**', '.github/workflows/work-graphs.yml']
+permissions:
+  contents: read
+jobs:
+  work-graph-integrity:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Read exact source head
+        shell: bash
+        env:
+          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          [[ "$SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]]
+          git init -q source
+          git -C source remote add origin https://github.com/The-Interdependency/uchc.git
+          git -C source fetch --quiet --depth=1 origin "$SOURCE_SHA"
+          git -C source checkout -q --detach FETCH_HEAD
+          test "$(git -C source rev-parse HEAD)" = "$SOURCE_SHA"
+          printf 'Validating UCHC head %s\n' "$SOURCE_SHA"
+      - name: Verify graph identity and migration linkage
+        working-directory: source
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, re
+          from pathlib import Path
+
+          def unique_object(pairs):
+              result = {}
+              for key, value in pairs:
+                  assert key not in result, f'duplicate JSON key: {key}'
+                  result[key] = value
+              return result
+
+          paths = sorted(Path('docs/work-graphs').glob('*.json'))
+          assert paths, 'missing work graphs'
+          graphs = {}
+          for path in paths:
+              graph = json.loads(path.read_text(encoding='utf-8'), object_pairs_hook=unique_object)
+              assert (graph['schema'], graph['version']) == ('the-interdependency.stack-manifest', '1.0.0'), path
+              assert set(graph) == {'schema', 'version', 'work_graph_sha256', 'repositories', 'boundaries'}, path
+              names = [row['repository'] for row in graph['repositories']]
+              assert names and len(names) == len(set(names)), path
+              for row in graph['repositories']:
+                  assert re.fullmatch(r'[0-9a-f]{40}', row['commit']), path
+                  assert row['authority'].strip() and row['relation'].strip(), path
+              for flag in ('authority_transfer', 'proof_status_transfer', 'measurement_status_transfer'):
+                  assert graph['boundaries'][flag] is False, (path, flag)
+              payload = {key: graph[key] for key in ('repositories', 'boundaries')}
+              digest = hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(',', ':'), ensure_ascii=True).encode('utf-8')).hexdigest()
+              assert graph['work_graph_sha256'] == digest, (path, digest)
+              graphs[path.name] = graph
+              print(f'{path}: {digest} verified')
+
+          recurrence = graphs['system-set-recurrence-v0.json']
+          doctrine = next(row for row in recurrence['repositories'] if row['repository'] == 'The-Interdependency/skill-lib')
+          assert doctrine['commit'] == '22c2c5702d14fb4b0faeb717777ecab2665770a1'
+          assert f"Source commit: `{doctrine['commit']}`" in Path('.agents/skills/README.md').read_text()
+          migration = Path('docs/MIGRATION.md').read_text()
+          for name in ('system-set-recurrence-v0.json', 'inference-input.json', 'hilbert-inference.json'):
+              assert f'](work-graphs/{name})' in migration, name
+              assert Path('docs/work-graphs', name).is_file(), name
+          assert '## Recurrence work graph and usage' in migration
+          assert 'work_graph_sha256' in migration and 'sort_keys=True' in migration
+          PY
+          test -z "$(git status --porcelain)"

@@ -66,6 +66,110 @@ Migration must preserve, at minimum:
 
 Do not redesign English during extraction.
 
+## Subsequent Hilbert candidate
+
+Stack PR #65 merged at `6504ed963d93836f66fc88e354fe52809a1a3b7a`, containing
+reviewed candidate `2a36a69c30a8395516cf6dc4ffae21ed9908e1bd`. This updates the
+Hilbert migration target, not the historical extraction baseline above or the
+existing immutable candidate-wheel lock. The shared
+[Hilbert work graph](work-graphs/hilbert-inference.json) pins that implementation.
+
+The producer's `research/english-gonol/MIGRATION.json` records `extracted` and
+supersedes `GRADUATION.json`. It records existing input-candidate build/forge
+verification separately from outstanding stable release, released-artifact
+reconsumption, forge-path severance, and scoped authority-transition evidence.
+Those input-candidate gates do not establish Hilbert migration or graduation.
+
+UCHC carries only the [provisional migration contract](HILBERT_INFERENCE.md),
+including domain-qualified mathematical terms and remaining falsifiers. No
+Hilbert implementation or frame bridge is introduced here. To replay or prepare
+migration, resolve the exact Stack commit through that graph and run its linked
+candidate checks before attempting the lifecycle gates below.
+
+## Recurrence work graph and usage
+
+The [system-set recurrence graph](work-graphs/system-set-recurrence-v0.json)
+is the coordination record for agents preparing or reviewing recurrence work
+across Stack, UCNS, METAPAT, EDCM and UCHC. Start here before a recurrence replay
+or migration: resolve the graph's exact producer commits, inspect the owning
+Stack `research/english-gonol/` source and tests, and carry this graph's digest
+into any resulting handoff. These are pinned coordination baselines, not claims
+that the commits are the latest heads or that downstream validation has passed.
+
+Stack remains the current English semantic-trajectory implementation authority.
+UCHC is a migration target only; this record introduces no recurrence code or
+public trajectory API. A future migration must first copy source and tests with
+provenance, then satisfy the remaining lifecycle gates below. Neither this
+graph nor its digest transfers authority, proof, certification, measurement or
+empirical standing. All unresolved boundaries remain `hmmm`.
+
+Choose the record by the work being performed, not by its date:
+
+| Record | Scope and relationship |
+| --- | --- |
+| [inference-input.json](work-graphs/inference-input.json) | Existing input-reader/corpus and candidate-consumption evidence; its pins and receipts remain unchanged. |
+| [hilbert-inference.json](work-graphs/hilbert-inference.json) | Subsequent Stack-owned Hilbert migration candidate described above. |
+| [system-set-recurrence-v0.json](work-graphs/system-set-recurrence-v0.json) | Recurrence coordination and migration boundary; complements the other graphs and supersedes neither. |
+
+The recurrence graph pins its governing
+[skill-lib contract at `22c2c5702d14fb4b0faeb717777ecab2665770a1`](https://github.com/The-Interdependency/skill-lib/blob/22c2c5702d14fb4b0faeb717777ecab2665770a1/interdependent-work-graph/SKILL.md),
+matching the [propagated skills record](../.agents/skills/README.md).
+Schema `the-interdependency.stack-manifest` version `1.0.0` hashes exactly
+`repositories` and `boundaries` as UTF-8 JSON with sorted object keys, compact
+separators and Python's default ASCII escaping. Array order is significant:
+preserve the declared METAPAT, UCNS, Stack, UCHC, EDCM, skill-lib order in this
+graph, including the order of `hmmm` entries. The digest excludes its own field
+and is reproducibility evidence, not producer authentication.
+
+From the repository root, verify the recorded graph digests without changing
+files (Python 3.12+, standard library only):
+
+```bash
+python3 - <<'PY'
+import hashlib, json
+from pathlib import Path
+paths = sorted(Path('docs/work-graphs').glob('*.json'))
+assert paths, 'run from the UCHC repository root'
+for path in paths:
+    graph = json.loads(path.read_text(encoding='utf-8'))
+    assert (graph['schema'], graph['version']) == ('the-interdependency.stack-manifest', '1.0.0'), path
+    payload = {key: graph[key] for key in ('repositories', 'boundaries')}
+    digest = hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(',', ':'), ensure_ascii=True).encode('utf-8')).hexdigest()
+    assert graph['work_graph_sha256'] == digest, f'{path}: digest mismatch'
+    print(f'{path}: {digest} verified')
+PY
+```
+
+To update recurrence provenance, first review the exact changed participant
+commits at their owning repositories and preserve their authority and unresolved
+boundaries. Edit only the intended graph; do not repin the input or Hilbert
+graphs as a side effect. Change the governing skill-lib pin only with an explicit
+contract/propagation review. After editing, recompute the recurrence digest:
+
+```bash
+python3 - <<'PY'
+import hashlib, json, re
+from pathlib import Path
+path = Path('docs/work-graphs/system-set-recurrence-v0.json')
+text = path.read_text(encoding='utf-8')
+graph = json.loads(text)
+assert (graph['schema'], graph['version']) == ('the-interdependency.stack-manifest', '1.0.0')
+payload = {key: graph[key] for key in ('repositories', 'boundaries')}
+digest = hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(',', ':'), ensure_ascii=True).encode('utf-8')).hexdigest()
+text, count = re.subn(r'("work_graph_sha256"\s*:\s*")[0-9a-f]{64}(")', lambda match: match[1] + digest + match[2], text)
+assert count == 1, 'expected one existing SHA-256 digest'
+path.write_text(text, encoding='utf-8')
+print(digest)
+PY
+```
+
+Run the read-only verification again and `git diff --check`, then review the
+graph and documentation diff together. The **Work-graph integrity** workflow
+runs on documentation, propagated-skill and gate changes and checks digests,
+the doctrine pin, migration discovery and non-transfer flags at the exact PR
+head. It does not run construction or certify migration; implementation changes
+still require the separate full-corpus workflow and the lifecycle gates below.
+
 ## Python
 
 The pinned Stack Python implementation remains the active source. Migration must
