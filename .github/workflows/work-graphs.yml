@@ -1,5 +1,6 @@
 # Usage: read-only checks for docs/work-graphs; reproduce digest checks from
-# docs/MIGRATION.md. Passing this gate grants no implementation authority.
+# docs/MIGRATION.md. On pull requests this validates GitHub's merge result, not
+# the head branch in isolation. Passing this gate grants no implementation authority.
 name: Work-graph integrity
 on:
   push:
@@ -13,10 +14,10 @@ jobs:
   work-graph-integrity:
     runs-on: ubuntu-24.04
     steps:
-      - name: Read exact source head
+      - name: Read exact validation revision
         shell: bash
         env:
-          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          SOURCE_SHA: ${{ github.sha }}
         run: |
           set -euo pipefail
           [[ "$SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]]
@@ -25,14 +26,14 @@ jobs:
           git -C source fetch --quiet --depth=1 origin "$SOURCE_SHA"
           git -C source checkout -q --detach FETCH_HEAD
           test "$(git -C source rev-parse HEAD)" = "$SOURCE_SHA"
-          printf 'Validating UCHC head %s\n' "$SOURCE_SHA"
+          printf 'Validating UCHC revision %s\n' "$SOURCE_SHA"
       - name: Verify graph identity and migration linkage
         working-directory: source
         shell: bash
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import hashlib, json, re
+          import hashlib, json, re, subprocess, tempfile
           from pathlib import Path
 
           def unique_object(pairs):
@@ -52,20 +53,77 @@ jobs:
               names = [row['repository'] for row in graph['repositories']]
               assert names and len(names) == len(set(names)), path
               for row in graph['repositories']:
+                  assert set(row) == {'repository', 'commit', 'authority', 'relation'}, (path, row)
+                  assert re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', row['repository']), (path, row)
                   assert re.fullmatch(r'[0-9a-f]{40}', row['commit']), path
-                  assert row['authority'].strip() and row['relation'].strip(), path
+                  assert isinstance(row['authority'], str) and row['authority'].strip(), (path, row)
+                  assert isinstance(row['relation'], str) and row['relation'].strip(), (path, row)
+              boundaries = graph['boundaries']
+              assert set(boundaries) == {
+                  'authority_transfer',
+                  'proof_status_transfer',
+                  'measurement_status_transfer',
+                  'semantic_mapping',
+                  'agent_scope',
+                  'hmmm',
+              }, (path, boundaries)
               for flag in ('authority_transfer', 'proof_status_transfer', 'measurement_status_transfer'):
-                  assert graph['boundaries'][flag] is False, (path, flag)
+                  assert type(boundaries[flag]) is bool and boundaries[flag] is False, (path, flag)
+              assert isinstance(boundaries['semantic_mapping'], str) and boundaries['semantic_mapping'].strip(), path
+              assert isinstance(boundaries['agent_scope'], str) and boundaries['agent_scope'].strip(), path
+              assert isinstance(boundaries['hmmm'], list) and boundaries['hmmm'], path
+              assert all(isinstance(item, str) and item.strip() for item in boundaries['hmmm']), path
               payload = {key: graph[key] for key in ('repositories', 'boundaries')}
               digest = hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(',', ':'), ensure_ascii=True).encode('utf-8')).hexdigest()
               assert graph['work_graph_sha256'] == digest, (path, digest)
               graphs[path.name] = graph
               print(f'{path}: {digest} verified')
 
+          participants = {}
+          for graph in graphs.values():
+              for row in graph['repositories']:
+                  participants.setdefault(row['repository'], set()).add(row['commit'])
+          for repository, commits in sorted(participants.items()):
+              with tempfile.TemporaryDirectory() as tmp:
+                  subprocess.run(['git', 'init', '-q', tmp], check=True)
+                  subprocess.run(
+                      ['git', '-C', tmp, 'remote', 'add', 'origin', f'https://github.com/{repository}.git'],
+                      check=True,
+                  )
+                  subprocess.run(
+                      ['git', '-C', tmp, 'fetch', '--quiet', '--depth=1', 'origin', *sorted(commits)],
+                      check=True,
+                  )
+                  for commit in commits:
+                      resolved = subprocess.run(
+                          ['git', '-C', tmp, 'cat-file', '-e', f'{commit}^{{commit}}'],
+                          stdout=subprocess.DEVNULL,
+                          stderr=subprocess.DEVNULL,
+                      )
+                      assert resolved.returncode == 0, (repository, commit)
+              print(f'{repository}: {len(commits)} participant commit(s) resolved')
+
           recurrence = graphs['system-set-recurrence-v0.json']
           doctrine = next(row for row in recurrence['repositories'] if row['repository'] == 'The-Interdependency/skill-lib')
           assert doctrine['commit'] == '22c2c5702d14fb4b0faeb717777ecab2665770a1'
           assert f"Source commit: `{doctrine['commit']}`" in Path('.agents/skills/README.md').read_text()
+          with tempfile.TemporaryDirectory() as tmp:
+              subprocess.run(['git', 'init', '-q', tmp], check=True)
+              subprocess.run(
+                  ['git', '-C', tmp, 'remote', 'add', 'origin', 'https://github.com/The-Interdependency/skill-lib.git'],
+                  check=True,
+              )
+              subprocess.run(
+                  ['git', '-C', tmp, 'fetch', '--quiet', '--depth=1', 'origin', doctrine['commit']],
+                  check=True,
+              )
+              remote_skill = subprocess.run(
+                  ['git', '-C', tmp, 'show', 'FETCH_HEAD:interdependent-work-graph/SKILL.md'],
+                  check=True,
+                  stdout=subprocess.PIPE,
+              ).stdout
+          local_skill = Path('.agents/skills/interdependent-work-graph/SKILL.md').read_bytes()
+          assert local_skill == remote_skill, 'propagated interdependent-work-graph skill differs from pinned skill-lib content'
           migration = Path('docs/MIGRATION.md').read_text()
           for name in ('system-set-recurrence-v0.json', 'inference-input.json', 'hilbert-inference.json'):
               assert f'](work-graphs/{name})' in migration, name
