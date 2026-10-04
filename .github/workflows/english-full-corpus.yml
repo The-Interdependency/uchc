@@ -34,7 +34,8 @@ jobs:
           }
           fetch_source The-Interdependency/uchc source "$SOURCE_SHA"
           fetch_source globalwordnet/english-wordnet oewn dc343f2683279ecbb13fab4e2fd778d7b162d287
-          fetch_source The-Interdependency/ucns ucns 1cf10c2df2541a332a77f2ed3feda0c6bef4abcc
+          fetch_source The-Interdependency/ucns ucns 380ce7b7ec6b8b45ffa53ea4210070f0b3129747
+          git -C ucns fetch --quiet origin fc01e1f0323da45362704f92adbf6d3b8a008307
           git -C ucns fetch --quiet origin 4f863ad37096b7baab8f62820ad5cb937b62a3a7
           git -C ucns worktree add --detach ../ucns-build 4f863ad37096b7baab8f62820ad5cb937b62a3a7
           git -C ucns fetch --quiet origin d7c6f51304ed6c32d48badf63132bea6de8af497

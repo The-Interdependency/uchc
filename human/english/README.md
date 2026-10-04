@@ -1,9 +1,11 @@
 # English Gonol Construction
 
-UCHC implementation home: `human/english/`. Extracted from
+Extracted UCHC implementation copy: `human/english/`. Source:
 `The-Interdependency/stack@ca190204de25de240662bb438af80c8dc405cea6`
-(`research/english-gonol/`); migration gates 1-5 passed 2026-09-21
-(92 tests passed). Stack remains the research forge.
+(`research/english-gonol/`). The historical 2026-09-21 extraction reported
+92 passing tests; current gate qualifications are in
+[the migration record](../../../docs/MIGRATION.md). Stack retains implementation
+and public-contract authority until graduation completes.
 
 ## Authority
 
@@ -23,16 +25,29 @@ move English semantics into UCNS.
 every admitted character is a gonol
 one exact scalar  -> one shared character identity
 one exact surface -> one shared word identity
+
+glyph axes
+  -> ordered glyph-axis construction
+  -> closed word
+  -> word axis
 ```
 
 Once closed, a gonol is atomic at an admissible consuming scale. Reuse preserves
 identity while order, multiplicity, relation, source position, and provenance
 remain recoverable.
 
+The Stack-owned Hilbert candidate uses admitted glyph and word axes as its
+mathematical basis. This is an unimplemented UCHC migration target. This does not replace Public Gonol carrier
+geometry with Cartesian coordinates. A word's ordered glyph-axis tensor remains
+recoverable when the closed word promotes to its own word axis.
+
 Corpus occurrences, sense ids, and synset ids are evidence/provenance, not
 independent gonols. Definitions are word-anchored constructions: each retains
 the shared word origin, exact ordered constituent word/whitespace-character
 identities, source ordinal, direct binding, and chain predecessor.
+
+See [`../../../docs/HILBERT_INFERENCE.md`](../../../docs/HILBERT_INFERENCE.md) for the
+provisional migration contract and exact Stack producer identity.
 
 ## Full construct v2
 
@@ -57,8 +72,13 @@ character identity. No normalization is applied.
 The builder does not create sentence/sense/synset/n-gram singleton objects,
 occurrence-object ledgers, closure graphs, synthetic relation circles,
 tangencies, attention frames, or duplicate JSON copies of the database. It does
-not synthesize weights, vectors, coordinates, centers, radii, motion, or
-tangency.
+not synthesize weights, Cartesian coordinates, centers, radii, displacement
+vectors, motion, or tangency.
+
+The separate Stack Hilbert candidate forms mathematical basis vectors from the
+axes already declared by the construction; it is not part of the UCHC package. Those basis vectors are not an
+English-layer displacement law and do not assign geometric direction, distance,
+weight, amplitude, or phase.
 
 ### Verified full-corpus result
 
@@ -107,6 +127,9 @@ deleted rather than retained as an active precedent.
 ## hmmm
 
 The exact UCNS law mapping ordinal + semantic + sentence-context evidence to
-geometric displacement remains unresolved. No English-layer rule may fill that
-boundary with invented weights, directions, distances, vectors, coordinates,
-centers, radii, tangencies, or motion.
+geometric displacement remains unresolved. The Hilbert basis does not settle
+the canonical scalar field (`R` or `C`), cross-origin inner products,
+amplitude/phase, learned operators, sense selection, or sentence-axis promotion.
+No English-layer rule may fill those boundaries with invented weights,
+directions, distances, Cartesian coordinates, centers, radii, tangencies, or
+motion.
