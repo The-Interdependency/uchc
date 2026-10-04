@@ -1,3 +1,29 @@
+# === CHECKS ===
+# id: check_trajectory_order_multiplicity
+#   proves: trajectory_preserves_order_and_multiplicity
+#   call: self::test_order_and_multiplicity_are_load_bearing
+#   requires: python3
+#   timeout: 10
+#   mutates: none
+#   cleanup: none
+#
+# id: check_trajectory_no_equivalence
+#   proves: trajectory_does_not_assert_equivalence
+#   call: self::test_same_signature_does_not_assert_equivalence
+#   requires: python3
+#   timeout: 10
+#   mutates: none
+#   cleanup: none
+#
+# id: check_trajectory_origin_provenance
+#   proves: trajectory_origin_is_explicit
+#   call: self::test_ucns_input_preserves_identity_and_provenance
+#   requires: python3
+#   timeout: 10
+#   mutates: none
+#   cleanup: none
+# === END CHECKS ===
+
 from english_gonol.system_set_trajectory import SemanticStep, SystemSetTrajectory
 
 
