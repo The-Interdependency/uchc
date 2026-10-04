@@ -1,0 +1,43 @@
+{
+  "schema": "the-interdependency.stack-manifest",
+  "version": "1.0.0",
+  "work_graph_sha256": "74489c1f753acf520452ad1271ee37c0824aac8b7a048172fc9438eb061e984b",
+  "repositories": [
+    {
+      "repository": "The-Interdependency/metapat",
+      "commit": "c9131e02493947e6fa84caaf31be639491de50bb",
+      "authority": "cross-domain semantic recurrence adjudication",
+      "relation": "adjudicates UCNS structural evidence without semantic transfer"
+    },
+    {
+      "repository": "The-Interdependency/ucns",
+      "commit": "bfffbf734639a3bc5f1edaa9a9e05eb5b68cc042",
+      "authority": "geometry and domain-neutral structural convergence evidence",
+      "relation": "records paths mappings invariants replay ancestry and proof identity"
+    },
+    {
+      "repository": "The-Interdependency/uchc",
+      "commit": "c60eb8240469164c8bc0e6090837db378b6b9212",
+      "authority": "language semantic trajectory construction",
+      "relation": "produces ordered provenance-bearing comparison inputs"
+    },
+    {
+      "repository": "The-Interdependency/edcm",
+      "commit": "616484d0caaa7a9ad82937d85c28bb43773d909b",
+      "authority": "measurement and evaluation",
+      "relation": "audits architecture revisions using candidate EDCM metrics without status transfer"
+    }
+  ],
+  "boundaries": {
+    "authority_transfer": false,
+    "proof_status_transfer": false,
+    "measurement_status_transfer": false,
+    "semantic_mapping": "declared mapping",
+    "agent_scope": "cross-repository-work-graph",
+    "hmmm": [
+      "UCNS has no universal path-distance metric or structural-equivalence theorem",
+      "UCHC automatic extraction from complete sense-selected inference trajectories is unresolved",
+      "EDCM metrics remain candidate measurement evidence and do not select canon"
+    ]
+  }
+}
