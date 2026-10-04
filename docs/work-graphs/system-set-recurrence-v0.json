@@ -1,23 +1,23 @@
 {
   "schema": "the-interdependency.stack-manifest",
   "version": "1.0.0",
-  "work_graph_sha256": "6022b338ed3dc5679cfaa73d55d0f158b29b08ce60305e70cead730332bc4e3c",
+  "work_graph_sha256": "423d4215df1d0d3ab95a3702dc8d07ac0790590a08fb9cc50c1c7d1f27b796bc",
   "repositories": [
     {
       "repository": "The-Interdependency/metapat",
-      "commit": "7443791e6fd6641555102fe86b7d603c90ff5d1a",
+      "commit": "d3a00fe91786fd8d798f47f2df07109ceda9b18e",
       "authority": "cross-domain semantic recurrence adjudication",
-      "relation": "adjudicates UCNS structural evidence without semantic transfer"
+      "relation": "adjudicates independently supplied structural evidence without semantic transfer"
     },
     {
       "repository": "The-Interdependency/ucns",
-      "commit": "f755b94d0d2d887c5b0ac46302355c053859f260",
-      "authority": "geometry and domain-neutral structural convergence evidence",
-      "relation": "records paths mappings invariants replay ancestry and proof identity"
+      "commit": "a374e2a8f08be2140d88a0ab24daaad2e5a98864",
+      "authority": "geometry and mathematical representation",
+      "relation": "supplies actual geometric constructions and proof identities when available; no generic recurrence schema"
     },
     {
       "repository": "The-Interdependency/stack",
-      "commit": "566383d9000c836bb5b84cda382418e8855c505a",
+      "commit": "6d2179a9c0fd201da1e1463930fc6839c7f813d0",
       "authority": "current Stack-forged English semantic trajectory implementation",
       "relation": "constructs ordered provenance-bearing system-set trajectory candidates"
     },
@@ -42,6 +42,7 @@
     "agent_scope": "cross-repository-work-graph",
     "hmmm": [
       "UCNS has no universal path-distance metric or structural-equivalence theorem",
+      "exact UCNS geometry binding English semantic trajectories to comparison evidence is unresolved",
       "exact closure criterion for higher-order system-set identity is unresolved",
       "UCHC graduation and authority transfer remain incomplete",
       "EDCM metrics remain candidate measurement evidence and do not select canon"
