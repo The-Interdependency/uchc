@@ -51,12 +51,13 @@ from uchc_polyglot import (
 )
 
 
-UCNS_ID = "a" * 64
+UCNS_ID = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 
 
 def test_rename_preserves_ucns_referent() -> None:
     referent = PolyglotReferent(ucns_identity_sha256=UCNS_ID)
     heart = build_label_attachment(
+        ucns_identity_sha256=UCNS_ID,
         language_tag="en",
         surface="heart",
         scope="ordinary",
@@ -64,6 +65,7 @@ def test_rename_preserves_ucns_referent() -> None:
     )
     first = attach_label(referent, heart)
     cardiac = build_label_attachment(
+        ucns_identity_sha256=UCNS_ID,
         language_tag="en",
         surface="cardiac",
         scope="technical",
@@ -88,6 +90,7 @@ def test_multiple_languages_attach_to_one_referent() -> None:
         referent = attach_label(
             referent,
             build_label_attachment(
+        ucns_identity_sha256=UCNS_ID,
                 language_tag=language,
                 surface=surface,
                 scope="technical",
@@ -102,12 +105,14 @@ def test_multiple_languages_attach_to_one_referent() -> None:
 
 def test_labels_share_referent_without_pairwise_equality() -> None:
     english = build_label_attachment(
+        ucns_identity_sha256=UCNS_ID,
         language_tag="en",
         surface="cardiac",
         scope="technical",
         source_id="fixture:en",
     )
     spanish = build_label_attachment(
+        ucns_identity_sha256=UCNS_ID,
         language_tag="es",
         surface="cardíaco",
         scope="technical",
@@ -124,15 +129,26 @@ def test_labels_share_referent_without_pairwise_equality() -> None:
     assert "translation" not in payload
     assert "equals" not in payload
 
+    other = build_label_attachment(
+        ucns_identity_sha256="bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        language_tag="en",
+        surface="cardiac",
+        scope="technical",
+        source_id="fixture:en",
+    )
+    assert english.attachment_sha256 != other.attachment_sha256
+
 
 def test_supersession_preserves_history() -> None:
     ordinary = build_label_attachment(
+        ucns_identity_sha256=UCNS_ID,
         language_tag="en",
         surface="heart",
         scope="focus-locus",
         source_id="fixture:v1",
     )
     technical = build_label_attachment(
+        ucns_identity_sha256=UCNS_ID,
         language_tag="en",
         surface="cardiac",
         scope="focus-locus",
@@ -153,17 +169,19 @@ def test_polyglot_fails_closed() -> None:
         PolyglotReferent(ucns_identity_sha256="not-a-digest")
 
     first = build_label_attachment(
+        ucns_identity_sha256=UCNS_ID,
         language_tag="en",
         surface="heart",
         scope="ordinary",
         source_id="fixture:1",
     )
     dangling = build_label_attachment(
+        ucns_identity_sha256=UCNS_ID,
         language_tag="en",
         surface="cardiac",
         scope="technical",
         source_id="fixture:2",
-        supersedes="b" * 64,
+        supersedes="bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
     )
     with pytest.raises(PolyglotError):
         PolyglotReferent(
@@ -176,3 +194,38 @@ def test_polyglot_fails_closed() -> None:
             ucns_identity_sha256=UCNS_ID,
             labels=(first, first),
         )
+
+    spanish_wrong_supersession = build_label_attachment(
+        ucns_identity_sha256=UCNS_ID,
+        language_tag="es",
+        surface="cardíaco",
+        scope="ordinary",
+        source_id="fixture:3",
+        supersedes=first.attachment_sha256,
+    )
+    with pytest.raises(PolyglotError):
+        PolyglotReferent(
+            ucns_identity_sha256=UCNS_ID,
+            labels=(first, spanish_wrong_supersession),
+        )
+
+    for field in ("language_tag", "scope", "source_id"):
+        kwargs = {
+            "ucns_identity_sha256": UCNS_ID,
+            "language_tag": "en",
+            "surface": "cardiac",
+            "scope": "technical",
+            "source_id": "fixture:blank",
+        }
+        kwargs[field] = "   "
+        with pytest.raises(PolyglotError):
+            build_label_attachment(**kwargs)
+
+    whitespace_surface = build_label_attachment(
+        ucns_identity_sha256=UCNS_ID,
+        language_tag="en",
+        surface=" ",
+        scope="literal",
+        source_id="fixture:whitespace-surface",
+    )
+    assert whitespace_surface.surface == " "
