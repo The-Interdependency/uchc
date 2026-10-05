@@ -1,0 +1,82 @@
+# Usage: verifies that UCHC label attachments consume one exact UCNS
+# axis-circle identity without reimplementing geometry or asserting translation.
+name: Polyglot identity integration
+on:
+  push:
+    branches: [main]
+    paths: ['shared/polyglot/**', 'docs/POLYGLOT.md', 'pyproject.toml', '.github/workflows/polyglot-identity.yml']
+  pull_request:
+    paths: ['shared/polyglot/**', 'docs/POLYGLOT.md', 'pyproject.toml', '.github/workflows/polyglot-identity.yml']
+permissions:
+  contents: read
+
+jobs:
+  polyglot-identity:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Resolve exact producer and consumer
+        shell: bash
+        env:
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          fetch_source() {
+            local repository="$1" directory="$2" sha="$3"
+            [[ "$sha" =~ ^[0-9a-f]{40}$ ]]
+            git init -q "$directory"
+            git -C "$directory" remote add origin "https://github.com/$repository.git"
+            git -C "$directory" fetch --quiet --depth=1 origin "$sha"
+            git -C "$directory" checkout -q --detach FETCH_HEAD
+            test "$(git -C "$directory" rev-parse HEAD)" = "$sha"
+          }
+          fetch_source The-Interdependency/uchc source "$SOURCE_SHA"
+          fetch_source The-Interdependency/ucns ucns fbb0af5fab9149ae319a2a84fed99505c1e05bc1
+          python3 -m venv .venv
+          .venv/bin/python -m pip install pytest==8.3.5
+      - name: Run polyglot contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH="$PWD/source/shared/polyglot:$PWD/ucns/src"             .venv/bin/python -m pytest -q source/shared/polyglot/tests
+      - name: Prove rename and language attachment over one UCNS position
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH="$PWD/source/shared/polyglot:$PWD/ucns/src" .venv/bin/python - <<'PY'
+          from ucns import build_axis_circle_position
+          from uchc_polyglot import PolyglotReferent, attach_label, build_label_attachment, same_referent
+
+          position = build_axis_circle_position(
+              origin_sha256="a" * 64,
+              axis_count=3,
+              axis_ordinal=1,
+          )
+          referent = PolyglotReferent(ucns_identity_sha256=position.identity_sha256)
+          heart = build_label_attachment(
+              language_tag="en",
+              surface="heart",
+              scope="focus-locus",
+              source_id="integration:v1",
+          )
+          before = attach_label(referent, heart)
+          cardiac = build_label_attachment(
+              language_tag="en",
+              surface="cardiac",
+              scope="focus-locus",
+              source_id="integration:v2",
+              supersedes=heart.attachment_sha256,
+          )
+          after = attach_label(before, cardiac)
+          spanish = build_label_attachment(
+              language_tag="es",
+              surface="cardíaco",
+              scope="focus-locus",
+              source_id="integration:es",
+          )
+          after = attach_label(after, spanish)
+
+          assert same_referent(before, after)
+          assert before.referent_identity == after.referent_identity == position.identity_sha256
+          assert [x.surface for x in after.current_labels(language_tag="en")] == ["cardiac"]
+          assert [x.surface for x in after.current_labels(language_tag="es")] == ["cardíaco"]
+          PY
