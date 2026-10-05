@@ -15,6 +15,9 @@ programming/
   python/        extracted from Stack; see migration gate evidence
   typescript/    forthcoming
   rust/          forthcoming
+
+shared/
+  polyglot/      cross-language label attachments to UCNS identities
 ```
 
 The construct is the implementation. UCHC does not separate a nominal specification layer from a hidden implementation that actually defines the construct.
@@ -90,10 +93,30 @@ The current UCHC O/S/C inference and epicyclic graph paths remain downstream
 candidate operators/readouts. Their executable channel tuples do not define
 the Hilbert basis.
 
+## Polyglot identity layer
+
+UCHC now has a shared candidate relation layer for language labels that attach
+to one UCNS geometric identity. The UCNS producer owns the axis-circle position
+and identity digest; UCHC records language/register surfaces, provenance, and
+supersession history without recomputing geometry or asserting direct
+word-to-word equality.
+
+A rename therefore changes the attachment, not the referent:
+
+```text
+heart   ─┐
+cardiac ─┼──► same UCNS identity
+cardíaco ┘
+```
+
+See [Polyglot identity layer](docs/POLYGLOT.md). Language-specific admission and
+semantic partitioning remain owned by the individual language implementations.
+
 ## Repository layout
 
 - `human/` — human-language UCHC implementations.
 - `programming/` — programming-language UCHC implementations.
+- `shared/polyglot/` — UCHC-owned cross-language label attachments; no UCNS geometry is reimplemented here.
 - `docs/` — authority, migration, and domain-boundary records.
 - `schemas/` — machine contracts after their owning implementation requires them.
 - `tests/` — cross-domain conformance tests after migration begins.
