@@ -90,9 +90,15 @@ def _canonical(payload: dict[str, object]) -> bytes:
     ).encode("utf-8")
 
 
-def _require_text(name: str, value: object) -> str:
+def _require_metadata_text(name: str, value: object) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise PolyglotError(f"{name} must contain non-whitespace text")
+    return value
+
+
+def _require_surface(value: object) -> str:
     if not isinstance(value, str) or not value:
-        raise PolyglotError(f"{name} must be a non-empty string")
+        raise PolyglotError("surface must be a non-empty string")
     return value
 
 
@@ -100,6 +106,7 @@ def _require_text(name: str, value: object) -> str:
 class LabelAttachment:
     """One provenance-bearing surface attached to a UCNS referent."""
 
+    ucns_identity_sha256: str
     language_tag: str
     surface: str
     scope: str
@@ -108,14 +115,20 @@ class LabelAttachment:
     attachment_sha256: str
 
     def __post_init__(self) -> None:
-        for name in ("language_tag", "surface", "scope", "source_id"):
-            _require_text(name, getattr(self, name))
+        if not isinstance(self.ucns_identity_sha256, str) or not _SHA256_RE.fullmatch(
+            self.ucns_identity_sha256
+        ):
+            raise PolyglotError("ucns_identity_sha256 must be a lowercase hexadecimal SHA-256")
+        for name in ("language_tag", "scope", "source_id"):
+            _require_metadata_text(name, getattr(self, name))
+        _require_surface(self.surface)
         if self.supersedes is not None and (
             not isinstance(self.supersedes, str)
             or not _SHA256_RE.fullmatch(self.supersedes)
         ):
             raise PolyglotError("supersedes must be a lowercase hexadecimal SHA-256 or None")
         expected = _attachment_digest(
+            ucns_identity_sha256=self.ucns_identity_sha256,
             language_tag=self.language_tag,
             surface=self.surface,
             scope=self.scope,
@@ -127,6 +140,7 @@ class LabelAttachment:
 
     def as_dict(self) -> dict[str, object]:
         return {
+            "ucns_identity_sha256": self.ucns_identity_sha256,
             "language_tag": self.language_tag,
             "surface": self.surface,
             "scope": self.scope,
@@ -138,6 +152,7 @@ class LabelAttachment:
 
 def _attachment_digest(
     *,
+    ucns_identity_sha256: str,
     language_tag: str,
     surface: str,
     scope: str,
@@ -145,6 +160,9 @@ def _attachment_digest(
     supersedes: str | None,
 ) -> str:
     payload = {
+        "ucns_schema": UCNS_SCHEMA,
+        "ucns_version": UCNS_VERSION,
+        "ucns_identity_sha256": ucns_identity_sha256,
         "language_tag": language_tag,
         "surface": surface,
         "scope": scope,
@@ -156,6 +174,7 @@ def _attachment_digest(
 
 def build_label_attachment(
     *,
+    ucns_identity_sha256: str,
     language_tag: str,
     surface: str,
     scope: str,
@@ -164,21 +183,27 @@ def build_label_attachment(
 ) -> LabelAttachment:
     """Build one immutable label attachment."""
 
-    language_tag = _require_text("language_tag", language_tag)
-    surface = _require_text("surface", surface)
-    scope = _require_text("scope", scope)
-    source_id = _require_text("source_id", source_id)
+    if not isinstance(ucns_identity_sha256, str) or not _SHA256_RE.fullmatch(
+        ucns_identity_sha256
+    ):
+        raise PolyglotError("ucns_identity_sha256 must be a lowercase hexadecimal SHA-256")
+    language_tag = _require_metadata_text("language_tag", language_tag)
+    surface = _require_surface(surface)
+    scope = _require_metadata_text("scope", scope)
+    source_id = _require_metadata_text("source_id", source_id)
     if supersedes is not None and (
         not isinstance(supersedes, str) or not _SHA256_RE.fullmatch(supersedes)
     ):
         raise PolyglotError("supersedes must be a lowercase hexadecimal SHA-256 or None")
     return LabelAttachment(
+        ucns_identity_sha256=ucns_identity_sha256,
         language_tag=language_tag,
         surface=surface,
         scope=scope,
         source_id=source_id,
         supersedes=supersedes,
         attachment_sha256=_attachment_digest(
+            ucns_identity_sha256=ucns_identity_sha256,
             language_tag=language_tag,
             surface=surface,
             scope=scope,
@@ -208,14 +233,22 @@ class PolyglotReferent:
             raise PolyglotError("labels must be an immutable tuple")
 
         seen: set[str] = set()
+        prior_by_digest: dict[str, LabelAttachment] = {}
         for attachment in self.labels:
             if not isinstance(attachment, LabelAttachment):
                 raise PolyglotError("labels must contain LabelAttachment records")
+            if attachment.ucns_identity_sha256 != self.ucns_identity_sha256:
+                raise PolyglotError("label attachment referent does not match PolyglotReferent")
             if attachment.attachment_sha256 in seen:
                 raise PolyglotError("duplicate label attachment identity")
-            if attachment.supersedes is not None and attachment.supersedes not in seen:
-                raise PolyglotError("supersedes must reference an earlier attachment on this referent")
+            if attachment.supersedes is not None:
+                prior = prior_by_digest.get(attachment.supersedes)
+                if prior is None:
+                    raise PolyglotError("supersedes must reference an earlier attachment on this referent")
+                if prior.language_tag != attachment.language_tag:
+                    raise PolyglotError("supersession must stay within one language")
             seen.add(attachment.attachment_sha256)
+            prior_by_digest[attachment.attachment_sha256] = attachment
 
     @property
     def referent_identity(self) -> str:
