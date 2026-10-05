@@ -1,0 +1,51 @@
+name: Binary sequence construction
+on:
+  pull_request:
+    paths:
+      - 'binary/**'
+      - 'pyproject.toml'
+      - '.github/workflows/binary.yml'
+  push:
+    paths:
+      - 'binary/**'
+      - 'pyproject.toml'
+      - '.github/workflows/binary.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  binary:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout event source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Verify event identity
+        env:
+          SOURCE_SHA: ${{ github.sha }}
+        run: test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+      - name: Checkout native geometry producer
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: The-Interdependency/ucns
+          ref: 905e66964a495d7596a577bb64e4158db9465864
+          path: .binary-inputs/ucns
+          persist-credentials: false
+      - name: Test actual native construction
+        run: |
+          set -euo pipefail
+          export UCNS_ROOT="$GITHUB_WORKSPACE/.binary-inputs/ucns"
+          test "$(git -C "$UCNS_ROOT" rev-parse HEAD)" = "905e66964a495d7596a577bb64e4158db9465864"
+          PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=binary python3 -m unittest discover -s binary/tests -v
+      - name: Build and test installed package independently of source import paths
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/binary-wheel-env"
+          py="$RUNNER_TEMP/binary-wheel-env/bin/python"
+          "$py" -m pip wheel --no-deps . --wheel-dir "$RUNNER_TEMP/binary-wheels"
+          "$py" -m pip install --no-deps "$RUNNER_TEMP"/binary-wheels/uchc-*.whl
+          export UCNS_ROOT="$GITHUB_WORKSPACE/.binary-inputs/ucns"
+          cd "$RUNNER_TEMP"
+          "$py" -c 'import uchc_binary; print(uchc_binary.__file__)'
+          "$py" -m unittest discover -s "$GITHUB_WORKSPACE/binary/tests" -v

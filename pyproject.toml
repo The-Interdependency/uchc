@@ -18,8 +18,8 @@ corpus-build = ["PyYAML==6.0.2"]
 test = ["pytest==8.3.5"]
 
 [tool.setuptools]
-packages = ["english_gonol", "english_gonol.language", "python_gonol"]
-package-dir = {english_gonol = "human/english/english_gonol", python_gonol = "programming/python/python_gonol"}
+packages = ["english_gonol", "english_gonol.language", "python_gonol", "uchc_binary"]
+package-dir = {english_gonol = "human/english/english_gonol", python_gonol = "programming/python/python_gonol", uchc_binary = "binary/uchc_binary"}
 
 [tool.pytest.ini_options]
 testpaths = ["human/english/tests", "programming/python/tests"]
