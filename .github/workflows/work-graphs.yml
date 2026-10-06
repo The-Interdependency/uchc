@@ -105,7 +105,7 @@ jobs:
 
           recurrence = graphs['system-set-recurrence-v0.json']
           doctrine = next(row for row in recurrence['repositories'] if row['repository'] == 'The-Interdependency/skill-lib')
-          assert doctrine['commit'] == '22c2c5702d14fb4b0faeb717777ecab2665770a1'
+          assert doctrine['commit'] == '38c64332b840b2bbe1c07e53aeee8996644548e9'
           assert f"Source commit: `{doctrine['commit']}`" in Path('.agents/skills/README.md').read_text()
           with tempfile.TemporaryDirectory() as tmp:
               subprocess.run(['git', 'init', '-q', tmp], check=True)
