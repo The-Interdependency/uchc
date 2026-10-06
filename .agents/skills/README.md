@@ -3,7 +3,7 @@
 This directory contains repo-local copies of canonical skills from
 `The-Interdependency/skill-lib`.
 
-Source commit: `22c2c5702d14fb4b0faeb717777ecab2665770a1`
+Source commit: `38c64332b840b2bbe1c07e53aeee8996644548e9`
 
 Repo-local copies are not the source of truth. Edit `skill-lib` first,
 then propagate from the canonical source.
