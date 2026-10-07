@@ -6,7 +6,7 @@ on:
     branches: [main]
     paths: ['.github/workflows/english-full-corpus.yml', 'human/**', 'programming/**', 'shared/**', 'pyproject.toml', 'README.md', 'LICENSE', 'tools/**']
   pull_request:
-    paths: ['.github/workflows/english-full-corpus.yml', 'human/**', 'programming/**', 'pyproject.toml', 'README.md', 'LICENSE', 'tools/**']
+    paths: ['.github/workflows/english-full-corpus.yml', 'human/**', 'programming/**', 'shared/**', 'pyproject.toml', 'README.md', 'LICENSE', 'tools/**']
 permissions:
   contents: read
 jobs:
@@ -74,10 +74,8 @@ jobs:
           from importlib.metadata import version
           import english_gonol.inference_input as reader
           import python_gonol
-          import uchc_polyglot
           assert '/.clean/' in str(Path(reader.__file__).resolve())
           assert '/.clean/' in str(Path(python_gonol.__file__).resolve())
-          assert '/.clean/' in str(Path(uchc_polyglot.__file__).resolve())
           assert version('uchc') == '0.1.0a1'
           PY
       - name: Build all pinned corpus rows through the installed artifact

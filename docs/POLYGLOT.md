@@ -51,6 +51,7 @@ remain owned by each language implementation.
     referent = attach_label(
         referent,
         build_label_attachment(
+            ucns_identity_sha256=position.identity_sha256,
             language_tag="en",
             surface="cardiac",
             scope="technical",

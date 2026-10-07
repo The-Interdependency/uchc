@@ -90,7 +90,7 @@ def test_multiple_languages_attach_to_one_referent() -> None:
         referent = attach_label(
             referent,
             build_label_attachment(
-        ucns_identity_sha256=UCNS_ID,
+                ucns_identity_sha256=UCNS_ID,
                 language_tag=language,
                 surface=surface,
                 scope="technical",

@@ -1,7 +1,7 @@
 {
   "schema": "the-interdependency.stack-manifest",
   "version": "1.0.0",
-  "work_graph_sha256": "9bf7ea91037f16e7e6b165bdf153c731869ff9acdcdab086676c2a04f9c243a2",
+  "work_graph_sha256": "eddd8d2fd269b74a9c7999109a94406b64073f2ad142669e78557e145348998c",
   "repositories": [
     {
       "repository": "The-Interdependency/skill-lib",
@@ -17,7 +17,7 @@
     },
     {
       "repository": "The-Interdependency/ucns",
-      "commit": "380ce7b7ec6b8b45ffa53ea4210070f0b3129747",
+      "commit": "905e66964a495d7596a577bb64e4158db9465864",
       "authority": "geometric axis-circle position identity",
       "relation": "producer baseline"
     },

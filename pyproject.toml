@@ -23,3 +23,4 @@ package-dir = {english_gonol = "human/english/english_gonol", python_gonol = "pr
 
 [tool.pytest.ini_options]
 testpaths = ["human/english/tests", "programming/python/tests", "shared/polyglot/tests"]
+pythonpath = ["human/english", "programming/python", "shared/polyglot"]
