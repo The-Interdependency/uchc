@@ -111,6 +111,10 @@ cardíaco ┘
 
 See [Polyglot identity layer](docs/POLYGLOT.md). Language-specific admission and
 semantic partitioning remain owned by the individual language implementations.
+The integration gate consumes the exact UCNS producer recorded in the shared
+[polyglot work graph](docs/work-graphs/polyglot-circle-identity-v0.json), currently
+merged UCNS `905e66964a495d7596a577bb64e4158db9465864`; the graph is the single checkout
+pin and changing it reruns the cross-repository proof.
 
 ## Repository layout
 

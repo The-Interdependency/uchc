@@ -62,6 +62,12 @@ remain owned by each language implementation.
 The caller obtains position.identity_sha256 from UCNS. UCHC does not recompute
 or redefine the geometry.
 
+The integration gate reads its exact UCNS producer commit from
+[`polyglot-circle-identity-v0.json`](work-graphs/polyglot-circle-identity-v0.json)
+rather than carrying a second version pin. The current graph consumes merged
+UCNS commit `905e66964a495d7596a577bb64e4158db9465864`; update the graph and let its
+path trigger the integration proof whenever that producer identity changes.
+
 ## Authority boundary
 
 - UCNS owns the geometric position and its identity.
