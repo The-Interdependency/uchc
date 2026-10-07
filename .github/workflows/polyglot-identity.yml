@@ -4,9 +4,9 @@ name: Polyglot identity integration
 on:
   push:
     branches: [main]
-    paths: ['shared/polyglot/**', 'docs/POLYGLOT.md', 'pyproject.toml', '.github/workflows/polyglot-identity.yml']
+    paths: ['shared/polyglot/**', 'docs/POLYGLOT.md', 'docs/work-graphs/polyglot-circle-identity-v0.json', 'pyproject.toml', '.github/workflows/polyglot-identity.yml']
   pull_request:
-    paths: ['shared/polyglot/**', 'docs/POLYGLOT.md', 'pyproject.toml', '.github/workflows/polyglot-identity.yml']
+    paths: ['shared/polyglot/**', 'docs/POLYGLOT.md', 'docs/work-graphs/polyglot-circle-identity-v0.json', 'pyproject.toml', '.github/workflows/polyglot-identity.yml']
 permissions:
   contents: read
 
