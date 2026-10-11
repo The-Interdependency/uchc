@@ -1,0 +1,393 @@
+{
+  "boundary_decisions": {},
+  "closure": [
+    {
+      "part": 1,
+      "state": "hmmm"
+    },
+    {
+      "part": 6,
+      "state": "closed"
+    },
+    {
+      "part": 9,
+      "state": "hmmm"
+    },
+    {
+      "part": 19,
+      "state": "hmmm"
+    }
+  ],
+  "field_receipt": "7d38cdbf3799b590a90db7a5c0fd72a223f2ff4ca12a3160a7925a5bf0a46a2d",
+  "geometry_state": "hmmm",
+  "input_closed": true,
+  "logical_state": "closed",
+  "next_word_site_open": true,
+  "parts": [
+    {
+      "end": 2,
+      "function": {
+        "closure": "glyph-boundary",
+        "group": null,
+        "roles": [
+          "lexical"
+        ]
+      },
+      "identity": 3401,
+      "kind": "word",
+      "ordinal": 0,
+      "origin": "O_W",
+      "standing": "admitted",
+      "start": 0
+    },
+    {
+      "end": 3,
+      "function": {
+        "closure": "hmmm",
+        "group": null,
+        "roles": [
+          "abbreviation"
+        ]
+      },
+      "identity": 14,
+      "kind": "character",
+      "ordinal": 1,
+      "origin": "O_G",
+      "standing": "admitted",
+      "start": 2
+    },
+    {
+      "end": 4,
+      "function": {
+        "closure": "not-applicable",
+        "group": null,
+        "roles": [
+          "separator",
+          "opens-or-continues-word-site"
+        ]
+      },
+      "identity": 1,
+      "kind": "character",
+      "ordinal": 2,
+      "origin": "O_G",
+      "standing": "admitted",
+      "start": 3
+    },
+    {
+      "end": 11,
+      "function": {
+        "closure": "whitespace",
+        "group": null,
+        "roles": [
+          "lexical"
+        ]
+      },
+      "identity": 31192,
+      "kind": "word",
+      "ordinal": 3,
+      "origin": "O_W",
+      "standing": "admitted",
+      "start": 4
+    },
+    {
+      "end": 12,
+      "function": {
+        "closure": "not-applicable",
+        "group": null,
+        "roles": [
+          "separator",
+          "opens-or-continues-word-site"
+        ]
+      },
+      "identity": 1,
+      "kind": "character",
+      "ordinal": 4,
+      "origin": "O_G",
+      "standing": "admitted",
+      "start": 11
+    },
+    {
+      "end": 20,
+      "function": {
+        "closure": "glyph-boundary",
+        "group": null,
+        "roles": [
+          "lexical"
+        ]
+      },
+      "identity": 45657,
+      "kind": "word",
+      "ordinal": 5,
+      "origin": "O_W",
+      "standing": "admitted",
+      "start": 12
+    },
+    {
+      "end": 21,
+      "function": {
+        "closure": "closed",
+        "group": null,
+        "roles": [
+          "sentence-close"
+        ]
+      },
+      "identity": 14,
+      "kind": "character",
+      "ordinal": 6,
+      "origin": "O_G",
+      "standing": "admitted",
+      "start": 20
+    },
+    {
+      "end": 22,
+      "function": {
+        "closure": "not-applicable",
+        "group": null,
+        "roles": [
+          "separator",
+          "opens-or-continues-word-site"
+        ]
+      },
+      "identity": 1,
+      "kind": "character",
+      "ordinal": 7,
+      "origin": "O_G",
+      "standing": "admitted",
+      "start": 21
+    },
+    {
+      "end": 24,
+      "function": {
+        "closure": "glyph-boundary",
+        "group": null,
+        "roles": [
+          "lexical"
+        ]
+      },
+      "identity": 3401,
+      "kind": "word",
+      "ordinal": 8,
+      "origin": "O_W",
+      "standing": "admitted",
+      "start": 22
+    },
+    {
+      "end": 25,
+      "function": {
+        "closure": "hmmm",
+        "group": null,
+        "roles": [
+          "abbreviation"
+        ]
+      },
+      "identity": 14,
+      "kind": "character",
+      "ordinal": 9,
+      "origin": "O_G",
+      "standing": "admitted",
+      "start": 24
+    },
+    {
+      "end": 26,
+      "function": {
+        "closure": "not-applicable",
+        "group": null,
+        "roles": [
+          "separator",
+          "opens-or-continues-word-site"
+        ]
+      },
+      "identity": 1,
+      "kind": "character",
+      "ordinal": 10,
+      "origin": "O_G",
+      "standing": "admitted",
+      "start": 25
+    },
+    {
+      "end": 33,
+      "function": {
+        "closure": "whitespace",
+        "group": null,
+        "roles": [
+          "lexical"
+        ]
+      },
+      "identity": 31192,
+      "kind": "word",
+      "ordinal": 11,
+      "origin": "O_W",
+      "standing": "admitted",
+      "start": 26
+    },
+    {
+      "end": 34,
+      "function": {
+        "closure": "not-applicable",
+        "group": null,
+        "roles": [
+          "separator",
+          "opens-or-continues-word-site"
+        ]
+      },
+      "identity": 1,
+      "kind": "character",
+      "ordinal": 12,
+      "origin": "O_G",
+      "standing": "admitted",
+      "start": 33
+    },
+    {
+      "end": 35,
+      "function": {
+        "closure": "not-applicable",
+        "group": null,
+        "roles": [
+          "numeral-digit"
+        ]
+      },
+      "identity": 19,
+      "kind": "character",
+      "ordinal": 13,
+      "origin": "O_G",
+      "standing": "admitted",
+      "start": 34
+    },
+    {
+      "end": 36,
+      "function": {
+        "closure": "not-applicable",
+        "group": [
+          34,
+          37
+        ],
+        "roles": [
+          "decimal-separator"
+        ]
+      },
+      "identity": 14,
+      "kind": "character",
+      "ordinal": 14,
+      "origin": "O_G",
+      "standing": "admitted",
+      "start": 35
+    },
+    {
+      "end": 37,
+      "function": {
+        "closure": "not-applicable",
+        "group": null,
+        "roles": [
+          "numeral-digit"
+        ]
+      },
+      "identity": 17,
+      "kind": "character",
+      "ordinal": 15,
+      "origin": "O_G",
+      "standing": "admitted",
+      "start": 36
+    },
+    {
+      "end": 38,
+      "function": {
+        "closure": "not-applicable",
+        "group": null,
+        "roles": [
+          "numeral-digit"
+        ]
+      },
+      "identity": 20,
+      "kind": "character",
+      "ordinal": 16,
+      "origin": "O_G",
+      "standing": "admitted",
+      "start": 37
+    },
+    {
+      "end": 39,
+      "function": {
+        "closure": "hmmm",
+        "group": [
+          38,
+          41
+        ],
+        "roles": [
+          "ellipsis"
+        ]
+      },
+      "identity": 14,
+      "kind": "character",
+      "ordinal": 17,
+      "origin": "O_G",
+      "standing": "admitted",
+      "start": 38
+    },
+    {
+      "end": 40,
+      "function": {
+        "closure": "hmmm",
+        "group": [
+          38,
+          41
+        ],
+        "roles": [
+          "ellipsis"
+        ]
+      },
+      "identity": 14,
+      "kind": "character",
+      "ordinal": 18,
+      "origin": "O_G",
+      "standing": "admitted",
+      "start": 39
+    },
+    {
+      "end": 41,
+      "function": {
+        "closure": "hmmm",
+        "group": [
+          38,
+          41
+        ],
+        "roles": [
+          "ellipsis"
+        ]
+      },
+      "identity": 14,
+      "kind": "character",
+      "ordinal": 19,
+      "origin": "O_G",
+      "standing": "admitted",
+      "start": 40
+    }
+  ],
+  "profile_sha256": "44ca491c1ffcfa788c4488b6be55b4d4acf41546a2efc3730f6a2fa15808e364",
+  "refusals": [],
+  "schema": "english-gonol.structural-query",
+  "source": "Dr. creates geometry. Dr. creates 3.14...",
+  "version": "1.0.0",
+  "word_sites": [
+    {
+      "event": "open-site",
+      "offset": 3
+    },
+    {
+      "event": "open-site",
+      "offset": 11
+    },
+    {
+      "event": "open-site",
+      "offset": 21
+    },
+    {
+      "event": "open-site",
+      "offset": 25
+    },
+    {
+      "event": "open-site",
+      "offset": 33
+    }
+  ],
+  "receipt_sha256": "b7172ce8bd2bb10d36eadb86bb1766d7d8836e5b9a24d52d06e4b567d0b2c81f"
+}

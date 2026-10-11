@@ -1,0 +1,61 @@
+# Usage: executable structural-profile gates; all source records, no sample substitute.
+name: English structural profile
+on:
+  pull_request:
+    paths: ['human/english/**', '.github/workflows/english-structural-profile.yml']
+  push:
+    branches: [main]
+    paths: ['human/english/**', '.github/workflows/english-structural-profile.yml']
+permissions:
+  contents: read
+jobs:
+  structural-complete-corpus:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@v7.0.1
+        with:
+          repository: globalwordnet/english-wordnet
+          ref: dc343f2683279ecbb13fab4e2fd778d7b162d287
+          path: _deps/oewn
+          persist-credentials: false
+      - uses: actions/checkout@v7.0.1
+        with:
+          repository: The-Interdependency/ucns
+          ref: 4f863ad37096b7baab8f62820ad5cb937b62a3a7
+          path: _deps/ucns
+          persist-credentials: false
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.12.3'
+      - name: Resource preflight and prerequisites
+        run: |
+          python - <<'PYTHON'
+          import os, shutil
+          assert shutil.disk_usage('.').free >= 8 * 1024**3
+          assert os.sysconf('SC_PHYS_PAGES') * os.sysconf('SC_PAGE_SIZE') >= 5 * 1024**3
+          PYTHON
+          python -m pip install pytest==8.3.5 PyYAML==6.0.2
+      - name: Structural regressions
+        env:
+          PYTHONPATH: human/english
+        run: python -m pytest -q human/english/tests/test_structural_profile.py
+      - name: Build every corpus construction twice and compare exact artifacts
+        env:
+          PYTHONPATH: human/english
+        run: |
+          python -m english_gonol.structural_construct build --source-root _deps/oewn/src/yaml --ucns-source-root _deps/ucns --out-dir _state/first
+          python -m english_gonol.structural_construct build --source-root _deps/oewn/src/yaml --ucns-source-root _deps/ucns --out-dir _state/second
+          cmp _state/first/construct.db _state/second/construct.db
+          cmp _state/first/manifest.json _state/second/manifest.json
+          python -m english_gonol.structural_query _state/first 'Dr. creates geometry. Dr. creates 3.14...' > _state/query.json
+      - name: Preserve replay evidence
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: english-structural-replay
+          path: |
+            _state/first/manifest.json
+            _state/query.json
+          if-no-files-found: error

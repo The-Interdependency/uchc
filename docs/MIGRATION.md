@@ -203,3 +203,21 @@ Until then, Stack remains the implementation owner for that domain.
 - immutable release identity: pending exact-candidate release evidence;
 - downstream reconsumption: active Stack ZFAE input consumer under candidate verification;
 - full skill-lib propagation: pending.
+
+## Operator-ratified structural profile v1
+
+The 2026-10-10 thirteen-answer decision is implemented as an explicit new
+[structural profile](../human/english/docs/structural-profile-v1.md), with
+source-bound construction, read-only querying and replay. Stack remains the
+forge. Its source is copied byte-identically into the UCHC candidate; the
+[work graph](../human/english/docs/structural-profile-work-graph.json) records
+starting identities and producer roles. Verification evidence and the extraction
+receipt bind the resulting source bytes separately.
+
+The historical v2 and Hilbert/input candidate locks above remain sealed. Their
+consumers do not silently receive changed word identities. New structural work
+uses `english_gonol.structural_construct` and `StructuralField`. This addition
+does not claim stable release, downstream migration, or authority transfer.
+
+The structural candidate increments the distribution version to `0.1.0a2`;
+the `0.1.0a1` historical wheel locks above remain unchanged.

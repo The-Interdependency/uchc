@@ -1,0 +1,18 @@
+{
+  "schema": "uchc.structural-profile-extraction",
+  "version": "1.0.0",
+  "source_repository": "The-Interdependency/stack",
+  "source_commit": "9b45868344ae22bb346592f397f944c393303ca6",
+  "source_root": "research/english-gonol",
+  "target_root": "human/english",
+  "authority_transfer": false,
+  "files": {
+    "english_gonol/structural_rules.py": "cd1fab701eea74c7e4b7a0e64850c762074f5a6fec642eb832067d0672a902a2",
+    "english_gonol/structural_construct.py": "1f59abc6711bef2eb26464d546d67a3cf8000afc8f6c668f850626feb78a0487",
+    "english_gonol/structural_query.py": "d4f92b16a5af59ad85ac5dab0b4a920d2c8545181ab3b67c1a7bedc98318d192",
+    "tests/test_structural_profile.py": "ed183124dbf6a58ba3d48cdedead5c72c850621aa9328880212d502553e3d180"
+  },
+  "hmmm": [
+    "Stable release, consumer migration and domain graduation remain incomplete."
+  ]
+}

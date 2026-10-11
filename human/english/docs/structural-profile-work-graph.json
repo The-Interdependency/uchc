@@ -1,0 +1,55 @@
+{
+  "schema": "the-interdependency.stack-manifest",
+  "version": "1.0.0",
+  "repositories": [
+    {
+      "repository": "The-Interdependency/metapat",
+      "commit": "8abffcd7766069fc835872974de31b086c6af337",
+      "authority": "domain-qualified semantics",
+      "relation": "semantic constraints; no geometric authority transfer"
+    },
+    {
+      "repository": "The-Interdependency/stack",
+      "commit": "ccf707f933a9611d7b7fe13a0417378d8b453a14",
+      "authority": "English construction forge",
+      "relation": "implementation baseline"
+    },
+    {
+      "repository": "The-Interdependency/uchc",
+      "commit": "7e49361c675e5d0d8fd6597c08f6af5e4776ea06",
+      "authority": "extracted candidate; authority transition incomplete",
+      "relation": "candidate baseline"
+    },
+    {
+      "repository": "The-Interdependency/ucns",
+      "commit": "4f863ad37096b7baab8f62820ad5cb937b62a3a7",
+      "authority": "Public Gonol geometry",
+      "relation": "verified carrier producer"
+    },
+    {
+      "repository": "globalwordnet/english-wordnet",
+      "commit": "dc343f2683279ecbb13fab4e2fd778d7b162d287",
+      "authority": "English source evidence",
+      "relation": "complete corpus"
+    },
+    {
+      "repository": "The-Interdependency/skill-lib",
+      "commit": "19b1988706a91ba305834613facb907cb175ef71",
+      "authority": "build discipline",
+      "relation": "governing instructions"
+    }
+  ],
+  "boundaries": {
+    "authority_transfer": false,
+    "proof_status_transfer": false,
+    "measurement_status_transfer": false,
+    "semantic_mapping": "operator-ratified structural profile; no geometric authority transfer",
+    "agent_scope": "cross-repository-work-graph",
+    "hmmm": [
+      "UCNS displacement and gonal order remain unresolved.",
+      "Compound lexical definition origins remain unresolved.",
+      "UCHC release and graduation remain incomplete."
+    ]
+  },
+  "work_graph_sha256": "8790d2d7894e180e5bc5cab75a043cc710eb65d8ca4eed8f5f49bb30b420256d"
+}

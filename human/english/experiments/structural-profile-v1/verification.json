@@ -1,0 +1,41 @@
+{
+  "schema": "english.structural-verification",
+  "version": "1.0.0",
+  "implementation_sha256": "f5c48e13333a7087691e8b8e5de01f0324bade42a4e8da9de74ff57cd3b6bb85",
+  "forge_source_commit": "9b45868344ae22bb346592f397f944c393303ca6",
+  "full_builds": 2,
+  "comparison": "byte-identical construct.db and manifest.json",
+  "build_implementations": [
+    "installed development wheel, same implementation digest",
+    "forge source"
+  ],
+  "construct_db_sha256": "58e7a28c40c38702a4e58e7f34a723f3788559f385d8770bc25e6a32ecbe1b54",
+  "database_bytes": 650153984,
+  "logical_receipt": "7d38cdbf3799b590a90db7a5c0fd72a223f2ff4ca12a3160a7925a5bf0a46a2d",
+  "definitions": 185155,
+  "definition_origins": {
+    "attached": 128000,
+    "hmmm:compound-lexical-origin": 57155
+  },
+  "python": "3.12.3",
+  "sqlite": "3.45.1",
+  "candidate_version": "0.1.0a2",
+  "candidate_wheel_sha256": "edf657243e23fa2ffde6ce37daf350428cf1ae02b2bacc4a2715e2cfe392b0b4",
+  "tests": {
+    "english": 150,
+    "python_domain": 5,
+    "structural_included_in_english": 20,
+    "clean_installed_structural": 20
+  },
+  "msdmd": {
+    "python_modules": 4,
+    "native_attachment_findings": 0,
+    "ratio_seals_verified": 4
+  },
+  "stack_consistency": "pass",
+  "hmmm": [
+    "UCNS geometric gonal order and displacement operations remain unresolved.",
+    "57155 compound or punctuated lexical-entry definitions preserve unresolved word-origin attachment.",
+    "Stable release, downstream migration and UCHC graduation remain incomplete."
+  ]
+}
