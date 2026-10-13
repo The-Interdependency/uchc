@@ -1,4 +1,4 @@
-# ratios: loc_comments=364:50 imports_exports=15:6 calls_definitions=210:15
+# ratios: loc_comments=507:63 imports_exports=19:6 calls_definitions=311:22
 """Complete English structural construction and byte-stable replay.
 
 Usage: python -m english_gonol.structural_construct build --source-root PATH
@@ -8,13 +8,17 @@ The source/profile/producer identity is part of the graph, not a renderer flag.
 from __future__ import annotations
 
 import argparse
-from contextlib import closing
+import base64
+import binascii
+from contextlib import closing, contextmanager, ExitStack
 from dataclasses import asdict
 from hashlib import sha256
 import json
-from pathlib import Path
+import os
+from pathlib import Path, PurePosixPath
 import shutil
 import sqlite3
+import stat
 import subprocess
 import tempfile
 from typing import Callable
@@ -57,11 +61,14 @@ from english_gonol.structural_rules import (
 #   then: preserve constituent direct/chain relations, definition succession and explicit unresolved compound origins
 # id: structural_complete_replay
 #   given: a materialized structural field
-#   then: reconstruct every source text and verify graph bytes, source evidence, policy, counts and receipt
+#   then: reconstruct every source text and verify canonical graph/evidence bytes, policy, counts and receipt in one stable read transaction
+# id: structural_complete_raw_source
+#   given: complete-corpus standing is requested or replayed
+#   then: independently bind every raw source byte and relative filename to the pinned tree without trusting reduced snapshot claims
 # === END CONTRACTS ===
 
 SCHEMA = "english-gonol.structural-construct"
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 # Derived from the clean pinned OEWN checkout using this source loader. The
 # ordered digest covers every included field, including unused relation evidence.
 PINNED_SOURCE = {
@@ -70,6 +77,12 @@ PINNED_SOURCE = {
     "files": 73, "lexemes": 135969, "synsets": 107519,
     "evidence_sha256": "42b18c16c786bad3801abf36e3f5966daba94df4b88792491ad22229749480d3",
 }
+# Exact upper bounds measured over the immutable pinned OEWN YAML tree.
+# They bound raw reads/decoding; matching the pinned digest still grants identity.
+RAW_SOURCE_MAX_FILES = 73
+RAW_SOURCE_MAX_FILE_BYTES = 3333131
+RAW_SOURCE_MAX_TOTAL_BYTES = 46372711
+RAW_SOURCE_MAX_PATH_BYTES = 23
 FIXED_METADATA = {
     "geometry_state": "hmmm", "normalization": "none",
     "definition_topologies": ["constituent-chain", "constituent-direct", "definition-succession"],
@@ -151,13 +164,148 @@ def _evidence_digest(rows) -> str:
     return result.hexdigest()
 
 
+def _raw_source_name(name: str) -> bytes:
+    """Accept only canonical relative YAML names within the pinned path budget."""
+    if (not isinstance(name, str) or not name or "/" in name or "\\" in name
+        or any(ord(c) < 32 for c in name) or PurePosixPath(name).is_absolute()
+        or name != PurePosixPath(name).as_posix() or ".." in PurePosixPath(name).parts
+        or not name.endswith(".yaml")):
+        raise StructuralError("invalid raw source path")
+    encoded = name.encode("utf-8")
+    if len(encoded) > RAW_SOURCE_MAX_PATH_BYTES:
+        raise StructuralError("raw source path exceeds pinned resource limit")
+    return encoded
+
+
+def _raw_tree_update(result, name: str, data: bytes) -> None:
+    """Use exactly language.source._source_tree_digest's length-prefixed bytes."""
+    encoded = _raw_source_name(name)
+    result.update(len(encoded).to_bytes(4, "big"))
+    result.update(encoded)
+    result.update(len(data).to_bytes(8, "big"))
+    result.update(data)
+
+
+def _raw_source_files(source_root: str | Path) -> tuple[Path, list[str]]:
+    """Bound the pinned flat YAML directory and preflight sizes before reads."""
+    if (not all(hasattr(os, flag) for flag in ("O_DIRECTORY", "O_NOFOLLOW", "O_NONBLOCK"))
+        or os.open not in getattr(os, "supports_dir_fd", set())
+        or os.scandir not in getattr(os, "supports_fd", set())):
+        raise StructuralError("raw source filesystem build requires no-follow directory descriptor support")
+    root = Path(source_root).absolute()
+    if root.is_symlink() or not root.is_dir():
+        raise StructuralError("raw source root must be a nonsymlink directory")
+    names, total = [], 0
+    with ExitStack() as stack:
+        directory = os.open(root, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        stack.callback(os.close, directory)
+        with os.scandir(directory) as entries:
+            for entry in entries:
+                if len(names) >= RAW_SOURCE_MAX_FILES:
+                    raise StructuralError("raw source exceeds pinned resource limits")
+                if entry.is_symlink():
+                    raise StructuralError("raw source symlinks are not admitted")
+                if not entry.is_file(follow_symlinks=False) or not entry.name.endswith(".yaml"):
+                    raise StructuralError("raw source requires only flat regular YAML files")
+                _raw_source_name(entry.name)
+                size = entry.stat(follow_symlinks=False).st_size
+                total += size
+                names.append(entry.name)
+                if size > RAW_SOURCE_MAX_FILE_BYTES or total > RAW_SOURCE_MAX_TOTAL_BYTES:
+                    raise StructuralError("raw source exceeds pinned resource limits")
+    if len(names) != PINNED_SOURCE["files"]:
+        raise StructuralError("raw source file count mismatch")
+    return root, sorted(names)
+
+
+def _read_raw_source(root: Path, name: str, limit: int) -> bytes:
+    """Read through no-follow directory descriptors, including nested parents."""
+    with ExitStack() as stack:
+        directory = os.open(root, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        stack.callback(os.close, directory)
+        parts = PurePosixPath(name).parts
+        for part in parts[:-1]:
+            directory = os.open(part, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=directory)
+            stack.callback(os.close, directory)
+        with os.fdopen(os.open(parts[-1], os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=directory), "rb") as stream:
+            info = os.fstat(stream.fileno())
+            if not stat.S_ISREG(info.st_mode):
+                raise StructuralError("raw source descriptor must be a regular file")
+            if info.st_size > limit:
+                raise StructuralError("raw source exceeds pinned resource limits")
+            data = stream.read(limit + 1)
+    if len(data) > limit:
+        raise StructuralError("raw source exceeds pinned resource limits")
+    return data
+
+
+def _embed_raw_source(db: sqlite3.Connection, source_root: str | Path) -> None:
+    """Preserve all exact pinned YAML bytes; any mismatch discards the build."""
+    root, names = _raw_source_files(source_root)
+    result, total = sha256(), 0
+    for ordinal, name in enumerate(names):
+        data = _read_raw_source(root, name, min(RAW_SOURCE_MAX_FILE_BYTES, RAW_SOURCE_MAX_TOTAL_BYTES - total))
+        total += len(data)
+        _raw_tree_update(result, name, data)
+        db.execute("INSERT INTO evidence VALUES('source-file',?,?)",
+                   (ordinal, _encoded({"path": name, "base64": base64.b64encode(data).decode("ascii")})))
+    if result.hexdigest() != PINNED_SOURCE["tree_sha256"]:
+        raise StructuralError("raw source tree digest mismatch")
+
+
+def _verify_raw_source(db: sqlite3.Connection, complete: bool) -> int:
+    """Bound SQL payload sizes before fetching, then stream exact raw recovery."""
+    count, largest, encoded_total = db.execute(
+        "SELECT COUNT(*),MAX(length(CAST(payload AS BLOB))),SUM(length(CAST(payload AS BLOB))) "
+        "FROM evidence WHERE kind='source-file'").fetchone()
+    if not complete:
+        if count:
+            raise StructuralError("partial corpus cannot claim raw source evidence")
+        return 0
+    if count != PINNED_SOURCE["files"] or count > RAW_SOURCE_MAX_FILES:
+        raise StructuralError("raw source file count mismatch")
+    overhead = 6 * RAW_SOURCE_MAX_PATH_BYTES + len(_encoded({"path": "", "base64": ""}))
+    if (largest > 4 * ((RAW_SOURCE_MAX_FILE_BYTES + 2) // 3) + overhead
+        or encoded_total > 4 * ((RAW_SOURCE_MAX_TOTAL_BYTES + 2) // 3) + count * (overhead + 4)):
+        raise StructuralError("raw source payload exceeds pinned resource limits")
+    result, total, previous = sha256(), 0, None
+    for expected, (ordinal, payload) in enumerate(db.execute(
+            "SELECT ordinal,payload FROM evidence WHERE kind='source-file' ORDER BY ordinal")):
+        item = json.loads(payload)
+        if payload != _encoded(item):
+            raise StructuralError("noncanonical raw source payload")
+        if not isinstance(item, dict) or set(item) != {"path", "base64"}:
+            raise StructuralError("invalid raw source payload fields")
+        name, encoded = item["path"], item["base64"]
+        _raw_source_name(name)
+        if ordinal != expected or (previous is not None and name <= previous):
+            raise StructuralError("raw source order or duplicate path mismatch")
+        if not isinstance(encoded, str) or len(encoded) > 4 * ((RAW_SOURCE_MAX_FILE_BYTES + 2) // 3):
+            raise StructuralError("raw source base64 exceeds pinned resource limits")
+        try:
+            data = base64.b64decode(encoded, validate=True)
+        except (ValueError, binascii.Error) as exc:
+            raise StructuralError("invalid raw source base64") from exc
+        if base64.b64encode(data).decode("ascii") != encoded:
+            raise StructuralError("noncanonical raw source base64")
+        total += len(data)
+        if len(data) > RAW_SOURCE_MAX_FILE_BYTES or total > RAW_SOURCE_MAX_TOTAL_BYTES:
+            raise StructuralError("raw source exceeds pinned resource limits")
+        _raw_tree_update(result, name, data)
+        previous = name
+    if result.hexdigest() != PINNED_SOURCE["tree_sha256"]:
+        raise StructuralError("raw source tree digest mismatch")
+    return count
+
+
 def build(snapshot: WordnetSnapshot, *, out_dir: str | Path,
           public_position: Callable[[str], int | None], producer: dict,
-          complete_corpus: bool = False) -> dict:
+          complete_corpus: bool = False, source_root: str | Path | None = None) -> dict:
     """Build all supplied source records. Production ``run`` verifies full pins.
 
-    Completeness is derived from exact pinned source identity and all included
-    evidence. ``complete_corpus=True`` requests a strict gate, never grants it.
+    Snapshot-only builds remain partial. ``complete_corpus=True`` additionally
+    requires ``source_root``: exact raw YAML bytes and the full reduced projection
+    must independently match their pinned identities before completeness is granted.
     Fixture callbacks supply carrier observations only, without UCNS authority.
     """
     if type(complete_corpus) is not bool:
@@ -170,9 +318,12 @@ def build(snapshot: WordnetSnapshot, *, out_dir: str | Path,
                   (kind, i, asdict(item))
                   for kind, items in (("lexeme", snapshot.lexemes), ("synset", snapshot.synsets))
                   for i, item in enumerate(items))}
-    validated_complete = source == PINNED_SOURCE
-    if complete_corpus and not validated_complete:
+    if complete_corpus and canonical(source) != canonical(PINNED_SOURCE):
         raise StructuralError("complete corpus requires exact pinned source evidence")
+    if complete_corpus and source_root is None:
+        raise StructuralError("complete corpus requires independent raw source")
+    if source_root is not None and not complete_corpus:
+        raise StructuralError("raw source requires an explicit complete corpus request")
     output = Path(out_dir).resolve()
     if output.exists():
         raise StructuralError("output already exists; use a new directory")
@@ -181,6 +332,8 @@ def build(snapshot: WordnetSnapshot, *, out_dir: str | Path,
     db = sqlite3.connect(stage / "construct.db")
     try:
         db.executescript(SQL)
+        if complete_corpus:
+            _embed_raw_source(db, source_root)
         lexical = sorted({s for lex in snapshot.lexemes for s in (lex.lemma, *lex.forms)} |
                          {s for syn in snapshot.synsets for s in syn.members})
         abbreviations = sorted(set(DEFAULT_ABBREVIATIONS) |
@@ -188,7 +341,7 @@ def build(snapshot: WordnetSnapshot, *, out_dir: str | Path,
         admission_policy = policy(abbreviations)
         meta = {"profile": admission_policy, "profile_sha256": digest(admission_policy),
                 "source": source,
-                "complete_corpus": validated_complete, "producer": producer,
+                "complete_corpus": complete_corpus, "producer": producer,
                 "implementation_sha256": _implementation(),
                 **FIXED_METADATA}
         db.executemany("INSERT INTO meta VALUES(?,?)", ((k, _encoded(v)) for k, v in sorted(meta.items())))
@@ -264,13 +417,15 @@ def _schema(db: sqlite3.Connection) -> list:
                       "WHERE name NOT GLOB 'sqlite_*' ORDER BY type,name").fetchall()
 
 
-def verify(out_dir: str | Path) -> dict:
-    """Verify complete canonical rows and independently recover all source spans."""
+@contextmanager
+def _verified_connection(out_dir: str | Path):
+    """Keep verification and subsequent reads on one snapshot until closed."""
     root = Path(out_dir)
     manifest = json.loads((root / "manifest.json").read_bytes())
     if (manifest.get("schema"), manifest.get("version")) != (SCHEMA, VERSION):
         raise StructuralError("schema/version mismatch")
     with closing(open_readonly(root / "construct.db")) as db:
+        db.execute("BEGIN")
         with closing(sqlite3.connect(":memory:")) as expected:
             expected.executescript(SQL)
             if _schema(db) != _schema(expected):
@@ -280,8 +435,9 @@ def verify(out_dir: str | Path) -> dict:
             raise StructuralError("table set mismatch")
         if db.execute("PRAGMA integrity_check").fetchone() != ("ok",) or db.execute("PRAGMA foreign_key_check").fetchone():
             raise StructuralError("database integrity failure")
-        if _manifest(db) != manifest:
-            raise StructuralError("receipt or manifest mismatch")
+        for _key, value in db.execute("SELECT key,value FROM meta"):
+            if value != _encoded(json.loads(value)):
+                raise StructuralError("noncanonical metadata payload")
         meta = manifest["metadata"]
         expected_keys = set(FIXED_METADATA) | {
             "profile", "profile_sha256", "source", "complete_corpus", "producer", "implementation_sha256"}
@@ -292,14 +448,17 @@ def verify(out_dir: str | Path) -> dict:
         source = meta["source"]
         if (set(source) != set(PINNED_SOURCE)
             or source["repository"] != OEWN_REPOSITORY or source["commit"] != OEWN_COMMIT
-            or meta["complete_corpus"] != (source == PINNED_SOURCE)):
+            or (meta["complete_corpus"] and canonical(source) != canonical(PINNED_SOURCE))):
             raise StructuralError("pinned source completeness mismatch")
         p = meta["profile"]
         if p != policy(p["abbreviations"]) or meta["profile_sha256"] != digest(p):
             raise StructuralError("profile mismatch")
         if meta["implementation_sha256"] != _implementation():
             raise StructuralError("implementation mismatch; explicit migration required")
-        _verify_source(db, meta)
+        raw_count = _verify_raw_source(db, meta["complete_corpus"])
+        if canonical(_manifest(db)) != canonical(manifest):
+            raise StructuralError("receipt or manifest mismatch")
+        _verify_source(db, meta, raw_count)
         chars = dict(db.execute("SELECT id,scalar FROM characters"))
         words = dict(db.execute("SELECT id,surface FROM words"))
         word_ids = {word: wid for wid, word in words.items()}
@@ -350,23 +509,34 @@ def verify(out_dir: str | Path) -> dict:
                     raise StructuralError("lexical origin mismatch")
             if state != ("attached" if origin is not None else "hmmm:compound-lexical-origin"):
                 raise StructuralError("origin status mismatch")
-    return manifest
+        yield db, manifest
 
 
-def _verify_source(db: sqlite3.Connection, meta: dict) -> None:
+def verify(out_dir: str | Path) -> dict:
+    """Verify canonical rows and source spans, then close the read snapshot."""
+    with _verified_connection(out_dir) as (_db, manifest):
+        return manifest
+
+
+def _verify_source(db: sqlite3.Connection, meta: dict, raw_count: int) -> None:
     """Reconcile the entire construction against preserved native source records."""
     evidence = {}
     for kind in ("lexeme", "synset"):
         rows = db.execute("SELECT ordinal,payload FROM evidence WHERE kind=? ORDER BY ordinal", (kind,)).fetchall()
         if [r[0] for r in rows] != list(range(len(rows))):
             raise StructuralError("source evidence order mismatch")
-        evidence[kind] = [json.loads(r[1]) for r in rows]
+        evidence[kind] = []
+        for _ordinal, payload in rows:
+            item = json.loads(payload)
+            if payload != _encoded(item):
+                raise StructuralError("noncanonical source evidence payload")
+            evidence[kind].append(item)
     evidence_sha256 = _evidence_digest(
         (kind, i, item) for kind in ("lexeme", "synset")
         for i, item in enumerate(evidence[kind]))
     if evidence_sha256 != meta["source"]["evidence_sha256"]:
         raise StructuralError("source evidence digest mismatch")
-    if db.execute("SELECT COUNT(*) FROM evidence").fetchone()[0] != sum(map(len, evidence.values())):
+    if db.execute("SELECT COUNT(*) FROM evidence").fetchone()[0] != raw_count + sum(map(len, evidence.values())):
         raise StructuralError("unknown source evidence kind")
     if (len(evidence["lexeme"]), len(evidence["synset"])) != (meta["source"]["lexemes"], meta["source"]["synsets"]):
         raise StructuralError("source coverage mismatch")
@@ -433,7 +603,7 @@ def run(*, source_root: str | Path, ucns_source_root: str | Path, out_dir: str |
                  producer={"repository": "The-Interdependency/ucns", "commit": UCNS_PUBLIC_GONOL_COMMIT,
                            "module_sha256": UCNS_PUBLIC_GONOL_MODULE_SHA256,
                            "carrier_sha256": PUBLIC_GONOL_SHA256,
-                           "carrier": list(carrier.PUBLIC_GONOL_157)}, complete_corpus=True)
+                           "carrier": list(carrier.PUBLIC_GONOL_157)}, complete_corpus=True, source_root=source)
 
 
 def main() -> int:
@@ -453,4 +623,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=364:50 imports_exports=15:6 calls_definitions=210:15
+# ratios: loc_comments=507:63 imports_exports=19:6 calls_definitions=311:22

@@ -1,7 +1,9 @@
-# ratios: loc_comments=285:29 imports_exports=12:30 calls_definitions=152:32
+# ratios: loc_comments=761:153 imports_exports=28:56 calls_definitions=420:70
 """Witnesses for the accepted thirteen-rule profile, including hostile records."""
+import base64
+from contextlib import closing
 from copy import deepcopy
-from dataclasses import replace
+from dataclasses import asdict, replace
 import json
 from pathlib import Path
 import sqlite3
@@ -9,9 +11,10 @@ import sqlite3
 import pytest
 
 from english_gonol.language.source import LexemeRecord, SenseRecord, SynsetRecord, WordnetSnapshot
-from english_gonol.structural_rules import segment, canonical
+from english_gonol.structural_rules import segment, canonical, digest
 from english_gonol.structural_construct import StructuralError, build, verify, _manifest
 from english_gonol.structural_query import StructuralField
+from english_gonol.hyperspace_construct import glyph_inventory
 
 # === CHECKS ===
 # id: check_structural_scalar_recovery
@@ -37,6 +40,126 @@ from english_gonol.structural_query import StructuralField
 # id: check_structural_replay
 #   proves: structural_complete_replay
 #   call: self::test_complete_rebuild_and_tamper
+#   mutates: filesystem
+#   cleanup: pytest_tmp_path
+# id: check_structural_query_snapshot
+#   proves: structural_queries_keep_verified_snapshot
+#   call: self::test_external_changes_cannot_replace_verified_query_rows
+#   mutates: filesystem
+#   cleanup: pytest_tmp_path
+# id: check_structural_snapshot_cleanup
+#   proves: structural_queries_keep_verified_snapshot
+#   call: self::test_verified_snapshot_closes_on_initialization_failure
+#   mutates: filesystem
+#   cleanup: pytest_tmp_path
+# id: check_structural_snapshot_lifetime
+#   proves: structural_queries_keep_verified_snapshot
+#   call: self::test_verified_snapshot_readonly_and_close
+#   mutates: filesystem
+#   cleanup: pytest_tmp_path
+# id: check_structural_evidence_canonical_bytes
+#   proves: structural_complete_replay
+#   call: self::test_resealed_noncanonical_evidence_is_rejected
+#   mutates: filesystem
+#   cleanup: pytest_tmp_path
+# id: check_structural_metadata_canonical_bytes
+#   proves: structural_complete_replay
+#   call: self::test_resealed_noncanonical_metadata_is_rejected
+#   mutates: filesystem
+#   cleanup: pytest_tmp_path
+# id: check_structural_glyph_axis_inventory
+#   proves: structural_atomic_recovery
+#   call: self::test_word_glyph_axes_follow_inventory
+#   mutates: filesystem
+#   cleanup: pytest_tmp_path
+# id: check_complete_raw_source_roundtrip
+#   proves: structural_complete_raw_source
+#   call: self::test_complete_raw_source_roundtrip
+#   mutates: filesystem
+#   cleanup: pytest_tmp_path
+# id: check_full_reduced_snapshot_requires_independent_raw_source
+#   proves: structural_complete_raw_source
+#   call: self::test_full_reduced_snapshot_requires_independent_raw_source
+#   mutates: filesystem
+#   cleanup: pytest_tmp_path
+# id: check_omitted_raw_fields_cannot_forge_complete_source
+#   proves: structural_complete_raw_source
+#   call: self::test_omitted_raw_fields_cannot_forge_complete_source
+#   mutates: filesystem
+#   cleanup: pytest_tmp_path
+# id: check_resealed_raw_source_corruption_refuses
+#   proves: structural_complete_raw_source
+#   call: self::test_resealed_raw_source_corruption_refuses
+#   mutates: filesystem
+#   cleanup: pytest_tmp_path
+# id: check_partial_artifact_rejects_raw_rows_and_claims
+#   proves: structural_complete_raw_source
+#   call: self::test_partial_artifact_rejects_raw_rows_and_claims
+#   mutates: filesystem
+#   cleanup: pytest_tmp_path
+# id: check_raw_source_symlinks_refuse
+#   proves: structural_complete_raw_source
+#   call: self::test_raw_source_symlinks_refuse
+#   mutates: filesystem
+#   cleanup: pytest_tmp_path
+# id: check_raw_source_preflight_rejects_oversize_before_read
+#   proves: structural_complete_raw_source
+#   call: self::test_raw_source_preflight_rejects_oversize_before_read
+#   mutates: filesystem
+#   cleanup: pytest_tmp_path
+# id: check_raw_payload_preflight_precedes_json_fetch_and_receipt
+#   proves: structural_complete_raw_source
+#   call: self::test_raw_payload_preflight_precedes_json_fetch_and_receipt
+#   mutates: filesystem
+#   cleanup: pytest_tmp_path
+# id: check_raw_tree_does_not_authorize_changed_projection
+#   proves: structural_complete_raw_source
+#   call: self::test_raw_tree_does_not_authorize_changed_projection
+#   mutates: filesystem
+#   cleanup: pytest_tmp_path
+# id: check_right_guillemet_retains_terminal_closure
+#   proves: structural_local_closure
+#   call: self::test_right_guillemet_retains_terminal_closure
+#   mutates: filesystem
+#   cleanup: pytest_tmp_path
+# id: check_raw_source_builder_requires_exact_file_count
+#   proves: structural_complete_raw_source
+#   call: self::test_raw_source_builder_requires_exact_file_count
+#   mutates: filesystem
+#   cleanup: pytest_tmp_path
+# id: check_raw_source_growth_after_preflight_is_bounded
+#   proves: structural_complete_raw_source
+#   call: self::test_raw_source_growth_after_preflight_is_bounded
+#   mutates: filesystem
+#   cleanup: pytest_tmp_path
+# id: check_embedded_replay_descriptor_independence
+#   proves: structural_complete_raw_source
+#   call: self::test_embedded_replay_does_not_require_filesystem_descriptor_support
+#   mutates: filesystem
+#   cleanup: pytest_tmp_path
+# id: check_raw_source_directory_traversal_is_bounded
+#   proves: structural_complete_raw_source
+#   call: self::test_raw_source_directory_traversal_is_bounded
+#   mutates: filesystem
+#   cleanup: pytest_tmp_path
+# id: check_raw_source_fifo_swap_refuses_without_blocking
+#   proves: structural_complete_raw_source
+#   call: self::test_raw_source_fifo_swap_refuses_without_blocking
+#   mutates: filesystem
+#   cleanup: pytest_tmp_path
+# id: check_complete_builder_rejects_float_source_count
+#   proves: structural_complete_raw_source, structural_complete_replay
+#   call: self::test_complete_builder_rejects_float_source_count
+#   mutates: filesystem
+#   cleanup: pytest_tmp_path
+# id: check_resealed_complete_source_rejects_float_counts
+#   proves: structural_complete_raw_source, structural_complete_replay
+#   call: self::test_resealed_complete_source_rejects_float_counts
+#   mutates: filesystem
+#   cleanup: pytest_tmp_path
+# id: check_manifest_requires_exact_json_types_against_database
+#   proves: structural_complete_raw_source, structural_complete_replay
+#   call: self::test_manifest_requires_exact_json_types_against_database
 #   mutates: filesystem
 #   cleanup: pytest_tmp_path
 # === END CHECKS ===
@@ -248,7 +371,7 @@ def test_completeness_requires_boolean(tmp_path, value):
 def test_resealed_metadata_boundary_refuses(tmp_path, key, value):
     root = tmp_path / "state"
     make(root)
-    reseal(root, lambda db: db.execute("INSERT OR REPLACE INTO meta VALUES(?,?)", (key, json.dumps(value))))
+    reseal(root, lambda db: db.execute("INSERT OR REPLACE INTO meta VALUES(?,?)", (key, canonical(value).decode("utf-8"))))
     with pytest.raises(StructuralError):
         verify(root)
 
@@ -258,10 +381,10 @@ def test_resealed_pinned_source_claim_requires_all_evidence(tmp_path):
     root = tmp_path / "state"
     make(root)
     def change(db):
-        db.execute("UPDATE meta SET value=? WHERE key='source'", (json.dumps(PINNED_SOURCE),))
+        db.execute("UPDATE meta SET value=? WHERE key='source'", (canonical(PINNED_SOURCE).decode("utf-8"),))
         db.execute("UPDATE meta SET value='true' WHERE key='complete_corpus'")
     reseal(root, change)
-    with pytest.raises(StructuralError, match="source evidence digest"):
+    with pytest.raises(StructuralError, match="raw source file count"):
         verify(root)
 
 
@@ -276,7 +399,7 @@ def test_unused_included_source_evidence_cannot_be_resealed(tmp_path, kind, fiel
     def change(db):
         payload = json.loads(db.execute("SELECT payload FROM evidence WHERE kind=? AND ordinal=0", (kind,)).fetchone()[0])
         payload[field] = value
-        db.execute("UPDATE evidence SET payload=? WHERE kind=? AND ordinal=0", (json.dumps(payload), kind))
+        db.execute("UPDATE evidence SET payload=? WHERE kind=? AND ordinal=0", (canonical(payload).decode("utf-8"), kind))
     reseal(root, change)
     with pytest.raises(StructuralError, match="source evidence digest"):
         verify(root)
@@ -286,7 +409,7 @@ def test_unused_included_source_evidence_cannot_be_resealed(tmp_path, kind, fiel
 def punctuation_field(tmp_path):
     source = snapshot()
     source = replace(source, synsets=source.synsets + (
-        SynsetRecord("punctuation", "n", ("geometry",), ('"geometry." (geometry!?) [geometry.] {geometry!} “geometry?” geometry; geometry,', "'geometry.'"), ()),))
+        SynsetRecord("punctuation", "n", ("geometry",), ('"geometry." (geometry!?) [geometry.] {geometry!} “geometry?” geometry; geometry, «geometry.»', "'geometry.'"), ()),))
     root = tmp_path / "punctuation"
     build(source, out_dir=root, public_position=lambda c: None, producer={"standing": "fixture"})
     with StructuralField(root) as result:
@@ -376,4 +499,538 @@ def test_ascii_single_quote_is_a_terminal_closer(punctuation_field, text):
     assert not query["refusals"]
     assert punctuation_field.compose(query, relation="sentence")["standing"] == "logically-closed"
     assert punctuation_field.replay(query) == query
-# ratios: loc_comments=285:29 imports_exports=12:30 calls_definitions=152:32
+
+
+@pytest.mark.parametrize("operation", ["update", "replace"])
+@pytest.mark.parametrize("timing", ["before-first-query", "after-first-query"])
+def test_external_changes_cannot_replace_verified_query_rows(tmp_path, monkeypatch, operation, timing):
+    from english_gonol import structural_query
+    root = tmp_path / "state"
+    make(root)
+    path = root / "construct.db"
+    replacement = tmp_path / "replacement.db"
+    replacement.write_bytes(path.read_bytes())
+    if operation == "update":
+        # WAL permits a committed writer while the verified reader stays open.
+        with closing(sqlite3.connect(path)) as db:
+            assert db.execute("PRAGMA journal_mode=WAL").fetchone() == ("wal",)
+    with StructuralField(root) as original:
+        expected_word = original.word("geometry")
+        rid = original.db.execute("SELECT MIN(id) FROM records WHERE kind='definition'").fetchone()[0]
+        expected_definition = original.definition(rid)
+        expected_query = original.construct("geometry")
+        expected_manifest = original.manifest
+    mutations = []
+
+    def mutate():
+        target = path if operation == "update" else replacement
+        with closing(sqlite3.connect(target)) as db:
+            db.execute("UPDATE words SET surface='forged' WHERE surface='geometry'")
+            db.execute("UPDATE records SET text='forged' WHERE kind='definition'")
+            db.commit()
+        if operation == "replace":
+            replacement.replace(path)
+        mutations.append(operation)
+
+    original_canonical = structural_query.canonical
+    def mutate_after_verification(value):
+        if timing == "before-first-query" and not mutations:
+            mutate()
+        return original_canonical(value)
+    monkeypatch.setattr(structural_query, "canonical", mutate_after_verification)
+    with StructuralField(root) as field:
+        if timing == "after-first-query":
+            assert field.word("geometry") == expected_word
+            assert field.definition(rid) == expected_definition
+            mutate()
+        assert mutations == [operation]
+        assert field.word("geometry") == expected_word
+        assert field.definition(rid) == expected_definition
+        assert field.construct("geometry") == expected_query
+        assert field.manifest == expected_manifest
+        assert "forged" not in field.words
+    with pytest.raises(StructuralError, match="receipt"):
+        verify(root)
+
+
+@pytest.mark.parametrize("stage", ["verification", "initialization"])
+def test_verified_snapshot_closes_on_initialization_failure(tmp_path, monkeypatch, stage):
+    from english_gonol import structural_construct, structural_query
+    root = tmp_path / "state"
+    make(root)
+    connections = []
+    original_open = structural_construct.open_readonly
+    def track_open(path):
+        db = original_open(path)
+        connections.append(db)
+        return db
+    monkeypatch.setattr(structural_construct, "open_readonly", track_open)
+    if stage == "verification":
+        manifest = json.loads((root / "manifest.json").read_bytes())
+        manifest["receipt_sha256"] = "forged"
+        (root / "manifest.json").write_bytes(canonical(manifest))
+    else:
+        def refuse_inventory(_db):
+            raise StructuralError("inventory failure")
+        monkeypatch.setattr(structural_query, "glyph_inventory", refuse_inventory)
+    with pytest.raises(StructuralError):
+        StructuralField(root)
+    assert len(connections) == 1
+    with pytest.raises(sqlite3.ProgrammingError, match="closed"):
+        connections[0].execute("SELECT 1")
+
+
+def test_verified_snapshot_readonly_and_close(tmp_path):
+    root = tmp_path / "state"
+    make(root)
+    with StructuralField(root) as field:
+        assert field.db.in_transaction
+        with pytest.raises(sqlite3.OperationalError, match="readonly"):
+            field.db.execute("UPDATE words SET surface='forged'")
+    with pytest.raises(sqlite3.ProgrammingError, match="closed"):
+        field.db.execute("SELECT 1")
+    field.close()
+    with pytest.raises(RuntimeError, match="caller failure"):
+        with StructuralField(root) as field:
+            raise RuntimeError("caller failure")
+    with pytest.raises(sqlite3.ProgrammingError, match="closed"):
+        field.db.execute("SELECT 1")
+
+
+@pytest.mark.parametrize("kind", ["lexeme", "synset"])
+@pytest.mark.parametrize("variant", ["pretty", "escape", "duplicate-key"])
+def test_resealed_noncanonical_evidence_is_rejected(tmp_path, kind, variant):
+    root = tmp_path / "state"
+    make(root)
+    def change(db):
+        raw = db.execute("SELECT payload FROM evidence WHERE kind=? AND ordinal=0", (kind,)).fetchone()[0]
+        item = json.loads(raw)
+        if variant == "pretty":
+            mutated = json.dumps(item, ensure_ascii=False, indent=2, sort_keys=True)
+        elif variant == "escape":
+            mutated = raw.replace("geometry", "\\u0067eometry")
+        else:
+            key = next(iter(item))
+            mutated = "{" + canonical(key).decode() + ":" + canonical(item[key]).decode() + "," + raw[1:]
+        assert mutated != raw and json.loads(mutated) == item
+        db.execute("UPDATE evidence SET payload=? WHERE kind=? AND ordinal=0", (mutated, kind))
+    reseal(root, change)
+    with pytest.raises(StructuralError, match="noncanonical source evidence"):
+        verify(root)
+    with pytest.raises(StructuralError, match="noncanonical source evidence"):
+        StructuralField(root)
+
+
+@pytest.mark.parametrize("carrier", [False, True])
+def test_word_glyph_axes_follow_inventory(tmp_path, carrier):
+    root = tmp_path / "state"
+    positions = {c: i for i, c in enumerate("ytromge.")} if carrier else {}
+    build(snapshot(), out_dir=root, public_position=positions.get, producer={"standing": "fixture-only"})
+    with StructuralField(root) as field:
+        word = field.word("geometry")
+        inventory = glyph_inventory(field.db)
+        assert word["glyph_axis_set"] == sorted({inventory[c].axis_index for c in "geometry"})
+        assert word["glyph_axis_set"] != sorted(set(word["glyph_ids"]))
+        assert word["glyph_axis_set"] == (list(range(7)) if carrier else sorted({gid - 1 for gid in word["glyph_ids"]}))
+        assert word["occurrence_count"] == 8
+        assert word["glyph_ids"][1] == word["glyph_ids"][4]
+        assert word["glyph_origin"] == "O_G"
+        assert word["gonal_order"] == "hmmm:UCNS_OPERATION_REQUIRED"
+
+
+@pytest.mark.parametrize("variant", ["pretty", "escape", "duplicate-key"])
+def test_resealed_noncanonical_metadata_is_rejected(tmp_path, variant):
+    root = tmp_path / "state"
+    make(root)
+    def change(db):
+        raw = db.execute("SELECT value FROM meta WHERE key='producer'").fetchone()[0]
+        item = json.loads(raw)
+        if variant == "pretty":
+            mutated = json.dumps(item, ensure_ascii=False, indent=2, sort_keys=True)
+        elif variant == "escape":
+            mutated = raw.replace("fixture", "\\u0066ixture")
+        else:
+            mutated = '{"standing":"fixture-only",' + raw[1:]
+        assert mutated != raw and json.loads(mutated) == item
+        db.execute("UPDATE meta SET value=? WHERE key='producer'", (mutated,))
+    reseal(root, change)
+    with pytest.raises(StructuralError, match="noncanonical metadata"):
+        verify(root)
+    with pytest.raises(StructuralError, match="noncanonical metadata"):
+        StructuralField(root)
+
+
+@pytest.fixture
+def pinned_raw_source(tmp_path, monkeypatch):
+    from english_gonol import structural_construct as module
+    from english_gonol.language import source as loader
+    from english_gonol.language.source import load_oewn_2025
+    monkeypatch.setattr(loader, "OEWN_EXPECTED_WORD_COUNT", 1)
+    monkeypatch.setattr(loader, "OEWN_EXPECTED_SYNSET_COUNT", 1)
+    root = tmp_path / "yaml"
+    root.mkdir()
+    (root / "frames.yaml").write_text("{}\n")
+    (root / "entries-g.yaml").write_text(
+        "geometry:\n  n:\n    pronunciation: [original]\n    sense:\n      - id: s1\n        synset: n1\n")
+    (root / "noun.yaml").write_text(
+        "n1:\n  partOfSpeech: n\n  members: [geometry]\n  definition: [geometry.]\n"
+        "  example: [original]\n  source: original\n  wikidata: Q1\n")
+    source = load_oewn_2025(root)
+    identity = {**module.PINNED_SOURCE, "tree_sha256": source.source_tree_sha256,
+                "files": source.source_file_count, "lexemes": len(source.lexemes),
+                "synsets": len(source.synsets), "evidence_sha256": module._evidence_digest(
+                    (kind, i, asdict(item))
+                    for kind, items in (("lexeme", source.lexemes), ("synset", source.synsets))
+                    for i, item in enumerate(items))}
+    monkeypatch.setattr(module, "PINNED_SOURCE", identity)
+    # Verbatim carrier order from UCNS's pinned public_gonol.py, checked by its digest.
+    carrier = list(' A!"B#$C%(D&\'E1*F+[G,-H./I3{J:;K=?L<@M5\\N^_O‘`P|~Q7…R“—S–·T°«U9±V×÷W√∂X∫∑Y∏∇Z∞≈≠a≤≥b→←c)↑d↓2e↔⊕f]⊗g⊙⊘h∈4i}∉j⊂⊃k⊆>l⊇6m∩∪n∧’o∨¬p∀8q∃”r⊢⊨s∴∵t»0u≡ψvφωwαβxγδyλπzσ')
+    assert digest(carrier) == module.PUBLIC_GONOL_SHA256
+    producer = {"repository": "The-Interdependency/ucns", "commit": module.UCNS_PUBLIC_GONOL_COMMIT,
+                "module_sha256": module.UCNS_PUBLIC_GONOL_MODULE_SHA256,
+                "carrier_sha256": module.PUBLIC_GONOL_SHA256, "carrier": carrier}
+    positions = {c: i for i, c in enumerate(carrier)}
+    return root, source, {"public_position": positions.get, "producer": producer}
+
+
+def raw_field(tmp_path, pinned_raw_source):
+    root, source, options = pinned_raw_source
+    output = tmp_path / "raw-field"
+    build(source, out_dir=output, source_root=root, complete_corpus=True, **options)
+    return output
+
+
+def test_complete_raw_source_roundtrip(tmp_path, pinned_raw_source):
+    from english_gonol.language.source import _source_tree_digest
+    source_root, source, options = pinned_raw_source
+    root = raw_field(tmp_path, pinned_raw_source)
+    manifest = verify(root)
+    assert manifest["version"] == "1.1.0"
+    assert manifest["metadata"]["complete_corpus"] is True
+    assert manifest["counts"]["evidence"] == len(source.lexemes) + len(source.synsets) + source.source_file_count
+    recovered = tmp_path / "recovered"
+    recovered.mkdir()
+    with closing(sqlite3.connect(root / "construct.db")) as db:
+        rows = db.execute("SELECT ordinal,payload FROM evidence WHERE kind='source-file' ORDER BY ordinal").fetchall()
+    assert [i for i, _ in rows] == list(range(source.source_file_count))
+    for _, payload in rows:
+        item = json.loads(payload)
+        assert canonical(item).decode() == payload
+        data = base64.b64decode(item["base64"], validate=True)
+        assert data == (source_root / item["path"]).read_bytes()
+        (recovered / item["path"]).write_bytes(data)
+    assert _source_tree_digest(recovered.rglob("*.yaml"), recovered) == source.source_tree_sha256
+    second = tmp_path / "second"
+    assert build(source, out_dir=second, source_root=source_root, complete_corpus=True, **options) == manifest
+    assert (second / "construct.db").read_bytes() == (root / "construct.db").read_bytes()
+    with StructuralField(root) as field:
+        assert not field.construct("geometry.")["refusals"]
+
+
+@pytest.mark.parametrize("complete", [False, True])
+def test_full_reduced_snapshot_requires_independent_raw_source(tmp_path, pinned_raw_source, complete):
+    _root, source, options = pinned_raw_source
+    output = tmp_path / "snapshot-only"
+    if complete:
+        with pytest.raises(StructuralError, match="independent raw source"):
+            build(source, out_dir=output, complete_corpus=True, **options)
+        assert not output.exists()
+    else:
+        manifest = build(source, out_dir=output, **options)
+        assert manifest["metadata"]["complete_corpus"] is False
+        assert verify(output) == manifest
+        assert manifest["counts"]["evidence"] == len(source.lexemes) + len(source.synsets)
+        reseal(output, lambda db: db.execute("UPDATE meta SET value='true' WHERE key='complete_corpus'"))
+        with pytest.raises(StructuralError, match="raw source file count"):
+            verify(output)
+
+
+@pytest.mark.parametrize("field", ["pronunciation", "example", "source", "wikidata"])
+def test_omitted_raw_fields_cannot_forge_complete_source(tmp_path, pinned_raw_source, field):
+    from english_gonol.language.source import load_oewn_2025
+    root, original, options = pinned_raw_source
+    path = root / ("entries-g.yaml" if field == "pronunciation" else "noun.yaml")
+    text = path.read_text()
+    value = "Q1" if field == "wikidata" else "[original]" if field in {"pronunciation", "example"} else "original"
+    text = text.replace(f"{field}: {value}", f"{field}: changed")
+    path.write_text(text)
+    changed = load_oewn_2025(root)
+    assert changed.lexemes == original.lexemes and changed.synsets == original.synsets
+    assert changed.source_tree_sha256 != original.source_tree_sha256
+    forged = replace(changed, source_tree_sha256=original.source_tree_sha256)
+    output = tmp_path / "forged"
+    with pytest.raises(StructuralError, match="raw source tree digest"):
+        build(forged, out_dir=output, complete_corpus=True, source_root=root, **options)
+    assert not output.exists() and not list(tmp_path.glob(".structural-*"))
+
+
+@pytest.mark.parametrize("variant", [
+    "altered", "missing", "extra", "duplicate-path", "reordered", "ordinal-gap",
+    "parent-path", "absolute-path", "noncanonical-path", "backslash-path",
+    "pretty-json", "escaped-json", "duplicate-json-key", "base64-whitespace", "base64-padding",
+    "base64-invalid", "base64-type", "extra-field", "nonobject",
+])
+def test_resealed_raw_source_corruption_refuses(tmp_path, pinned_raw_source, variant):
+    root = raw_field(tmp_path, pinned_raw_source)
+    def change(db):
+        rows = db.execute("SELECT ordinal,payload FROM evidence WHERE kind='source-file' ORDER BY ordinal").fetchall()
+        ordinal, raw = rows[0]
+        item = json.loads(raw)
+        if variant == "missing":
+            db.execute("DELETE FROM evidence WHERE kind='source-file' AND ordinal=0")
+            return
+        if variant == "extra":
+            db.execute("INSERT INTO evidence VALUES('source-file',?,?)", (len(rows), raw))
+            return
+        if variant == "ordinal-gap":
+            db.execute("UPDATE evidence SET ordinal=99 WHERE kind='source-file' AND ordinal=0")
+            return
+        if variant == "reordered":
+            db.execute("UPDATE evidence SET payload=? WHERE kind='source-file' AND ordinal=1", (raw,))
+            raw = rows[1][1]
+        elif variant == "duplicate-path":
+            item["path"] = json.loads(rows[1][1])["path"]
+        elif variant == "altered":
+            item["base64"] = base64.b64encode(base64.b64decode(item["base64"]) + b"# changed\n").decode()
+        elif variant == "parent-path":
+            item["path"] = "../entries-g.yaml"
+        elif variant == "absolute-path":
+            item["path"] = "/entries-g.yaml"
+        elif variant == "noncanonical-path":
+            item["path"] = "./entries-g.yaml"
+        elif variant == "backslash-path":
+            item["path"] = "..\\entries-g.yaml"
+        elif variant == "pretty-json":
+            raw = json.dumps(item, indent=2)
+        elif variant == "escaped-json":
+            raw = raw.replace("entries", "\\u0065ntries")
+        elif variant == "duplicate-json-key":
+            raw = '{"path":' + json.dumps(item["path"]) + "," + raw[1:]
+        elif variant == "base64-whitespace":
+            item["base64"] += "\n"
+        elif variant == "base64-padding":
+            # Nonzero unused pad bits decode successfully but are not canonical.
+            item["base64"] = "Zh=="
+            assert base64.b64decode(item["base64"], validate=True) == b"f"
+        elif variant == "base64-invalid":
+            item["base64"] = "!!!!"
+        elif variant == "base64-type":
+            item["base64"] = [1]
+        elif variant == "extra-field":
+            item["extra"] = True
+        elif variant == "nonobject":
+            item = []
+        if variant not in {"reordered", "pretty-json", "escaped-json", "duplicate-json-key"}:
+            raw = canonical(item).decode()
+        db.execute("UPDATE evidence SET payload=? WHERE kind='source-file' AND ordinal=?", (raw, ordinal))
+    reseal(root, change)
+    with pytest.raises(StructuralError):
+        verify(root)
+    with pytest.raises(StructuralError):
+        StructuralField(root)
+
+
+def test_partial_artifact_rejects_raw_rows_and_claims(tmp_path, pinned_raw_source):
+    source_root, source, options = pinned_raw_source
+    with pytest.raises(StructuralError, match="explicit complete corpus"):
+        build(source, out_dir=tmp_path / "ambiguous", source_root=source_root, **options)
+    root = tmp_path / "partial"
+    build(source, out_dir=root, **options)
+    reseal(root, lambda db: db.execute("INSERT INTO evidence VALUES('source-file',0,?)",
+                                    (canonical({"path": "frames.yaml", "base64": "e30K"}).decode(),)))
+    with pytest.raises(StructuralError, match="partial corpus"):
+        verify(root)
+
+
+@pytest.mark.parametrize("kind", ["file", "directory"])
+def test_raw_source_symlinks_refuse(tmp_path, pinned_raw_source, kind):
+    source_root, source, options = pinned_raw_source
+    target = source_root / ("entries-g.yaml" if kind == "file" else "linked")
+    if kind == "file":
+        external = tmp_path / "external.yaml"
+        target.rename(external)
+        target.symlink_to(external)
+    else:
+        target.symlink_to(tmp_path, target_is_directory=True)
+    with pytest.raises(StructuralError, match="symlink"):
+        build(source, out_dir=tmp_path / "linked-field", source_root=source_root, complete_corpus=True, **options)
+
+
+def test_raw_source_preflight_rejects_oversize_before_read(tmp_path, monkeypatch, pinned_raw_source):
+    from english_gonol import structural_construct as module
+    source_root, source, options = pinned_raw_source
+    with (source_root / "entries-g.yaml").open("wb") as stream:
+        stream.truncate(module.RAW_SOURCE_MAX_FILE_BYTES + 1)
+    def forbidden_read(*_args):
+        raise AssertionError("oversized file must be rejected before reading")
+    monkeypatch.setattr(module, "_read_raw_source", forbidden_read)
+    with pytest.raises(StructuralError, match="resource limits"):
+        build(source, out_dir=tmp_path / "oversized", source_root=source_root, complete_corpus=True, **options)
+
+
+def test_raw_payload_preflight_precedes_json_fetch_and_receipt(tmp_path, monkeypatch, pinned_raw_source):
+    from english_gonol import structural_construct as module
+    root = raw_field(tmp_path, pinned_raw_source)
+    with closing(sqlite3.connect(root / "construct.db")) as db:
+        db.execute("UPDATE evidence SET payload=zeroblob(?) WHERE kind='source-file' AND ordinal=0",
+                   (4 * ((module.RAW_SOURCE_MAX_FILE_BYTES + 2) // 3) + 1000,))
+        db.commit()
+    def forbidden_receipt(_db):
+        raise AssertionError("oversized raw payload must be rejected before row receipt reads")
+    monkeypatch.setattr(module, "_manifest", forbidden_receipt)
+    with pytest.raises(StructuralError, match="payload exceeds pinned resource limits"):
+        verify(root)
+
+
+def test_raw_tree_does_not_authorize_changed_projection(tmp_path, pinned_raw_source):
+    source_root, source, options = pinned_raw_source
+    changed = replace(source, lexemes=(replace(source.lexemes[0], part_of_speech="forged"),))
+    with pytest.raises(StructuralError, match="exact pinned source evidence"):
+        build(changed, out_dir=tmp_path / "forged-projection", source_root=source_root,
+              complete_corpus=True, **options)
+    root = raw_field(tmp_path, pinned_raw_source)
+    def change(db):
+        item = json.loads(db.execute("SELECT payload FROM evidence WHERE kind='lexeme' AND ordinal=0").fetchone()[0])
+        item["part_of_speech"] = "forged"
+        db.execute("UPDATE evidence SET payload=? WHERE kind='lexeme' AND ordinal=0", (canonical(item).decode(),))
+    reseal(root, change)
+    with pytest.raises(StructuralError, match="source evidence digest"):
+        verify(root)
+
+
+def test_right_guillemet_retains_terminal_closure(punctuation_field):
+    text = "«geometry.»"
+    query = punctuation_field.construct(text)
+    assert not query["refusals"]
+    assert query["closure"] == [{"part": 2, "state": "closed"}]
+    result = punctuation_field.compose(query, relation="sentence")
+    assert result["standing"] == "logically-closed"
+    assert len(result["participants"]) == 4
+    assert punctuation_field.replay(query) == query
+
+
+@pytest.mark.parametrize("change", ["missing", "extra"])
+def test_raw_source_builder_requires_exact_file_count(tmp_path, pinned_raw_source, change):
+    source_root, source, options = pinned_raw_source
+    if change == "missing":
+        (source_root / "frames.yaml").unlink()
+    else:
+        (source_root / "extra.yaml").write_text("{}\n")
+    with pytest.raises(StructuralError, match="file count"):
+        build(source, out_dir=tmp_path / "wrong-count", source_root=source_root,
+              complete_corpus=True, **options)
+
+
+def test_raw_source_growth_after_preflight_is_bounded(tmp_path, monkeypatch, pinned_raw_source):
+    from english_gonol import structural_construct as module
+    source_root, source, options = pinned_raw_source
+    original_read = module._read_raw_source
+    def grow_then_read(root, name, limit):
+        with (root / name).open("wb") as stream:
+            stream.truncate(limit + 1)
+        return original_read(root, name, limit)
+    monkeypatch.setattr(module, "_read_raw_source", grow_then_read)
+    with pytest.raises(StructuralError, match="resource limits"):
+        build(source, out_dir=tmp_path / "grown", source_root=source_root,
+              complete_corpus=True, **options)
+    assert not list(tmp_path.glob(".structural-*"))
+
+
+
+def test_embedded_replay_does_not_require_filesystem_descriptor_support(tmp_path, monkeypatch, pinned_raw_source):
+    from english_gonol import structural_construct as module
+    root = raw_field(tmp_path, pinned_raw_source)
+    expected = verify(root)
+    source_root, source, options = pinned_raw_source
+    monkeypatch.delattr(module.os, "O_NOFOLLOW")
+    assert verify(root) == expected
+    with StructuralField(root) as field:
+        assert not field.construct("geometry.")["refusals"]
+    with pytest.raises(StructuralError, match="no-follow directory descriptor support"):
+        build(source, out_dir=tmp_path / "unsupported", source_root=source_root,
+              complete_corpus=True, **options)
+    assert build(source, out_dir=tmp_path / "partial-portable", **options)["metadata"]["complete_corpus"] is False
+
+
+
+@pytest.mark.parametrize("kind", ["non-yaml", "directory", "too-many"])
+def test_raw_source_directory_traversal_is_bounded(tmp_path, pinned_raw_source, kind):
+    from english_gonol import structural_construct as module
+    source_root, source, options = pinned_raw_source
+    if kind == "non-yaml":
+        (source_root / "ignored.txt").write_text("must not be ignored")
+    elif kind == "directory":
+        (source_root / "subtree").mkdir()
+        (source_root / "subtree" / "hidden.yaml").write_text("{}\n")
+    else:
+        for number in range(module.RAW_SOURCE_MAX_FILES):
+            (source_root / f"extra-{number}.yaml").write_text("{}\n")
+    with pytest.raises(StructuralError, match="flat regular YAML|resource limits"):
+        build(source, out_dir=tmp_path / "unbounded", source_root=source_root,
+              complete_corpus=True, **options)
+
+
+def test_raw_source_fifo_swap_refuses_without_blocking(tmp_path, monkeypatch, pinned_raw_source):
+    from english_gonol import structural_construct as module
+    if not hasattr(module.os, "mkfifo"):
+        pytest.skip("FIFO regression requires POSIX mkfifo")
+    source_root, source, options = pinned_raw_source
+    original_read, original_open = module._read_raw_source, module.os.open
+    def swap_then_read(root, name, limit):
+        target = root / name
+        target.unlink()
+        module.os.mkfifo(target)
+        def guarded_open(path, flags, **kwargs):
+            # Assert the safety flag before the system call so a regression cannot hang.
+            if path == name:
+                assert flags & module.os.O_NONBLOCK
+            return original_open(path, flags, **kwargs)
+        monkeypatch.setattr(module.os, "open", guarded_open)
+        return original_read(root, name, limit)
+    monkeypatch.setattr(module, "_read_raw_source", swap_then_read)
+    with pytest.raises(StructuralError, match="descriptor must be a regular file"):
+        build(source, out_dir=tmp_path / "fifo", source_root=source_root,
+              complete_corpus=True, **options)
+    assert not list(tmp_path.glob(".structural-*"))
+
+
+
+def test_complete_builder_rejects_float_source_count(tmp_path, pinned_raw_source):
+    source_root, source, options = pinned_raw_source
+    forged = replace(source, source_file_count=float(source.source_file_count))
+    with pytest.raises(StructuralError, match="exact pinned source evidence"):
+        build(forged, out_dir=tmp_path / "float-source", source_root=source_root,
+              complete_corpus=True, **options)
+
+
+@pytest.mark.parametrize("key", ["files", "lexemes", "synsets"])
+def test_resealed_complete_source_rejects_float_counts(tmp_path, pinned_raw_source, key):
+    root = raw_field(tmp_path, pinned_raw_source)
+    def change(db):
+        source = json.loads(db.execute("SELECT value FROM meta WHERE key='source'").fetchone()[0])
+        source[key] = float(source[key])
+        db.execute("UPDATE meta SET value=? WHERE key='source'", (canonical(source).decode(),))
+    reseal(root, change)
+    with pytest.raises(StructuralError, match="pinned source completeness"):
+        verify(root)
+
+
+@pytest.mark.parametrize("variant", ["float-count", "float-source", "false-versus-zero"])
+def test_manifest_requires_exact_json_types_against_database(tmp_path, variant):
+    root = tmp_path / "field"
+    make(root)
+    if variant == "false-versus-zero":
+        reseal(root, lambda db: db.execute("UPDATE meta SET value='0' WHERE key='authority_transfer'"))
+    manifest = json.loads((root / "manifest.json").read_bytes())
+    if variant == "float-count":
+        manifest["counts"]["words"] = float(manifest["counts"]["words"])
+    elif variant == "float-source":
+        manifest["metadata"]["source"]["files"] = float(manifest["metadata"]["source"]["files"])
+    else:
+        manifest["metadata"]["authority_transfer"] = False
+    (root / "manifest.json").write_bytes(canonical(manifest))
+    with pytest.raises(StructuralError, match="receipt or manifest"):
+        verify(root)
+    with pytest.raises(StructuralError, match="receipt or manifest"):
+        StructuralField(root)
+# ratios: loc_comments=761:153 imports_exports=28:56 calls_definitions=420:70

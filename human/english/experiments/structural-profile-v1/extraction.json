@@ -2,21 +2,21 @@
   "schema": "uchc.structural-profile-extraction",
   "version": "1.0.0",
   "source_repository": "The-Interdependency/stack",
-  "source_commit": "bf3c8816ce4fc64ad26aaf61488aeb22a91e3351",
+  "source_commit": "ba76bc4e4346dd0704d47012474e8bcbe5ddef0b",
   "source_root": "research/english-gonol",
   "target_root": "human/english",
   "authority_transfer": false,
   "files": {
-    "english_gonol/structural_rules.py": "0bea0c6ac3897d808ee33fd6efe3f09fe50d97ce360d5a1b13162d532e92dcee",
-    "english_gonol/structural_construct.py": "e2b5010d0dd7650d24635fccdf5dc7a593840a88a3a762792f1e8110cfb06139",
-    "english_gonol/structural_query.py": "441c16d76e57fa87125c162f38ed2d3be9fdc1c2bc4caa9e99125d1462213f7a",
+    "english_gonol/structural_rules.py": "4686f6a847dd0cee24e3f0a05154a71203a1d4c790922952f9876a38f017db70",
+    "english_gonol/structural_construct.py": "ae105516a076b420412387a1cdd8194bcc2306bfed864cfcc563d46863450470",
+    "english_gonol/structural_query.py": "9818ebcb5002dc0de906c88bc8e7038e55ebe5726cbf9182337cd3e062f21572",
     "english_gonol/hyperspace_construct.py": "c5996470c6d3fe5387fa8f46e3d777deb44289d0b9e1e5d2f55c5d6348912a71",
     "english_gonol/full_construct_run.py": "fbadf9cc033a154148b62e11b52d7e38b845c0d0b669ff34dfc6186cab15c064",
     "english_gonol/language/source.py": "beb4d86f9c2a2879d3f63f4b73867af19edf33a2fdd6fea32e4e6e14c6b4ae2f",
-    "tests/test_structural_profile.py": "aa1367351963b9d17d35dab485cbde3cb004ce96e0dbd5b0f3b1984e8985ec62"
+    "tests/test_structural_profile.py": "1d415b6cfc60ba67da4f7617d035c842cd1c04fa7daa4be3fc32d58a5010f5ae"
   },
   "hmmm": [
     "Stable release, consumer migration and domain graduation remain incomplete."
   ],
-  "work_graph_sha256": "5c07f2efe02a6c3ab536710e8f86e9811369bc4744d0795ac9f9e2d45e76083c"
+  "work_graph_sha256": "e35c8af309dd33fd0485fb5252b1e6cb4e7706a28d9e6ecbe6180e9e5c45a4ae"
 }

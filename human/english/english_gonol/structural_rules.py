@@ -22,7 +22,7 @@ from typing import Iterable
 # === END CONTRACTS ===
 
 PROFILE = "english.structural/1"
-TERMINAL_CLOSERS = frozenset("\"'”’)]}")
+TERMINAL_CLOSERS = frozenset("\"'”’»)]}")
 DEFAULT_ABBREVIATIONS = ("Dr", "Mr", "Mrs", "Ms", "Prof", "Sr", "Jr", "St", "vs", "etc")
 
 

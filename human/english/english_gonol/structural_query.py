@@ -1,4 +1,4 @@
-# ratios: loc_comments=167:31 imports_exports=9:2 calls_definitions=64:14
+# ratios: loc_comments=175:34 imports_exports=9:2 calls_definitions=67:14
 """Read-only text construction, atomic word recovery and explicit refusals.
 
 Usage: ``with StructuralField(path) as field: graph = field.construct(text)``.
@@ -13,8 +13,10 @@ import json
 from pathlib import Path
 from types import MappingProxyType
 
-from english_gonol.hyperspace_construct import promote_word, attach_word_origin, attach_definition_frame
-from english_gonol.structural_construct import StructuralError, open_readonly, verify
+from english_gonol.hyperspace_construct import (
+    promote_word, attach_word_origin, attach_definition_frame, glyph_inventory,
+)
+from english_gonol.structural_construct import StructuralError, _verified_connection
 from english_gonol.structural_rules import TERMINAL_CLOSERS, canonical, digest, segment
 
 # === CONTRACTS ===
@@ -23,10 +25,13 @@ from english_gonol.structural_rules import TERMINAL_CLOSERS, canonical, digest, 
 #   then: preserve input with local admission refusals and leave the field unchanged
 # id: structural_atomic_recovery
 #   given: a closed word participating in another construction
-#   then: consume its word axis while ordered glyph interior and origin attachments remain recoverable
+#   then: consume its word axis while ordered glyph interior, inventory-derived glyph axes and origin attachments remain recoverable
 # id: structural_geometry_refuses
 #   given: a request for unavailable UCNS displacement or a new relation
 #   then: emit a named refusal without synthesizing an edge or operation
+# id: structural_queries_keep_verified_snapshot
+#   given: a verified field and external database writes or replacement
+#   then: every query consumes the same verified read snapshot until the field is closed
 # === END CONTRACTS ===
 
 
@@ -34,14 +39,20 @@ class StructuralField:
     """One verified field; close it or use a context manager after queries."""
 
     def __init__(self, out_dir: str | Path):
-        verified = verify(out_dir)
-        self._manifest_bytes = canonical(verified)
-        self._field_receipt = verified["receipt_sha256"]
-        self._profile_sha256 = verified["metadata"]["profile_sha256"]
-        self._abbreviations = tuple(verified["metadata"]["profile"]["abbreviations"])
-        self.db = open_readonly(Path(out_dir) / "construct.db")
-        self.words = MappingProxyType(dict(self.db.execute("SELECT surface,id FROM words")))
-        self.characters = MappingProxyType({s: (cid, pos) for cid, s, pos in self.db.execute("SELECT * FROM characters")})
+        self._snapshot = _verified_connection(out_dir)
+        self.db, verified = self._snapshot.__enter__()
+        try:
+            self._manifest_bytes = canonical(verified)
+            self._field_receipt = verified["receipt_sha256"]
+            self._profile_sha256 = verified["metadata"]["profile_sha256"]
+            self._abbreviations = tuple(verified["metadata"]["profile"]["abbreviations"])
+            self.words = MappingProxyType(dict(self.db.execute("SELECT surface,id FROM words")))
+            self.characters = MappingProxyType({s: (cid, pos) for cid, s, pos in self.db.execute("SELECT * FROM characters")})
+            self._glyph_axes = MappingProxyType({scalar: glyph.axis_index
+                                                for scalar, glyph in glyph_inventory(self.db).items()})
+        except BaseException:
+            self.close()
+            raise
 
     @property
     def manifest(self) -> dict:
@@ -60,7 +71,7 @@ class StructuralField:
         self.close()
 
     def close(self):
-        self.db.close()
+        self._snapshot.__exit__(None, None, None)
 
     def word(self, surface: str) -> dict:
         """Recover one existing closed word and the distinct glyph-axis set."""
@@ -69,7 +80,7 @@ class StructuralField:
             raise StructuralError("WORD_ADMISSION_REQUIRED")
         word, axis = promote_word(self.db, wid)
         return {**word.as_dict(), "origin": "O_W", "axis": axis,
-                "glyph_origin": "O_G", "glyph_axis_set": sorted(set(word.glyph_ids)),
+                "glyph_origin": "O_G", "glyph_axis_set": sorted({self._glyph_axes[c] for c in word.surface}),
                 "occurrence_count": len(word.glyph_ids), "closed": True,
                 "attachment": attach_word_origin(word),
                 "definition_attachment": attach_definition_frame(word),
@@ -220,4 +231,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=167:31 imports_exports=9:2 calls_definitions=64:14
+# ratios: loc_comments=175:34 imports_exports=9:2 calls_definitions=67:14

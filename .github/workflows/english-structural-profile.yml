@@ -2,10 +2,10 @@
 name: English structural profile
 on:
   pull_request:
-    paths: ['human/english/**', '.github/workflows/english-structural-profile.yml']
+    paths: ['human/english/**', 'programming/python/**', 'pyproject.toml', 'README.md', 'LICENSE', 'NOTICE', '.github/workflows/english-structural-profile.yml']
   push:
     branches: [main]
-    paths: ['human/english/**', '.github/workflows/english-structural-profile.yml']
+    paths: ['human/english/**', 'programming/python/**', 'pyproject.toml', 'README.md', 'LICENSE', 'NOTICE', '.github/workflows/english-structural-profile.yml']
 permissions:
   contents: read
 jobs:
@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@v7.0.1
         with:
           repository: The-Interdependency/stack
-          ref: bf3c8816ce4fc64ad26aaf61488aeb22a91e3351
+          ref: ba76bc4e4346dd0704d47012474e8bcbe5ddef0b
           path: _deps/forge
           persist-credentials: false
       - name: Verify immutable forge extraction and work graph
@@ -43,6 +43,11 @@ jobs:
           root = pathlib.Path('human/english')
           forge = pathlib.Path('_deps/forge/research/english-gonol')
           graph = json.loads((root / 'docs/structural-profile-work-graph.json').read_text())
+          assert (graph['schema'], graph['version']) == ('the-interdependency.stack-manifest', '1.0.0')
+          repositories = graph['repositories']
+          assert len({r['repository'] for r in repositories}) == len(repositories)
+          assert all(len(r['commit']) == 40 and all(c in '0123456789abcdef' for c in r['commit']) for r in repositories)
+          assert all(graph['boundaries'][flag] is False for flag in ['authority_transfer', 'proof_status_transfer', 'measurement_status_transfer'])
           identity = {k: graph[k] for k in ('repositories', 'boundaries')}
           assert hashlib.sha256(json.dumps(identity, sort_keys=True, separators=(',', ':')).encode()).hexdigest() == graph['work_graph_sha256']
           for repository, checkout in [('The-Interdependency/stack', '_deps/forge'), ('The-Interdependency/ucns', '_deps/ucns'), ('globalwordnet/english-wordnet', '_deps/oewn')]:
@@ -135,6 +140,7 @@ jobs:
                   return hashlib.file_digest(stream, 'sha256').hexdigest()
           assert verification['evidence_scope'] == 'local observed source versus clean-wheel replay; hosted replay records its own runtime and test observations'
           assert platform.python_version() == verification['python']
+          assert sqlite3.sqlite_version == verification['sqlite']
           assert verification['full_builds'] == 2
           assert verification['construct_db_sha256'] == digest('_state/first/construct.db') == digest('_state/second/construct.db')
           assert verification['database_bytes'] == pathlib.Path('_state/first/construct.db').stat().st_size
@@ -142,6 +148,14 @@ jobs:
               origins = dict(database.execute("SELECT origin_state, count(*) FROM records WHERE kind='definition' GROUP BY origin_state"))
           assert verification['definition_origins'] == origins
           assert verification['definitions'] == sum(origins.values())
+          assert verification['artifact_version'] == manifest['version'] == '1.1.0'
+          raw = verification['raw_source_evidence']
+          import base64
+          with sqlite3.connect('file:_state/first/construct.db?mode=ro', uri=True) as database:
+              payloads = list(database.execute("SELECT payload FROM evidence WHERE kind='source-file' ORDER BY ordinal"))
+          assert raw['files'] == len(payloads) == manifest['metadata']['source']['files']
+          assert raw['decoded_bytes'] == sum(len(base64.b64decode(json.loads(row[0])['base64'], validate=True)) for row in payloads)
+          assert raw['tree_sha256'] == manifest['metadata']['source']['tree_sha256']
           for metadata_key in ['source', 'producer']:
               participant = manifest['metadata'][metadata_key]
               assert participant['commit'] == next(r['commit'] for r in graph['repositories'] if r['repository'] == participant['repository'])
@@ -167,6 +181,13 @@ jobs:
           pathlib.Path('_state/hosted-replay.json').write_text(json.dumps(record, indent=2) + '\n')
           print(json.dumps(record))
           PYTHON
+      - name: Preserve upstream corpus attribution
+        if: always()
+        run: |
+          mkdir -p _state/corpus-attribution
+          cp _deps/oewn/LICENSE.md _state/corpus-attribution/OEWN-LICENSE.md
+          cp _deps/oewn/README.md _state/corpus-attribution/OEWN-README.md
+          printf '%s\n' 'Open English WordNet 2025' 'https://github.com/globalwordnet/english-wordnet/tree/dc343f2683279ecbb13fab4e2fd778d7b162d287' 'Raw source-file evidence retains its original Princeton WordNet License and CC BY 4.0 terms; no UCHC code-license substitution.' > _state/corpus-attribution/PROVENANCE.txt
       - name: Preserve replay evidence
         if: always()
         uses: actions/upload-artifact@v7.0.1
@@ -179,4 +200,5 @@ jobs:
             _state/sqlite-diagnostic.json
             _state/structural.xml
             _state/installed.xml
+            _state/corpus-attribution/
           if-no-files-found: error

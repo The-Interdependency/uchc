@@ -1,35 +1,35 @@
 {
   "schema": "english.structural-verification",
-  "version": "1.0.0",
-  "implementation_sha256": "457f40b669a6757998e61f4b449706f102017a91cc3dd6f20a0d7f31d3ce3923",
-  "forge_source_commit": "bf3c8816ce4fc64ad26aaf61488aeb22a91e3351",
+  "version": "1.1.0",
+  "implementation_sha256": "2b4f32d9ce9b0487d0a5e475822db75167f2e59a70fda34b63c386f8bf6ae3e6",
+  "forge_source_commit": "ba76bc4e4346dd0704d47012474e8bcbe5ddef0b",
   "full_builds": 2,
   "comparison": "byte-identical construct.db and manifest.json",
   "build_implementations": [
     "forge source at immutable repaired commit",
     "clean-installed exact candidate wheel"
   ],
-  "construct_db_sha256": "59406a8527bf6b580eb6d6ab7ff2093b1a53dfa0a2536cd2d5bc35d9aa68772f",
-  "database_bytes": 650153984,
-  "logical_receipt": "0117d5b1bdb0d0ad6401989a7fe1773d943249d03d2280d95a4faecdc9feab20",
+  "construct_db_sha256": "368b63bc37ee53e701e1636cb6eef1a0e3ce437dec58af40d05131d04c25abc6",
+  "database_bytes": 711983104,
+  "logical_receipt": "b2f6d987ec097a436f8bcbb95aebd9a62aa2a1b74078ff0f433d2a56e09e3baa",
   "definitions": 185155,
   "definition_origins": {
     "attached": 128000,
     "hmmm:compound-lexical-origin": 57155
   },
   "python": "3.12.14",
-  "sqlite": "3.53.1",
+  "sqlite": "3.45.1",
   "candidate_version": "0.1.0a2",
-  "candidate_wheel_sha256": "74edb253be25b7309879c01725b6f3496f48037f548bcd8fee85d10a07352189",
+  "candidate_wheel_sha256": "5890f508a255964b4217dd898cc62da8723ee39744d761f989bdf2be53d72878",
   "tests": {
-    "stack_english": 214,
+    "stack_english": 280,
     "stack_english_optional_replay_skips": 3,
-    "uchc_english": 197,
+    "uchc_english": 263,
     "python_domain": 5,
     "uchc_polyglot": 5,
-    "structural_included_in_english": 67,
-    "clean_installed_structural": 67,
-    "clean_installed_total": 86
+    "structural_included_in_english": 133,
+    "clean_installed_structural": 133,
+    "clean_installed_total": 152
   },
   "msdmd": {
     "python_modules": 4,
@@ -43,12 +43,161 @@
     "Stable release, downstream migration and UCHC graduation remain incomplete.",
     "Three optional Stack historical EDCM replay tests skipped because their separate EDCM/full-construct fixture roots were not supplied; these are not structural-profile passes."
   ],
-  "work_graph_sha256": "5c07f2efe02a6c3ab536710e8f86e9811369bc4744d0795ac9f9e2d45e76083c",
+  "work_graph_sha256": "e35c8af309dd33fd0485fb5252b1e6cb4e7706a28d9e6ecbe6180e9e5c45a4ae",
   "source_evidence_sha256": "42b18c16c786bad3801abf36e3f5966daba94df4b88792491ad22229749480d3",
   "integration_bases": {
     "stack": "595b137f7b1b9f39d3102ce45a15d68150dbeb5f",
     "uchc": "519cae068a0544d6094cda0fadbfcf36793d2549"
   },
   "ci_evidence_gate": "bind rebuilt DB, manifest, query, source evidence, implementation, graph, wheel and structural/clean test totals; record hosted runtime separately; bind each checked-out graph input",
-  "evidence_scope": "local observed source versus clean-wheel replay; hosted replay records its own runtime and test observations"
+  "evidence_scope": "local observed source versus clean-wheel replay; hosted replay records its own runtime and test observations",
+  "artifact_version": "1.1.0",
+  "runtime_provenance": {
+    "scope": "primary local replay matching hosted Python and SQLite versions; raw byte identity remains a hard gate",
+    "python_archive": {
+      "url": "https://github.com/actions/python-versions/releases/download/3.12.14-31661455385/python-3.12.14-linux-24.04-x64.tar.gz",
+      "sha256": "5a03168292516f6dd6dcf630f4bf5369b108abd7c699a7e1db37f1e622257fff"
+    },
+    "sqlite_package": {
+      "url": "https://archive.ubuntu.com/ubuntu/pool/main/s/sqlite3/libsqlite3-0_3.45.1-1ubuntu2.9_amd64.deb",
+      "sha256": "e04c9d3cf7d0fc4d63332bea2395280550a0b5daef35d19c3c079fc2e96a92e5"
+    },
+    "system_installation": false,
+    "python_build": "3.12.14 (main, Aug 13 2026, 02:47:42) [GCC 13.3.0]",
+    "sqlite_runtime": "3.45.1",
+    "sqlite_secure_delete_default": 1
+  },
+  "historical_runtime_replays": [
+    {
+      "scope": "earlier source 386204b artifact 1.0.0; not evidence for current raw-source artifact 1.1.0",
+      "forge_source_commit": "386204bec00d52550cf3aa66e9c5d1bb8b564651",
+      "implementation_sha256": "3e25d42d74a5733ce7ef6df24f28020b8f540962a7db41b907eb6bc4f7842018",
+      "candidate_wheel_sha256": "7faa7f9196ba4bba145624fbea68bc63a4882ed134fe7848817da785364c7ba4",
+      "python": "3.12.14",
+      "logical_receipt": "58726ef98e7f94ad48f2f799f56458b633ea51cc82c1e398f90c4c0146f478dd",
+      "runtimes": [
+        {
+          "sqlite": "3.53.1",
+          "full_builds": 2,
+          "construct_db_sha256": "bbd69d49432d9fb4d4097aaabc79f0ff3374d360f886bf1f7beefb9eaf96695e",
+          "database_bytes": 650153984
+        },
+        {
+          "sqlite": "3.45.1",
+          "full_builds": 2,
+          "construct_db_sha256": "682d0fafbca3ebe6df12814da75b3ba71268f381627142ce3424498b53667758",
+          "database_bytes": 650153984
+        }
+      ],
+      "comparison": "source and clean wheel were byte-identical within each runtime; cross-runtime logical manifest/query equal, raw SQLite bytes unequal"
+    }
+  ],
+  "cross_runtime_diagnostic": {
+    "forge_source_commit": "bf3c8816ce4fc64ad26aaf61488aeb22a91e3351",
+    "candidate_wheel_sha256": "74edb253be25b7309879c01725b6f3496f48037f548bcd8fee85d10a07352189",
+    "sqlite_3_53_1_db_sha256": "59406a8527bf6b580eb6d6ab7ff2093b1a53dfa0a2536cd2d5bc35d9aa68772f",
+    "sqlite_3_45_1_db_sha256": "84041693e99fc1b796488f24113b05ed59ff7e3f71d46b45d80379b88d7490c2",
+    "same_logical_receipt": "0117d5b1bdb0d0ad6401989a7fe1773d943249d03d2280d95a4faecdc9feab20",
+    "raw_byte_equality": false,
+    "header_only_explanation": false,
+    "resolution": "Reproduced the original hosted 3.45.1 baseline locally; rebuilt current source and clean wheel using that producer runtime. No normalization or conditional byte-gate bypass.",
+    "evidence": [
+      "https://github.com/The-Interdependency/stack/actions/runs/38354275128/artifacts/11792307393",
+      "https://github.com/The-Interdependency/uchc/actions/runs/38354271756/artifacts/11792721910"
+    ]
+  },
+  "raw_source_evidence": {
+    "files": 73,
+    "decoded_bytes": 46372711,
+    "tree_sha256": "3a46546a1ffbb4aed98990535ad5155c69be12ad09fdf093701b257d2a3e468f",
+    "standing": "canonical raw source bytes and reduced projection independently match pinned identities; snapshot-only builds are partial",
+    "license": "OEWN source retains Princeton WordNet License and CC BY 4.0; CI evidence includes upstream attribution"
+  },
+  "raw_source_negative_checks": {
+    "artifact_version": "1.1.0",
+    "encoded_payload_bytes": 61833199,
+    "implementation_sha256": "2b4f32d9ce9b0487d0a5e475822db75167f2e59a70fda34b63c386f8bf6ae3e6",
+    "initial_complete_raw_replay": "passed",
+    "mutations": [
+      {
+        "actual_mutated_tree_sha256": "ea2e66d58f2ab73c3a668fa02f1d58c24b93d00e8bf8eee566bed647f5466439",
+        "byte_length_preserved": 30645,
+        "complete_builder_error": "raw source tree digest mismatch",
+        "complete_builder_outcome": "rejected",
+        "error": "raw source tree digest mismatch",
+        "field": "pronunciation",
+        "field_key_preserved": true,
+        "forged_declared_tree_sha256": "3a46546a1ffbb4aed98990535ad5155c69be12ad09fdf093701b257d2a3e468f",
+        "mutated_sha256": "ae9528df5b0fcfedcc031b9aecaf2d3d0134f057af3b785ed493e55e40de9dd5",
+        "original_sha256": "4ba5388b40700646dedeb181c322ebac0b86f354aaf599a4b2cfb9d968995994",
+        "other_yaml_fields_preserved": true,
+        "outcome": "rejected",
+        "path": "entries-0.yaml",
+        "reduced_projection_matches_production_pin": true,
+        "reduced_projection_sha256": "42b18c16c786bad3801abf36e3f5966daba94df4b88792491ad22229749480d3"
+      },
+      {
+        "actual_mutated_tree_sha256": "4c8acefbac6fc9e082e11cc956fc541feef68f200989732f1f0304e0937bc2b9",
+        "byte_length_preserved": 3333131,
+        "complete_builder_error": "raw source tree digest mismatch",
+        "complete_builder_outcome": "rejected",
+        "error": "raw source tree digest mismatch",
+        "field": "example",
+        "field_key_preserved": true,
+        "forged_declared_tree_sha256": "3a46546a1ffbb4aed98990535ad5155c69be12ad09fdf093701b257d2a3e468f",
+        "mutated_sha256": "3f36abedca293b87713015542d1e4b76947c5a4bb013c826dc52b26b5d5223c0",
+        "original_sha256": "aeaf812c01f55cac17f1de2b8968047caecc985f9d43abb5d3464474e1c61869",
+        "other_yaml_fields_preserved": true,
+        "outcome": "rejected",
+        "path": "adj.all.yaml",
+        "reduced_projection_matches_production_pin": true,
+        "reduced_projection_sha256": "42b18c16c786bad3801abf36e3f5966daba94df4b88792491ad22229749480d3"
+      },
+      {
+        "actual_mutated_tree_sha256": "4bdc42c8efdebfeb72ad62500e16c052129694d1080b30b0ac4d8ee2f073e434",
+        "byte_length_preserved": 3333131,
+        "complete_builder_error": "raw source tree digest mismatch",
+        "complete_builder_outcome": "rejected",
+        "error": "raw source tree digest mismatch",
+        "field": "source",
+        "field_key_preserved": true,
+        "forged_declared_tree_sha256": "3a46546a1ffbb4aed98990535ad5155c69be12ad09fdf093701b257d2a3e468f",
+        "mutated_sha256": "4fd549985c898f9dc82f5fe5d5f7666a638db1136caba6eff7e0bf70f1e612bf",
+        "original_sha256": "aeaf812c01f55cac17f1de2b8968047caecc985f9d43abb5d3464474e1c61869",
+        "other_yaml_fields_preserved": true,
+        "outcome": "rejected",
+        "path": "adj.all.yaml",
+        "reduced_projection_matches_production_pin": true,
+        "reduced_projection_sha256": "42b18c16c786bad3801abf36e3f5966daba94df4b88792491ad22229749480d3"
+      },
+      {
+        "actual_mutated_tree_sha256": "27438916ee25bff704df04d2b3d4176e7237bf65be38f2a415d99626b7bb1e5a",
+        "byte_length_preserved": 1419977,
+        "complete_builder_error": "raw source tree digest mismatch",
+        "complete_builder_outcome": "rejected",
+        "error": "raw source tree digest mismatch",
+        "field": "wikidata",
+        "field_key_preserved": true,
+        "forged_declared_tree_sha256": "3a46546a1ffbb4aed98990535ad5155c69be12ad09fdf093701b257d2a3e468f",
+        "mutated_sha256": "ef40238571e72fc7e8266bb81716e3b1dcc1d601c27da8e07096b36fdd6f1c20",
+        "original_sha256": "7072653fc940511beea7ea73a1ca7845172946088f4805553a721477e3867818",
+        "other_yaml_fields_preserved": true,
+        "outcome": "rejected",
+        "path": "noun.act.yaml",
+        "reduced_projection_matches_production_pin": true,
+        "reduced_projection_sha256": "42b18c16c786bad3801abf36e3f5966daba94df4b88792491ad22229749480d3"
+      }
+    ],
+    "original_source_tree_unchanged": true,
+    "production_constants_patched": false,
+    "python": "3.12.14 (main, Aug 13 2026, 02:47:42) [GCC 13.3.0]",
+    "restored_complete_raw_replay": "passed",
+    "schema": "structural-raw-source-negative-evidence",
+    "script_sha256": "afd8d12cc880c9311f9cf314c16fd321cc1243f0376dfe598d84802cb9fda977",
+    "source_bytes": 46372711,
+    "source_files": 73,
+    "source_tree_sha256": "3a46546a1ffbb4aed98990535ad5155c69be12ad09fdf093701b257d2a3e468f",
+    "sqlite": "3.45.1",
+    "structural_construct_sha256": "ae105516a076b420412387a1cdd8194bcc2306bfed864cfcc563d46863450470"
+  }
 }
