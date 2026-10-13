@@ -1,4 +1,4 @@
-# ratios: loc_comments=356:49 imports_exports=15:6 calls_definitions=205:14
+# ratios: loc_comments=364:50 imports_exports=15:6 calls_definitions=210:15
 """Complete English structural construction and byte-stable replay.
 
 Usage: python -m english_gonol.structural_construct build --source-root PATH
@@ -75,6 +75,8 @@ FIXED_METADATA = {
     "definition_topologies": ["constituent-chain", "constituent-direct", "definition-succession"],
     "authority_transfer": False,
 }
+IMPLEMENTATION_FILES = ("structural_rules.py", "structural_construct.py", "structural_query.py",
+                        "hyperspace_construct.py", "full_construct_run.py", "language/source.py")
 TABLES = ("meta", "characters", "words", "word_characters", "records", "components", "evidence")
 SQL = """
 PRAGMA foreign_keys=ON;
@@ -115,9 +117,8 @@ def _encoded(value: object) -> str:
 
 def _implementation() -> str:
     root = Path(__file__).parent
-    paths = ("structural_rules.py", "structural_construct.py", "structural_query.py",
-             "hyperspace_construct.py", "full_construct_run.py", "language/source.py")
-    return digest({name: sha256((root / name).read_bytes()).hexdigest() for name in paths})
+    return digest({name: sha256((root / name).read_bytes()).hexdigest()
+                   for name in IMPLEMENTATION_FILES})
 
 
 def _receipt(db: sqlite3.Connection) -> str:
@@ -257,6 +258,12 @@ def open_readonly(path: str | Path) -> sqlite3.Connection:
     return sqlite3.connect(Path(path).resolve().as_uri() + "?mode=ro", uri=True)
 
 
+def _schema(db: sqlite3.Connection) -> list:
+    """Bind tables, columns, constraints, indexes and absence of extra objects."""
+    return db.execute("SELECT type,name,tbl_name,sql FROM sqlite_master "
+                      "WHERE name NOT GLOB 'sqlite_*' ORDER BY type,name").fetchall()
+
+
 def verify(out_dir: str | Path) -> dict:
     """Verify complete canonical rows and independently recover all source spans."""
     root = Path(out_dir)
@@ -264,6 +271,10 @@ def verify(out_dir: str | Path) -> dict:
     if (manifest.get("schema"), manifest.get("version")) != (SCHEMA, VERSION):
         raise StructuralError("schema/version mismatch")
     with closing(open_readonly(root / "construct.db")) as db:
+        with closing(sqlite3.connect(":memory:")) as expected:
+            expected.executescript(SQL)
+            if _schema(db) != _schema(expected):
+                raise StructuralError("database schema mismatch")
         tables = {r[0] for r in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
         if tables != set(TABLES):
             raise StructuralError("table set mismatch")
@@ -442,4 +453,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=356:49 imports_exports=15:6 calls_definitions=205:14
+# ratios: loc_comments=364:50 imports_exports=15:6 calls_definitions=210:15

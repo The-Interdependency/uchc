@@ -1,4 +1,4 @@
-# ratios: loc_comments=94:17 imports_exports=6:6 calls_definitions=29:7
+# ratios: loc_comments=95:17 imports_exports=6:6 calls_definitions=30:7
 """Exact English structural admission rules; see docs/structural-profile-v1.md.
 
 Usage: ``segment('Dr. creates 3.14...')`` preserves all scalar offsets. This
@@ -22,6 +22,7 @@ from typing import Iterable
 # === END CONTRACTS ===
 
 PROFILE = "english.structural/1"
+TERMINAL_CLOSERS = frozenset("\"'”’)]}")
 DEFAULT_ABBREVIATIONS = ("Dr", "Mr", "Mrs", "Ms", "Prof", "Sr", "Jr", "St", "vs", "etc")
 
 
@@ -115,7 +116,7 @@ def segment(text: str, abbreviations: Iterable[str] = DEFAULT_ABBREVIATIONS) -> 
             elif (result and result[-1].kind == "word" and result[-1].end == i
                   and (result[-1].text in abbreviations or len(result[-1].text) == 1)):
                 roles, closure = ("abbreviation",), "hmmm"
-            elif i > 0 and (i + 1 == len(text) or text[i + 1].isspace() or text[i + 1] in '\"”’)]}'):
+            elif i > 0 and (i + 1 == len(text) or text[i + 1].isspace() or text[i + 1] in TERMINAL_CLOSERS):
                 roles, closure = ("sentence-close",), "closed"
             else:
                 roles, closure = ("unresolved-period",), "hmmm"
@@ -128,4 +129,4 @@ def segment(text: str, abbreviations: Iterable[str] = DEFAULT_ABBREVIATIONS) -> 
         result.append(Part("character", c, i, i + 1, roles, closure, group))
         i += 1
     return tuple(result)
-# ratios: loc_comments=94:17 imports_exports=6:6 calls_definitions=29:7
+# ratios: loc_comments=95:17 imports_exports=6:6 calls_definitions=30:7

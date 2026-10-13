@@ -1,17 +1,17 @@
 {
   "schema": "english.structural-verification",
   "version": "1.0.0",
-  "implementation_sha256": "67d0c0b856a46daa90979c70896f9d728989eca0f2a2414e782c46e639bf639a",
-  "forge_source_commit": "0e8f59c7b9afdd0c3e9a173841b1bcc4f58dcac2",
+  "implementation_sha256": "457f40b669a6757998e61f4b449706f102017a91cc3dd6f20a0d7f31d3ce3923",
+  "forge_source_commit": "bf3c8816ce4fc64ad26aaf61488aeb22a91e3351",
   "full_builds": 2,
   "comparison": "byte-identical construct.db and manifest.json",
   "build_implementations": [
     "forge source at immutable repaired commit",
     "clean-installed exact candidate wheel"
   ],
-  "construct_db_sha256": "c129f0f924466c45688377f4d17e9e33cca7d7f04d1d4938aa5a74cdd9400b55",
+  "construct_db_sha256": "59406a8527bf6b580eb6d6ab7ff2093b1a53dfa0a2536cd2d5bc35d9aa68772f",
   "database_bytes": 650153984,
-  "logical_receipt": "a8da0cdbfa6300ce8f10947aad992b5a9fb3850cae2b125d2feb27ab355a3f92",
+  "logical_receipt": "0117d5b1bdb0d0ad6401989a7fe1773d943249d03d2280d95a4faecdc9feab20",
   "definitions": 185155,
   "definition_origins": {
     "attached": 128000,
@@ -20,16 +20,16 @@
   "python": "3.12.14",
   "sqlite": "3.53.1",
   "candidate_version": "0.1.0a2",
-  "candidate_wheel_sha256": "f30fe542f255a46afc052d15559e6c34f21dd5c41f1104b58e16ebca90f1603e",
+  "candidate_wheel_sha256": "74edb253be25b7309879c01725b6f3496f48037f548bcd8fee85d10a07352189",
   "tests": {
-    "stack_english": 201,
+    "stack_english": 214,
     "stack_english_optional_replay_skips": 3,
-    "uchc_english": 184,
+    "uchc_english": 197,
     "python_domain": 5,
     "uchc_polyglot": 5,
-    "structural_included_in_english": 54,
-    "clean_installed_structural": 54,
-    "clean_installed_total": 73
+    "structural_included_in_english": 67,
+    "clean_installed_structural": 67,
+    "clean_installed_total": 86
   },
   "msdmd": {
     "python_modules": 4,
@@ -43,11 +43,11 @@
     "Stable release, downstream migration and UCHC graduation remain incomplete.",
     "Three optional Stack historical EDCM replay tests skipped because their separate EDCM/full-construct fixture roots were not supplied; these are not structural-profile passes."
   ],
-  "work_graph_sha256": "7623c14efc3aa3379cf872e8a570b9047f93f8ae7362e77c5469f1531369e185",
+  "work_graph_sha256": "5c07f2efe02a6c3ab536710e8f86e9811369bc4744d0795ac9f9e2d45e76083c",
   "source_evidence_sha256": "42b18c16c786bad3801abf36e3f5966daba94df4b88792491ad22229749480d3",
   "integration_bases": {
     "stack": "595b137f7b1b9f39d3102ce45a15d68150dbeb5f",
     "uchc": "519cae068a0544d6094cda0fadbfcf36793d2549"
   },
-  "ci_evidence_gate": "compare rebuilt manifest/query with committed evidence; verify immutable forge extraction and shared work graph"
+  "ci_evidence_gate": "compare rebuilt manifest/query with committed evidence; verify all six implementation modules and tests against immutable forge source; verify extraction and lifecycle scopes"
 }

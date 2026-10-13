@@ -154,3 +154,17 @@ profile's manifest, query and verification receipts together. CI compares its
 rebuilt manifest and query with these committed receipts as well as with an
 independent rebuild. The work graph pins the immutable repaired source commit;
 its descendant evidence commit does not claim a new authority transition.
+
+### Review follow-up boundaries
+
+An explicit `closed: false` decision resolves a nonterminal ambiguity without
+creating a sentence boundary. Unresolved ambiguities and nonterminal closed
+boundaries still refuse sentence composition. ASCII single quotes share the
+same terminal-closing rule as the existing admitted quote/bracket scalars.
+
+Verification checks the exact SQLite table/index definitions and rejects added
+columns, views or triggers before a field can be opened. `field.manifest` is a
+detached JSON snapshot and `field.abbreviations` is immutable; neither exposes a
+mutable alias into the verified receipt/policy inputs. The forge gate compares
+all six files in `IMPLEMENTATION_FILES`, including the non-structural runtime
+dependencies, plus the extracted structural tests.

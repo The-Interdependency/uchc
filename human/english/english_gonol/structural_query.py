@@ -1,4 +1,4 @@
-# ratios: loc_comments=157:29 imports_exports=9:2 calls_definitions=61:12
+# ratios: loc_comments=167:31 imports_exports=9:2 calls_definitions=64:14
 """Read-only text construction, atomic word recovery and explicit refusals.
 
 Usage: ``with StructuralField(path) as field: graph = field.construct(text)``.
@@ -15,7 +15,7 @@ from types import MappingProxyType
 
 from english_gonol.hyperspace_construct import promote_word, attach_word_origin, attach_definition_frame
 from english_gonol.structural_construct import StructuralError, open_readonly, verify
-from english_gonol.structural_rules import canonical, digest, segment
+from english_gonol.structural_rules import TERMINAL_CLOSERS, canonical, digest, segment
 
 # === CONTRACTS ===
 # id: structural_queries_do_not_admit
@@ -34,11 +34,24 @@ class StructuralField:
     """One verified field; close it or use a context manager after queries."""
 
     def __init__(self, out_dir: str | Path):
-        self.manifest = verify(out_dir)
+        verified = verify(out_dir)
+        self._manifest_bytes = canonical(verified)
+        self._field_receipt = verified["receipt_sha256"]
+        self._profile_sha256 = verified["metadata"]["profile_sha256"]
+        self._abbreviations = tuple(verified["metadata"]["profile"]["abbreviations"])
         self.db = open_readonly(Path(out_dir) / "construct.db")
         self.words = MappingProxyType(dict(self.db.execute("SELECT surface,id FROM words")))
         self.characters = MappingProxyType({s: (cid, pos) for cid, s, pos in self.db.execute("SELECT * FROM characters")})
-        self.abbreviations = self.manifest["metadata"]["profile"]["abbreviations"]
+
+    @property
+    def manifest(self) -> dict:
+        """Return a detached JSON snapshot; caller edits cannot alter receipts."""
+        return json.loads(self._manifest_bytes)
+
+    @property
+    def abbreviations(self) -> tuple[str, ...]:
+        """Expose the verified immutable parser policy without a writable alias."""
+        return self._abbreviations
 
     def __enter__(self):
         return self
@@ -137,8 +150,8 @@ class StructuralField:
                    if p["kind"] == "character" and p["function"]["closure"] in {"hmmm", "closed", "open"}
                    and (p["function"]["group"] is None or p["end"] == p["function"]["group"][1])]
         result = {"schema": "english-gonol.structural-query", "version": "1.0.0",
-                  "field_receipt": self.manifest["receipt_sha256"],
-                  "profile_sha256": self.manifest["metadata"]["profile_sha256"],
+                  "field_receipt": self._field_receipt,
+                  "profile_sha256": self._profile_sha256,
                   "source": text, "boundary_decisions": decisions, "parts": output,
                   "word_sites": spaces, "next_word_site_open": site_open,
                   "closure": closure, "input_closed": True,
@@ -172,12 +185,13 @@ class StructuralField:
             # Segment already licenses closure before these closing scalars.
             # Retain them as participants, but locate the terminal mark cluster
             # before them. Whitespace inside a cluster is not silently collapsed.
-            while parts and graph["source"][parts[-1]["start"]:parts[-1]["end"]] in '\"”’)]}':
+            while parts and graph["source"][parts[-1]["start"]:parts[-1]["end"]] in TERMINAL_CLOSERS:
                 parts.pop()
             terminal = set()
             while parts and parts[-1]["function"]["closure"] == "closed":
                 terminal.add(parts.pop()["ordinal"])
-            if (not terminal or any(c["state"] != "closed" or c["part"] not in terminal
+            if (not terminal or any(c["state"] == "hmmm"
+                                    or (c["state"] == "closed" and c["part"] not in terminal)
                                     for c in graph["closure"])):
                 refusal = "SENTENCE_CLOSURE_UNRESOLVED"
         if refusal:
@@ -206,4 +220,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=157:29 imports_exports=9:2 calls_definitions=61:12
+# ratios: loc_comments=167:31 imports_exports=9:2 calls_definitions=64:14

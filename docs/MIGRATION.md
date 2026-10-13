@@ -199,9 +199,10 @@ Until then, Stack remains the implementation owner for that domain.
 ## hmmm
 
 - repository license: resolved (FSL-1.1-ALv2, licensor Erin Spencer; each version converts to Apache-2.0 on the second anniversary of the date it is made available);
-- candidate package: `uchc`, version `0.1.0a1`, Python wheel; stable publication pending;
+- historical input-consumer candidate: `uchc` `0.1.0a1`; existing Stack/ZFAE locks retain their exact scope;
+- current structural candidate: `uchc` `0.1.0a2`; immutable wheel, source and replay identities are in `human/english/experiments/structural-profile-v1/`; stable publication pending;
 - immutable release identity: pending exact-candidate release evidence;
-- downstream reconsumption: active Stack ZFAE input consumer under candidate verification;
+- downstream reconsumption: Stack/ZFAE consumes the historical `0.1.0a1` candidate; migration of that consumer to structural `0.1.0a2` remains pending;
 - full skill-lib propagation: pending.
 
 ## Operator-ratified structural profile v1
@@ -221,3 +222,9 @@ does not claim stable release, downstream migration, or authority transfer.
 
 The structural candidate increments the distribution version to `0.1.0a2`;
 the `0.1.0a1` historical wheel locks above remain unchanged.
+
+The structural source/clean-wheel complete-build equivalence is distinct from
+installing that candidate into the existing Stack/ZFAE consumer. Its gate 8
+remains pending for `0.1.0a2`; the historical `0.1.0a1` integration receipt does
+not establish it. Release, released-artifact reconsumption and authority transfer
+remain uncompleted.

@@ -1,4 +1,4 @@
-# ratios: loc_comments=230:29 imports_exports=11:25 calls_definitions=125:27
+# ratios: loc_comments=285:29 imports_exports=12:30 calls_definitions=152:32
 """Witnesses for the accepted thirteen-rule profile, including hostile records."""
 from copy import deepcopy
 from dataclasses import replace
@@ -286,7 +286,7 @@ def test_unused_included_source_evidence_cannot_be_resealed(tmp_path, kind, fiel
 def punctuation_field(tmp_path):
     source = snapshot()
     source = replace(source, synsets=source.synsets + (
-        SynsetRecord("punctuation", "n", ("geometry",), ('"geometry." (geometry!?) [geometry.] {geometry!} “geometry?” geometry; geometry,',), ()),))
+        SynsetRecord("punctuation", "n", ("geometry",), ('"geometry." (geometry!?) [geometry.] {geometry!} “geometry?” geometry; geometry,', "'geometry.'"), ()),))
     root = tmp_path / "punctuation"
     build(source, out_dir=root, public_position=lambda c: None, producer={"standing": "fixture"})
     with StructuralField(root) as result:
@@ -311,4 +311,69 @@ def test_nonterminal_or_ambiguous_closure_still_refuses(punctuation_field, text)
     query = punctuation_field.construct(text)
     assert not query["refusals"]
     assert punctuation_field.compose(query, relation="sentence")["code"] == "SENTENCE_CLOSURE_UNRESOLVED"
-# ratios: loc_comments=230:29 imports_exports=11:25 calls_definitions=125:27
+
+
+def test_explicit_open_ambiguity_is_a_resolved_nonboundary(field):
+    text = "Dr. creates geometry."
+    query = field.construct(text, boundary_decisions={
+        "2": {"closed": False, "source": "operator:abbreviation-not-sentence-end"}})
+    assert query["closure"][0]["state"] == "open"
+    assert field.compose(query, relation="sentence")["standing"] == "logically-closed"
+    assert field.replay(query) == query
+    undecided = field.construct(text)
+    assert field.compose(undecided, relation="sentence")["code"] == "SENTENCE_CLOSURE_UNRESOLVED"
+    nonterminal = field.construct(text, boundary_decisions={
+        "2": {"closed": True, "source": "operator:independent-boundary"}})
+    assert field.compose(nonterminal, relation="sentence")["code"] == "SENTENCE_CLOSURE_UNRESOLVED"
+
+
+@pytest.mark.parametrize("sql", [
+    "ALTER TABLE characters ADD COLUMN extra TEXT",
+    "ALTER TABLE words ADD COLUMN extra TEXT",
+    "DROP INDEX components_word",
+    "CREATE VIEW extra AS SELECT * FROM words",
+    "CREATE VIEW sqliteXextra AS SELECT * FROM words",
+    "CREATE TRIGGER sqliteXextra AFTER INSERT ON words BEGIN SELECT 1; END",
+    "CREATE TRIGGER extra AFTER INSERT ON words BEGIN SELECT 1; END",
+])
+def test_resealed_schema_tamper_refuses_before_query(tmp_path, sql):
+    root = tmp_path / "state"
+    make(root)
+    reseal(root, lambda db: db.execute(sql))
+    with pytest.raises(StructuralError, match="schema"):
+        verify(root)
+    with pytest.raises(StructuralError, match="schema"):
+        StructuralField(root)
+
+
+def test_manifest_edits_do_not_redefine_verified_field(field):
+    original = field.construct("Dr.")
+    exposed = field.manifest
+    exposed["receipt_sha256"] = "forged"
+    exposed["metadata"]["profile_sha256"] = "forged"
+    exposed["metadata"]["profile"]["abbreviations"].remove("Dr")
+    assert field.construct("Dr.") == original
+    assert field.replay(original) == original
+    assert field.manifest != exposed
+    with pytest.raises(AttributeError):
+        field.manifest = exposed
+    with pytest.raises(AttributeError):
+        field.abbreviations = ()
+    with pytest.raises(AttributeError):
+        field.abbreviations.remove("Dr")
+
+
+def test_implementation_inputs_are_the_full_forge_check_surface():
+    from english_gonol.structural_construct import IMPLEMENTATION_FILES
+    assert set(IMPLEMENTATION_FILES) == {
+        "structural_rules.py", "structural_construct.py", "structural_query.py",
+        "hyperspace_construct.py", "full_construct_run.py", "language/source.py"}
+
+
+@pytest.mark.parametrize("text", ["'geometry.'", "'geometry!?'", "'geometry.'  "])
+def test_ascii_single_quote_is_a_terminal_closer(punctuation_field, text):
+    query = punctuation_field.construct(text)
+    assert not query["refusals"]
+    assert punctuation_field.compose(query, relation="sentence")["standing"] == "logically-closed"
+    assert punctuation_field.replay(query) == query
+# ratios: loc_comments=285:29 imports_exports=12:30 calls_definitions=152:32
