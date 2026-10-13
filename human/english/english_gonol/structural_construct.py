@@ -1,4 +1,4 @@
-# ratios: loc_comments=507:63 imports_exports=19:6 calls_definitions=311:22
+# ratios: loc_comments=515:65 imports_exports=19:6 calls_definitions=314:22
 """Complete English structural construction and byte-stable replay.
 
 Usage: python -m english_gonol.structural_construct build --source-root PATH
@@ -88,8 +88,15 @@ FIXED_METADATA = {
     "definition_topologies": ["constituent-chain", "constituent-direct", "definition-succession"],
     "authority_transfer": False,
 }
-IMPLEMENTATION_FILES = ("structural_rules.py", "structural_construct.py", "structural_query.py",
-                        "hyperspace_construct.py", "full_construct_run.py", "language/source.py")
+# Bind the entire project import-time closure, including package initialization.
+# The fresh-process regression reconciles this inventory against loaded source files.
+IMPLEMENTATION_FILES = (
+    "structural_rules.py", "structural_construct.py", "structural_query.py",
+    "hyperspace_construct.py", "full_construct_run.py", "language/source.py",
+    "language/__init__.py", "language/affixes.py", "language/manifest.py",
+    "language/model.py", "language/morphology.py", "language/relational_bridge.py",
+    "language/rendering.py",
+)
 TABLES = ("meta", "characters", "words", "word_characters", "records", "components", "evidence")
 SQL = """
 PRAGMA foreign_keys=ON;
@@ -421,7 +428,10 @@ def _schema(db: sqlite3.Connection) -> list:
 def _verified_connection(out_dir: str | Path):
     """Keep verification and subsequent reads on one snapshot until closed."""
     root = Path(out_dir)
-    manifest = json.loads((root / "manifest.json").read_bytes())
+    manifest_bytes = (root / "manifest.json").read_bytes()
+    manifest = json.loads(manifest_bytes)
+    if manifest_bytes != canonical(manifest) + b"\n":
+        raise StructuralError("noncanonical manifest encoding")
     if (manifest.get("schema"), manifest.get("version")) != (SCHEMA, VERSION):
         raise StructuralError("schema/version mismatch")
     with closing(open_readonly(root / "construct.db")) as db:
@@ -623,4 +633,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=507:63 imports_exports=19:6 calls_definitions=311:22
+# ratios: loc_comments=515:65 imports_exports=19:6 calls_definitions=314:22

@@ -1,17 +1,17 @@
 {
   "schema": "english.structural-verification",
   "version": "1.1.0",
-  "implementation_sha256": "2b4f32d9ce9b0487d0a5e475822db75167f2e59a70fda34b63c386f8bf6ae3e6",
-  "forge_source_commit": "ba76bc4e4346dd0704d47012474e8bcbe5ddef0b",
+  "implementation_sha256": "b6db9e9f4d75e4bafbc82f1b8ef4ac13bb74f193f137710c111e81301c24cbef",
+  "forge_source_commit": "d2e4c1de55d0b93810a62e799453a9b11270ce46",
   "full_builds": 2,
   "comparison": "byte-identical construct.db and manifest.json",
   "build_implementations": [
     "forge source at immutable repaired commit",
     "clean-installed exact candidate wheel"
   ],
-  "construct_db_sha256": "368b63bc37ee53e701e1636cb6eef1a0e3ce437dec58af40d05131d04c25abc6",
+  "construct_db_sha256": "6b8817d0e777fc172e2808054761c78816afe2e51222867cc9e93c14551f80ec",
   "database_bytes": 711983104,
-  "logical_receipt": "b2f6d987ec097a436f8bcbb95aebd9a62aa2a1b74078ff0f433d2a56e09e3baa",
+  "logical_receipt": "92daff3ea9945e32686c6cc3335692f90b7b96ec742ab971a3257a50ac1b0c99",
   "definitions": 185155,
   "definition_origins": {
     "attached": 128000,
@@ -20,16 +20,16 @@
   "python": "3.12.14",
   "sqlite": "3.45.1",
   "candidate_version": "0.1.0a2",
-  "candidate_wheel_sha256": "5890f508a255964b4217dd898cc62da8723ee39744d761f989bdf2be53d72878",
+  "candidate_wheel_sha256": "32058e461ebcdb436a2b76b207ed40bc7a309fe74c00f07f5c87e48c67c1b292",
   "tests": {
-    "stack_english": 280,
+    "stack_english": 295,
     "stack_english_optional_replay_skips": 3,
-    "uchc_english": 263,
+    "uchc_english": 278,
     "python_domain": 5,
     "uchc_polyglot": 5,
-    "structural_included_in_english": 133,
-    "clean_installed_structural": 133,
-    "clean_installed_total": 152
+    "structural_included_in_english": 148,
+    "clean_installed_structural": 148,
+    "clean_installed_total": 167
   },
   "msdmd": {
     "python_modules": 4,
@@ -43,7 +43,7 @@
     "Stable release, downstream migration and UCHC graduation remain incomplete.",
     "Three optional Stack historical EDCM replay tests skipped because their separate EDCM/full-construct fixture roots were not supplied; these are not structural-profile passes."
   ],
-  "work_graph_sha256": "e35c8af309dd33fd0485fb5252b1e6cb4e7706a28d9e6ecbe6180e9e5c45a4ae",
+  "work_graph_sha256": "0f79bafa08cbdf404a4defeec9b56cd71ba612f277a247476e33d95bebf24338",
   "source_evidence_sha256": "42b18c16c786bad3801abf36e3f5966daba94df4b88792491ad22229749480d3",
   "integration_bases": {
     "stack": "595b137f7b1b9f39d3102ce45a15d68150dbeb5f",
@@ -116,7 +116,7 @@
   "raw_source_negative_checks": {
     "artifact_version": "1.1.0",
     "encoded_payload_bytes": 61833199,
-    "implementation_sha256": "2b4f32d9ce9b0487d0a5e475822db75167f2e59a70fda34b63c386f8bf6ae3e6",
+    "implementation_sha256": "b6db9e9f4d75e4bafbc82f1b8ef4ac13bb74f193f137710c111e81301c24cbef",
     "initial_complete_raw_replay": "passed",
     "mutations": [
       {
@@ -198,6 +198,21 @@
     "source_files": 73,
     "source_tree_sha256": "3a46546a1ffbb4aed98990535ad5155c69be12ad09fdf093701b257d2a3e468f",
     "sqlite": "3.45.1",
-    "structural_construct_sha256": "ae105516a076b420412387a1cdd8194bcc2306bfed864cfcc563d46863450470"
-  }
+    "structural_construct_sha256": "5029068d5ae582ad6dee53645c4c62686b0f8490790bd3045183787c5acf5c96"
+  },
+  "historical_structural_replays": [
+    {
+      "forge_source_commit": "ba76bc4e4346dd0704d47012474e8bcbe5ddef0b",
+      "scope": "preceding schema1.1.0 candidate; exact hosted replay passed before later manifest/import identity repairs",
+      "construct_db_sha256": "368b63bc37ee53e701e1636cb6eef1a0e3ce437dec58af40d05131d04c25abc6",
+      "logical_receipt": "b2f6d987ec097a436f8bcbb95aebd9a62aa2a1b74078ff0f433d2a56e09e3baa",
+      "candidate_wheel_sha256": "5890f508a255964b4217dd898cc62da8723ee39744d761f989bdf2be53d72878",
+      "python": "3.12.14",
+      "sqlite": "3.45.1",
+      "hosted_artifacts": [
+        "https://github.com/The-Interdependency/stack/actions/runs/38360464029/artifacts/11794559590",
+        "https://github.com/The-Interdependency/uchc/actions/runs/38360457411/artifacts/11794633639"
+      ]
+    }
+  ]
 }

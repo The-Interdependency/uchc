@@ -1,4 +1,4 @@
-# ratios: loc_comments=761:153 imports_exports=28:56 calls_definitions=420:70
+# ratios: loc_comments=825:196 imports_exports=37:59 calls_definitions=464:73
 """Witnesses for the accepted thirteen-rule profile, including hostile records."""
 import base64
 from contextlib import closing
@@ -7,6 +7,9 @@ from dataclasses import asdict, replace
 import json
 from pathlib import Path
 import sqlite3
+import shutil
+import subprocess
+import sys
 
 import pytest
 
@@ -160,6 +163,21 @@ from english_gonol.hyperspace_construct import glyph_inventory
 # id: check_manifest_requires_exact_json_types_against_database
 #   proves: structural_complete_raw_source, structural_complete_replay
 #   call: self::test_manifest_requires_exact_json_types_against_database
+#   mutates: filesystem
+#   cleanup: pytest_tmp_path
+# id: check_manifest_raw_bytes_must_be_canonical
+#   proves: structural_complete_replay
+#   call: self::test_manifest_raw_bytes_must_be_canonical
+#   mutates: filesystem
+#   cleanup: pytest_tmp_path
+# id: check_fresh_process_import_closure_is_fully_bound
+#   proves: structural_complete_replay
+#   call: self::test_fresh_process_import_closure_is_fully_bound
+#   mutates: filesystem
+#   cleanup: pytest_tmp_path
+# id: check_import_time_dependency_mutation_invalidates_implementation
+#   proves: structural_complete_replay
+#   call: self::test_import_time_dependency_mutation_invalidates_implementation
 #   mutates: filesystem
 #   cleanup: pytest_tmp_path
 # === END CHECKS ===
@@ -322,7 +340,7 @@ def test_resealed_structural_corruption_detected(tmp_path, sql):
         db.execute(sql)
         db.commit()
         manifest = _manifest(db)
-    (root / "manifest.json").write_bytes(canonical(manifest))
+    (root / "manifest.json").write_bytes(canonical(manifest) + b"\n")
     with pytest.raises(StructuralError):
         verify(root)
 
@@ -343,7 +361,7 @@ def reseal(root, change):
         change(db)
         db.commit()
         manifest = _manifest(db)
-    (root / "manifest.json").write_bytes(canonical(manifest))
+    (root / "manifest.json").write_bytes(canonical(manifest) + b"\n")
 
 
 def test_caller_cannot_grant_complete_corpus(tmp_path):
@@ -490,7 +508,10 @@ def test_implementation_inputs_are_the_full_forge_check_surface():
     from english_gonol.structural_construct import IMPLEMENTATION_FILES
     assert set(IMPLEMENTATION_FILES) == {
         "structural_rules.py", "structural_construct.py", "structural_query.py",
-        "hyperspace_construct.py", "full_construct_run.py", "language/source.py"}
+        "hyperspace_construct.py", "full_construct_run.py", "language/source.py",
+        "language/__init__.py", "language/affixes.py", "language/manifest.py",
+        "language/model.py", "language/morphology.py", "language/relational_bridge.py",
+        "language/rendering.py"}
 
 
 @pytest.mark.parametrize("text", ["'geometry.'", "'geometry!?'", "'geometry.'  "])
@@ -568,7 +589,7 @@ def test_verified_snapshot_closes_on_initialization_failure(tmp_path, monkeypatc
     if stage == "verification":
         manifest = json.loads((root / "manifest.json").read_bytes())
         manifest["receipt_sha256"] = "forged"
-        (root / "manifest.json").write_bytes(canonical(manifest))
+        (root / "manifest.json").write_bytes(canonical(manifest) + b"\n")
     else:
         def refuse_inventory(_db):
             raise StructuralError("inventory failure")
@@ -1028,9 +1049,102 @@ def test_manifest_requires_exact_json_types_against_database(tmp_path, variant):
         manifest["metadata"]["source"]["files"] = float(manifest["metadata"]["source"]["files"])
     else:
         manifest["metadata"]["authority_transfer"] = False
-    (root / "manifest.json").write_bytes(canonical(manifest))
+    (root / "manifest.json").write_bytes(canonical(manifest) + b"\n")
     with pytest.raises(StructuralError, match="receipt or manifest"):
         verify(root)
     with pytest.raises(StructuralError, match="receipt or manifest"):
         StructuralField(root)
-# ratios: loc_comments=761:153 imports_exports=28:56 calls_definitions=420:70
+
+
+
+@pytest.mark.parametrize("variant", ["pretty", "escaped", "duplicate-key", "leading-space",
+                                     "trailing-space", "extra-newline", "missing-newline"])
+def test_manifest_raw_bytes_must_be_canonical(tmp_path, variant):
+    root = tmp_path / "field"
+    make(root)
+    path = root / "manifest.json"
+    original = path.read_bytes()
+    manifest = json.loads(original)
+    assert original == canonical(manifest) + b"\n"
+    if variant == "pretty":
+        mutated = json.dumps(manifest, ensure_ascii=False, sort_keys=True, indent=2).encode() + b"\n"
+    elif variant == "escaped":
+        mutated = original.replace(b"english-gonol", b"\\u0065nglish-gonol", 1)
+    elif variant == "duplicate-key":
+        mutated = b'{"schema":' + canonical(manifest["schema"]) + b"," + original[1:]
+    elif variant == "leading-space":
+        mutated = b" " + original
+    elif variant == "trailing-space":
+        mutated = original[:-1] + b" \n"
+    elif variant == "extra-newline":
+        mutated = original + b"\n"
+    else:
+        mutated = original[:-1]
+    assert mutated != original and json.loads(mutated) == manifest
+    path.write_bytes(mutated)
+    with pytest.raises(StructuralError, match="noncanonical manifest"):
+        verify(root)
+    with pytest.raises(StructuralError, match="noncanonical manifest"):
+        StructuralField(root)
+
+
+def test_fresh_process_import_closure_is_fully_bound(tmp_path):
+    from english_gonol import structural_construct as module
+    package = Path(module.__file__).resolve().parent
+    script = r"""
+import importlib, json, sys
+from pathlib import Path
+package = Path(sys.argv[1]).resolve()
+sys.path.insert(0, str(package.parent))
+for name in ("english_gonol.structural_construct", "english_gonol.structural_query"):
+    importlib.import_module(name)
+loaded = set()
+for name, module in tuple(sys.modules.items()):
+    filename = getattr(module, "__file__", None)
+    if filename is None:
+        continue
+    path = Path(filename).resolve()
+    if path.is_relative_to(package):
+        loaded.add(path.relative_to(package).as_posix())
+    elif name == "english_gonol" or name.startswith("english_gonol."):
+        raise AssertionError(f"project import escaped expected package: {name}: {path}")
+print(json.dumps(sorted(loaded)))
+"""
+    output = subprocess.check_output([sys.executable, "-I", "-c", script, str(package)],
+                                     text=True, cwd=tmp_path)
+    loaded = json.loads(output)
+    assert len(module.IMPLEMENTATION_FILES) == len(set(module.IMPLEMENTATION_FILES))
+    assert set(loaded) == set(module.IMPLEMENTATION_FILES)
+
+
+@pytest.mark.parametrize("relative", [
+    "language/__init__.py", "language/affixes.py", "language/manifest.py", "language/model.py",
+    "language/morphology.py", "language/relational_bridge.py", "language/rendering.py",
+])
+def test_import_time_dependency_mutation_invalidates_implementation(tmp_path, relative):
+    from english_gonol import structural_construct as module
+    root = tmp_path / "field"
+    make(root)
+    package = tmp_path / "isolated" / "english_gonol"
+    shutil.copytree(Path(module.__file__).resolve().parent, package,
+                    ignore=shutil.ignore_patterns("__pycache__"))
+    script = r"""
+import sys
+sys.path.insert(0, sys.argv[1])
+from english_gonol.structural_construct import StructuralError, verify
+try:
+    verify(sys.argv[2])
+except StructuralError as error:
+    print(str(error))
+    raise SystemExit(1)
+"""
+    command = [sys.executable, "-I", "-c", script, str(package.parent), str(root)]
+    control = subprocess.run(command, cwd=tmp_path, capture_output=True, text=True)
+    assert control.returncode == 0, control.stderr or control.stdout
+    target = package / relative
+    target.write_bytes(target.read_bytes() + b"\n# implementation identity mutation\n")
+    mutated = subprocess.run(command, cwd=tmp_path, capture_output=True, text=True)
+    assert mutated.returncode == 1
+    assert mutated.stderr == ""
+    assert mutated.stdout.strip() == "implementation mismatch; explicit migration required"
+# ratios: loc_comments=825:196 imports_exports=37:59 calls_definitions=464:73
