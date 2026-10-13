@@ -98,6 +98,27 @@ jobs:
           python -m english_gonol.structural_query _state/first 'Dr. creates geometry. Dr. creates 3.14...' > _state/query.json
           cmp _state/first/manifest.json human/english/experiments/structural-profile-v1/manifest.json
           cmp _state/query.json human/english/experiments/structural-profile-v1/query.json
+      - name: Diagnose physical SQLite replay identity without relaxing the gate
+        run: |
+          python - <<'PYTHON'
+          import hashlib, json, pathlib, platform, sqlite3
+          verification = json.loads(pathlib.Path('human/english/experiments/structural-profile-v1/verification.json').read_text())
+          observed = {'python': platform.python_version(), 'sqlite': sqlite3.sqlite_version, 'local_sqlite': verification['sqlite'], 'local_db_sha256': verification['construct_db_sha256'], 'databases': {}}
+          version = [int(p) for p in verification['sqlite'].split('.')]
+          writer = version[0] * 1000000 + version[1] * 1000 + version[2]
+          for name in ['first', 'second']:
+              path = pathlib.Path('_state') / name / 'construct.db'
+              with path.open('rb') as stream:
+                  header = stream.read(100)
+                  raw = hashlib.sha256(header)
+                  adjusted = hashlib.sha256(header[:96] + writer.to_bytes(4, 'big'))
+                  while block := stream.read(1024 * 1024):
+                      raw.update(block)
+                      adjusted.update(block)
+              observed['databases'][name] = {'bytes': path.stat().st_size, 'header_hex': header.hex(), 'sha256': raw.hexdigest(), 'local_writer_header_sha256': adjusted.hexdigest()}
+          pathlib.Path('_state/sqlite-diagnostic.json').write_text(json.dumps(observed, indent=2) + '\n')
+          print(json.dumps(observed))
+          PYTHON
       - name: Bind committed local evidence and record hosted replay separately
         env:
           REPLAY_COMMIT: ${{ github.sha }}
@@ -147,6 +168,7 @@ jobs:
           print(json.dumps(record))
           PYTHON
       - name: Preserve replay evidence
+        if: always()
         uses: actions/upload-artifact@v7.0.1
         with:
           name: english-structural-replay
@@ -154,6 +176,7 @@ jobs:
             _state/first/manifest.json
             _state/query.json
             _state/hosted-replay.json
+            _state/sqlite-diagnostic.json
             _state/structural.xml
             _state/installed.xml
           if-no-files-found: error
