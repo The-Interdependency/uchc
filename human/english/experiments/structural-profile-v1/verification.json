@@ -49,5 +49,6 @@
     "stack": "595b137f7b1b9f39d3102ce45a15d68150dbeb5f",
     "uchc": "519cae068a0544d6094cda0fadbfcf36793d2549"
   },
-  "ci_evidence_gate": "compare rebuilt manifest/query with committed evidence; verify all six implementation modules and tests against immutable forge source; verify extraction and lifecycle scopes"
+  "ci_evidence_gate": "bind rebuilt DB, manifest, query, source evidence, implementation, graph, wheel and structural/clean test totals; record hosted runtime separately; bind each checked-out graph input",
+  "evidence_scope": "local observed source versus clean-wheel replay; hosted replay records its own runtime and test observations"
 }

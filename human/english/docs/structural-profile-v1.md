@@ -77,7 +77,7 @@ only closed, verified artifacts into synchronized folders. The local verificatio
 environment replaced open workspace files during synchronization; independent
 construction outside that directory passed unchanged.
 
-The complete-corpus replay gate pins Python 3.12.3. SQLite runtime identity is
+The complete-corpus replay gate pins Python 3.12.14. SQLite runtime identity is
 recorded with verification evidence; changing runtime requires full replay.
 
 ## Usage
@@ -168,3 +168,5 @@ detached JSON snapshot and `field.abbreviations` is immutable; neither exposes a
 mutable alias into the verified receipt/policy inputs. The forge gate compares
 all six files in `IMPLEMENTATION_FILES`, including the non-structural runtime
 dependencies, plus the extracted structural tests.
+
+The committed verification receipt records local source-versus-clean-wheel observations (Python 3.12.14, SQLite 3.53.1). Hosted replay separately records its actual Python and SQLite versions, checkout identities, artifact hashes, and structural test totals in `hosted-replay.json`; equality of corpus bytes is checked rather than assuming runtime identity. Other local domain-suite totals and native attachment checks remain local evidence.
