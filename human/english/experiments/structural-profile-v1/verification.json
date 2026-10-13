@@ -46,7 +46,7 @@
   "work_graph_sha256": "0f79bafa08cbdf404a4defeec9b56cd71ba612f277a247476e33d95bebf24338",
   "source_evidence_sha256": "42b18c16c786bad3801abf36e3f5966daba94df4b88792491ad22229749480d3",
   "integration_bases": {
-    "stack": "595b137f7b1b9f39d3102ce45a15d68150dbeb5f",
+    "stack": "07f327e1d49d3fce2fa58dcdda1a89f9041e132a",
     "uchc": "519cae068a0544d6094cda0fadbfcf36793d2549"
   },
   "ci_evidence_gate": "bind rebuilt DB, manifest, query, source evidence, implementation, graph, wheel and structural/clean test totals; record hosted runtime separately; bind each checked-out graph input",
