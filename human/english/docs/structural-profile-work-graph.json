@@ -10,15 +10,15 @@
     },
     {
       "repository": "The-Interdependency/stack",
-      "commit": "ccf707f933a9611d7b7fe13a0417378d8b453a14",
+      "commit": "0e8f59c7b9afdd0c3e9a173841b1bcc4f58dcac2",
       "authority": "English construction forge",
-      "relation": "implementation baseline"
+      "relation": "immutable repaired implementation source; Stack remains forge"
     },
     {
       "repository": "The-Interdependency/uchc",
-      "commit": "7e49361c675e5d0d8fd6597c08f6af5e4776ea06",
+      "commit": "519cae068a0544d6094cda0fadbfcf36793d2549",
       "authority": "extracted candidate; authority transition incomplete",
-      "relation": "candidate baseline"
+      "relation": "current main integration baseline for candidate extraction"
     },
     {
       "repository": "The-Interdependency/ucns",
@@ -34,7 +34,7 @@
     },
     {
       "repository": "The-Interdependency/skill-lib",
-      "commit": "19b1988706a91ba305834613facb907cb175ef71",
+      "commit": "023ae12bb19ced1a4f2494ed6507fc31285a5b8e",
       "authority": "build discipline",
       "relation": "governing instructions"
     }
@@ -51,5 +51,5 @@
       "UCHC release and graduation remain incomplete."
     ]
   },
-  "work_graph_sha256": "8790d2d7894e180e5bc5cab75a043cc710eb65d8ca4eed8f5f49bb30b420256d"
+  "work_graph_sha256": "7623c14efc3aa3379cf872e8a570b9047f93f8ae7362e77c5469f1531369e185"
 }

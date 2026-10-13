@@ -132,3 +132,25 @@ origin attachment; all their source and definition structure remains preserved.
 Parser conventions beyond the accepted thirteen answers are explicit profile
 choices, not claims of universally complete English parsing. Graduation and
 stable release remain separate work.
+
+## Source-integrity repair and evidence updates
+
+Complete-corpus standing is derived from the pinned source tree, exact counts,
+and the ordered SHA-256 of every included native lexeme and synset record.
+The digest includes relation fields that do not participate in this construction.
+`build(..., complete_corpus=True)` requests that strict gate; callers cannot grant
+completeness. Fixture artifacts remain explicitly incomplete. Replay independently
+rehashes the included evidence and checks the fixed authority/geometry envelope
+and exact carrier producer. A resealed row receipt cannot promote altered source
+or manufacture authority transfer.
+
+Sentence composition accepts a contiguous terminal closure cluster (such as `!?`)
+followed by the segmenter's permitted closing quote/bracket scalars and trailing
+whitespace. These scalars remain ordered participants. Multiple sentences,
+separated closing marks, and unresolved abbreviation/ellipsis still refuse.
+
+After implementation changes, rebuild the complete corpus and refresh this
+profile's manifest, query and verification receipts together. CI compares its
+rebuilt manifest and query with these committed receipts as well as with an
+independent rebuild. The work graph pins the immutable repaired source commit;
+its descendant evidence commit does not claim a new authority transition.

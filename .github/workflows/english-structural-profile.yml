@@ -27,6 +27,34 @@ jobs:
           ref: 4f863ad37096b7baab8f62820ad5cb937b62a3a7
           path: _deps/ucns
           persist-credentials: false
+      - uses: actions/checkout@v7.0.1
+        with:
+          repository: The-Interdependency/stack
+          ref: 0e8f59c7b9afdd0c3e9a173841b1bcc4f58dcac2
+          path: _deps/forge
+          persist-credentials: false
+      - name: Verify immutable forge extraction and work graph
+        run: |
+          python - <<'PYTHON'
+          import hashlib, json, pathlib, subprocess
+          root = pathlib.Path('human/english')
+          forge = pathlib.Path('_deps/forge/research/english-gonol')
+          graph = json.loads((root / 'docs/structural-profile-work-graph.json').read_text())
+          identity = {k: graph[k] for k in ('repositories', 'boundaries')}
+          assert hashlib.sha256(json.dumps(identity, sort_keys=True, separators=(',', ':')).encode()).hexdigest() == graph['work_graph_sha256']
+          source = next(r['commit'] for r in graph['repositories'] if r['repository'] == 'The-Interdependency/stack')
+          assert subprocess.check_output(['git', '-C', '_deps/forge', 'rev-parse', 'HEAD'], text=True).strip() == source
+          files = ['english_gonol/structural_rules.py', 'english_gonol/structural_construct.py', 'english_gonol/structural_query.py', 'tests/test_structural_profile.py']
+          hashes = {}
+          for name in files:
+              assert (root / name).read_bytes() == (forge / name).read_bytes(), name
+              hashes[name] = hashlib.sha256((root / name).read_bytes()).hexdigest()
+          receipt = json.loads((root / 'experiments/structural-profile-v1/extraction.json').read_text())
+          assert receipt['source_commit'] == source
+          assert receipt['files'] == hashes
+          assert receipt['work_graph_sha256'] == graph['work_graph_sha256']
+          assert receipt['authority_transfer'] is False
+          PYTHON
       - uses: actions/setup-python@v7.0.0
         with:
           python-version: '3.12.3'
@@ -51,6 +79,8 @@ jobs:
           cmp _state/first/construct.db _state/second/construct.db
           cmp _state/first/manifest.json _state/second/manifest.json
           python -m english_gonol.structural_query _state/first 'Dr. creates geometry. Dr. creates 3.14...' > _state/query.json
+          cmp _state/first/manifest.json human/english/experiments/structural-profile-v1/manifest.json
+          cmp _state/query.json human/english/experiments/structural-profile-v1/query.json
       - name: Preserve replay evidence
         uses: actions/upload-artifact@v7.0.1
         with:

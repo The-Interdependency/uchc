@@ -1,4 +1,4 @@
-# ratios: loc_comments=150:28 imports_exports=10:16 calls_definitions=83:16
+# ratios: loc_comments=230:29 imports_exports=11:25 calls_definitions=125:27
 """Witnesses for the accepted thirteen-rule profile, including hostile records."""
 from copy import deepcopy
 from dataclasses import replace
@@ -212,4 +212,103 @@ def test_failed_build_publishes_no_partial_state(tmp_path):
         build(bad, out_dir=root, public_position=lambda c: None, producer={"standing": "fixture"})
     assert not root.exists()
     assert not list(tmp_path.glob('.structural-*'))
-# ratios: loc_comments=150:28 imports_exports=10:16 calls_definitions=83:16
+
+
+def reseal(root, change):
+    """Adversarial helper: row receipts alone must not authorize source claims."""
+    with sqlite3.connect(root / "construct.db") as db:
+        change(db)
+        db.commit()
+        manifest = _manifest(db)
+    (root / "manifest.json").write_bytes(canonical(manifest))
+
+
+def test_caller_cannot_grant_complete_corpus(tmp_path):
+    root = tmp_path / "state"
+    with pytest.raises(StructuralError, match="exact pinned source"):
+        build(snapshot(), out_dir=root, public_position=lambda c: None,
+              producer={"standing": "fixture"}, complete_corpus=True)
+    assert not root.exists()
+
+
+@pytest.mark.parametrize("value", [1, "true", None, [], {}])
+def test_completeness_requires_boolean(tmp_path, value):
+    with pytest.raises(StructuralError, match="boolean"):
+        build(snapshot(), out_dir=tmp_path / "state", public_position=lambda c: None,
+              producer={}, complete_corpus=value)
+
+
+@pytest.mark.parametrize("key,value", [
+    ("authority_transfer", True), ("authority_transfer", 0),
+    ("geometry_state", "executed"), ("normalization", "NFC"),
+    ("definition_topologies", ["constituent-direct"]),
+    ("complete_corpus", True), ("complete_corpus", 0),
+    ("extra_authority", "graduated"),
+])
+def test_resealed_metadata_boundary_refuses(tmp_path, key, value):
+    root = tmp_path / "state"
+    make(root)
+    reseal(root, lambda db: db.execute("INSERT OR REPLACE INTO meta VALUES(?,?)", (key, json.dumps(value))))
+    with pytest.raises(StructuralError):
+        verify(root)
+
+
+def test_resealed_pinned_source_claim_requires_all_evidence(tmp_path):
+    from english_gonol.structural_construct import PINNED_SOURCE
+    root = tmp_path / "state"
+    make(root)
+    def change(db):
+        db.execute("UPDATE meta SET value=? WHERE key='source'", (json.dumps(PINNED_SOURCE),))
+        db.execute("UPDATE meta SET value='true' WHERE key='complete_corpus'")
+    reseal(root, change)
+    with pytest.raises(StructuralError, match="source evidence digest"):
+        verify(root)
+
+
+@pytest.mark.parametrize("kind,field,value", [
+    ("lexeme", "part_of_speech", "forged"),
+    ("synset", "relations", [["invented", ["n1"]]]),
+    ("synset", "part_of_speech", "forged"),
+])
+def test_unused_included_source_evidence_cannot_be_resealed(tmp_path, kind, field, value):
+    root = tmp_path / "state"
+    make(root)
+    def change(db):
+        payload = json.loads(db.execute("SELECT payload FROM evidence WHERE kind=? AND ordinal=0", (kind,)).fetchone()[0])
+        payload[field] = value
+        db.execute("UPDATE evidence SET payload=? WHERE kind=? AND ordinal=0", (json.dumps(payload), kind))
+    reseal(root, change)
+    with pytest.raises(StructuralError, match="source evidence digest"):
+        verify(root)
+
+
+@pytest.fixture
+def punctuation_field(tmp_path):
+    source = snapshot()
+    source = replace(source, synsets=source.synsets + (
+        SynsetRecord("punctuation", "n", ("geometry",), ('"geometry." (geometry!?) [geometry.] {geometry!} “geometry?” geometry; geometry,',), ()),))
+    root = tmp_path / "punctuation"
+    build(source, out_dir=root, public_position=lambda c: None, producer={"standing": "fixture"})
+    with StructuralField(root) as result:
+        yield result
+
+
+@pytest.mark.parametrize("text", ['"geometry."', '(geometry!?)', '[geometry.]', '{geometry!}',
+                                   '“geometry?”', 'geometry!?', 'geometry?!', 'geometry!!',
+                                   '"geometry!?"  '])
+def test_terminal_closing_punctuation_and_clusters(punctuation_field, text):
+    query = punctuation_field.construct(text)
+    assert not query["refusals"]
+    result = punctuation_field.compose(query, relation="sentence")
+    assert result["standing"] == "logically-closed"
+    assert len(result["participants"]) == len(query["parts"])
+    assert punctuation_field.replay(query) == query
+
+
+@pytest.mark.parametrize("text", ['geometry. geometry.', 'geometry! ?', 'geometry.;',
+                                   'geometry.,', 'geometry...', 'Dr.', 'geometry'])
+def test_nonterminal_or_ambiguous_closure_still_refuses(punctuation_field, text):
+    query = punctuation_field.construct(text)
+    assert not query["refusals"]
+    assert punctuation_field.compose(query, relation="sentence")["code"] == "SENTENCE_CLOSURE_UNRESOLVED"
+# ratios: loc_comments=230:29 imports_exports=11:25 calls_definitions=125:27

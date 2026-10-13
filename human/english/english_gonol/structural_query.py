@@ -1,4 +1,4 @@
-# ratios: loc_comments=151:26 imports_exports=9:2 calls_definitions=57:12
+# ratios: loc_comments=157:29 imports_exports=9:2 calls_definitions=61:12
 """Read-only text construction, atomic word recovery and explicit refusals.
 
 Usage: ``with StructuralField(path) as field: graph = field.construct(text)``.
@@ -166,10 +166,19 @@ class StructuralField:
         elif not graph["parts"] or graph["refusals"]:
             refusal = "PARTICIPANT_ADMISSION_REQUIRED"
         elif relation == "sentence":
-            substantive = [p for p in graph["parts"] if "separator" not in p["function"]["roles"]]
-            closed = [c for c in graph["closure"] if c["state"] == "closed"]
-            if (not substantive or len(closed) != 1 or closed[0]["part"] != substantive[-1]["ordinal"]
-                or any(c["state"] == "hmmm" for c in graph["closure"])):
+            parts = list(graph["parts"])
+            while parts and "separator" in parts[-1]["function"]["roles"]:
+                parts.pop()
+            # Segment already licenses closure before these closing scalars.
+            # Retain them as participants, but locate the terminal mark cluster
+            # before them. Whitespace inside a cluster is not silently collapsed.
+            while parts and graph["source"][parts[-1]["start"]:parts[-1]["end"]] in '\"”’)]}':
+                parts.pop()
+            terminal = set()
+            while parts and parts[-1]["function"]["closure"] == "closed":
+                terminal.add(parts.pop()["ordinal"])
+            if (not terminal or any(c["state"] != "closed" or c["part"] not in terminal
+                                    for c in graph["closure"])):
                 refusal = "SENTENCE_CLOSURE_UNRESOLVED"
         if refusal:
             return {"standing": "refused", "code": refusal, "edges": []}
@@ -197,4 +206,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=151:26 imports_exports=9:2 calls_definitions=57:12
+# ratios: loc_comments=157:29 imports_exports=9:2 calls_definitions=61:12

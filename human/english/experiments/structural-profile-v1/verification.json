@@ -1,31 +1,35 @@
 {
   "schema": "english.structural-verification",
   "version": "1.0.0",
-  "implementation_sha256": "f5c48e13333a7087691e8b8e5de01f0324bade42a4e8da9de74ff57cd3b6bb85",
-  "forge_source_commit": "9b45868344ae22bb346592f397f944c393303ca6",
+  "implementation_sha256": "67d0c0b856a46daa90979c70896f9d728989eca0f2a2414e782c46e639bf639a",
+  "forge_source_commit": "0e8f59c7b9afdd0c3e9a173841b1bcc4f58dcac2",
   "full_builds": 2,
   "comparison": "byte-identical construct.db and manifest.json",
   "build_implementations": [
-    "installed development wheel, same implementation digest",
-    "forge source"
+    "forge source at immutable repaired commit",
+    "clean-installed exact candidate wheel"
   ],
-  "construct_db_sha256": "58e7a28c40c38702a4e58e7f34a723f3788559f385d8770bc25e6a32ecbe1b54",
+  "construct_db_sha256": "c129f0f924466c45688377f4d17e9e33cca7d7f04d1d4938aa5a74cdd9400b55",
   "database_bytes": 650153984,
-  "logical_receipt": "7d38cdbf3799b590a90db7a5c0fd72a223f2ff4ca12a3160a7925a5bf0a46a2d",
+  "logical_receipt": "a8da0cdbfa6300ce8f10947aad992b5a9fb3850cae2b125d2feb27ab355a3f92",
   "definitions": 185155,
   "definition_origins": {
     "attached": 128000,
     "hmmm:compound-lexical-origin": 57155
   },
-  "python": "3.12.3",
-  "sqlite": "3.45.1",
+  "python": "3.12.14",
+  "sqlite": "3.53.1",
   "candidate_version": "0.1.0a2",
-  "candidate_wheel_sha256": "edf657243e23fa2ffde6ce37daf350428cf1ae02b2bacc4a2715e2cfe392b0b4",
+  "candidate_wheel_sha256": "f30fe542f255a46afc052d15559e6c34f21dd5c41f1104b58e16ebca90f1603e",
   "tests": {
-    "english": 150,
+    "stack_english": 201,
+    "stack_english_optional_replay_skips": 3,
+    "uchc_english": 184,
     "python_domain": 5,
-    "structural_included_in_english": 20,
-    "clean_installed_structural": 20
+    "uchc_polyglot": 5,
+    "structural_included_in_english": 54,
+    "clean_installed_structural": 54,
+    "clean_installed_total": 73
   },
   "msdmd": {
     "python_modules": 4,
@@ -36,6 +40,14 @@
   "hmmm": [
     "UCNS geometric gonal order and displacement operations remain unresolved.",
     "57155 compound or punctuated lexical-entry definitions preserve unresolved word-origin attachment.",
-    "Stable release, downstream migration and UCHC graduation remain incomplete."
-  ]
+    "Stable release, downstream migration and UCHC graduation remain incomplete.",
+    "Three optional Stack historical EDCM replay tests skipped because their separate EDCM/full-construct fixture roots were not supplied; these are not structural-profile passes."
+  ],
+  "work_graph_sha256": "7623c14efc3aa3379cf872e8a570b9047f93f8ae7362e77c5469f1531369e185",
+  "source_evidence_sha256": "42b18c16c786bad3801abf36e3f5966daba94df4b88792491ad22229749480d3",
+  "integration_bases": {
+    "stack": "595b137f7b1b9f39d3102ce45a15d68150dbeb5f",
+    "uchc": "519cae068a0544d6094cda0fadbfcf36793d2549"
+  },
+  "ci_evidence_gate": "compare rebuilt manifest/query with committed evidence; verify immutable forge extraction and shared work graph"
 }

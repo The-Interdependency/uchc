@@ -1,4 +1,4 @@
-# ratios: loc_comments=313:45 imports_exports=15:6 calls_definitions=184:13
+# ratios: loc_comments=356:49 imports_exports=15:6 calls_definitions=205:14
 """Complete English structural construction and byte-stable replay.
 
 Usage: python -m english_gonol.structural_construct build --source-root PATH
@@ -62,6 +62,19 @@ from english_gonol.structural_rules import (
 
 SCHEMA = "english-gonol.structural-construct"
 VERSION = "1.0.0"
+# Derived from the clean pinned OEWN checkout using this source loader. The
+# ordered digest covers every included field, including unused relation evidence.
+PINNED_SOURCE = {
+    "repository": OEWN_REPOSITORY, "commit": OEWN_COMMIT,
+    "tree_sha256": "3a46546a1ffbb4aed98990535ad5155c69be12ad09fdf093701b257d2a3e468f",
+    "files": 73, "lexemes": 135969, "synsets": 107519,
+    "evidence_sha256": "42b18c16c786bad3801abf36e3f5966daba94df4b88792491ad22229749480d3",
+}
+FIXED_METADATA = {
+    "geometry_state": "hmmm", "normalization": "none",
+    "definition_topologies": ["constituent-chain", "constituent-direct", "definition-succession"],
+    "authority_transfer": False,
+}
 TABLES = ("meta", "characters", "words", "word_characters", "records", "components", "evidence")
 SQL = """
 PRAGMA foreign_keys=ON;
@@ -129,14 +142,36 @@ def _function(part) -> str:
     return _encoded({"roles": part.roles, "closure": part.closure, "group": part.group})
 
 
+def _evidence_digest(rows) -> str:
+    """Bind all ordered source evidence, not only fields used by construction."""
+    result = sha256()
+    for kind, ordinal, payload in rows:
+        result.update(canonical([kind, ordinal, payload]) + b"\n")
+    return result.hexdigest()
+
+
 def build(snapshot: WordnetSnapshot, *, out_dir: str | Path,
           public_position: Callable[[str], int | None], producer: dict,
           complete_corpus: bool = False) -> dict:
     """Build all supplied source records. Production ``run`` verifies full pins.
 
-    Fixture builds are explicitly marked incomplete; callbacks supply carrier
-    observations only and cannot confer UCNS authority or corpus completeness.
+    Completeness is derived from exact pinned source identity and all included
+    evidence. ``complete_corpus=True`` requests a strict gate, never grants it.
+    Fixture callbacks supply carrier observations only, without UCNS authority.
     """
+    if type(complete_corpus) is not bool:
+        raise StructuralError("complete_corpus must be boolean")
+    source = {"repository": OEWN_REPOSITORY, "commit": OEWN_COMMIT,
+              "tree_sha256": snapshot.source_tree_sha256,
+              "files": snapshot.source_file_count,
+              "lexemes": len(snapshot.lexemes), "synsets": len(snapshot.synsets),
+              "evidence_sha256": _evidence_digest(
+                  (kind, i, asdict(item))
+                  for kind, items in (("lexeme", snapshot.lexemes), ("synset", snapshot.synsets))
+                  for i, item in enumerate(items))}
+    validated_complete = source == PINNED_SOURCE
+    if complete_corpus and not validated_complete:
+        raise StructuralError("complete corpus requires exact pinned source evidence")
     output = Path(out_dir).resolve()
     if output.exists():
         raise StructuralError("output already exists; use a new directory")
@@ -151,15 +186,10 @@ def build(snapshot: WordnetSnapshot, *, out_dir: str | Path,
                                {s[:-1] for s in lexical if s.endswith(".") and s[:-1].isalpha()})
         admission_policy = policy(abbreviations)
         meta = {"profile": admission_policy, "profile_sha256": digest(admission_policy),
-                "source": {"repository": OEWN_REPOSITORY, "commit": OEWN_COMMIT,
-                           "tree_sha256": snapshot.source_tree_sha256,
-                           "files": snapshot.source_file_count,
-                           "lexemes": len(snapshot.lexemes), "synsets": len(snapshot.synsets)},
-                "complete_corpus": complete_corpus, "producer": producer,
+                "source": source,
+                "complete_corpus": validated_complete, "producer": producer,
                 "implementation_sha256": _implementation(),
-                "geometry_state": "hmmm", "normalization": "none",
-                "definition_topologies": ["constituent-chain", "constituent-direct", "definition-succession"],
-                "authority_transfer": False}
+                **FIXED_METADATA}
         db.executemany("INSERT INTO meta VALUES(?,?)", ((k, _encoded(v)) for k, v in sorted(meta.items())))
         texts = lexical + [text for syn in snapshot.synsets for text in syn.definitions]
         scalars = sorted({c for text in texts for c in text}, key=ord)
@@ -242,6 +272,17 @@ def verify(out_dir: str | Path) -> dict:
         if _manifest(db) != manifest:
             raise StructuralError("receipt or manifest mismatch")
         meta = manifest["metadata"]
+        expected_keys = set(FIXED_METADATA) | {
+            "profile", "profile_sha256", "source", "complete_corpus", "producer", "implementation_sha256"}
+        if (set(meta) != expected_keys
+            or any(canonical(meta.get(k)) != canonical(v) for k, v in FIXED_METADATA.items())
+            or type(meta.get("complete_corpus")) is not bool):
+            raise StructuralError("fixed metadata boundary mismatch")
+        source = meta["source"]
+        if (set(source) != set(PINNED_SOURCE)
+            or source["repository"] != OEWN_REPOSITORY or source["commit"] != OEWN_COMMIT
+            or meta["complete_corpus"] != (source == PINNED_SOURCE)):
+            raise StructuralError("pinned source completeness mismatch")
         p = meta["profile"]
         if p != policy(p["abbreviations"]) or meta["profile_sha256"] != digest(p):
             raise StructuralError("profile mismatch")
@@ -256,7 +297,10 @@ def verify(out_dir: str | Path) -> dict:
         if meta["complete_corpus"]:
             producer = meta["producer"]
             carrier = producer.get("carrier", [])
-            if (producer.get("commit") != UCNS_PUBLIC_GONOL_COMMIT
+            if (set(producer) != {"repository", "commit", "module_sha256", "carrier_sha256", "carrier"}
+                or producer.get("repository") != "The-Interdependency/ucns"
+                or producer.get("carrier_sha256") != PUBLIC_GONOL_SHA256
+                or producer.get("commit") != UCNS_PUBLIC_GONOL_COMMIT
                 or producer.get("module_sha256") != UCNS_PUBLIC_GONOL_MODULE_SHA256
                 or len(carrier) != 157 or len(set(carrier)) != 157
                 or digest(carrier) != PUBLIC_GONOL_SHA256):
@@ -306,6 +350,11 @@ def _verify_source(db: sqlite3.Connection, meta: dict) -> None:
         if [r[0] for r in rows] != list(range(len(rows))):
             raise StructuralError("source evidence order mismatch")
         evidence[kind] = [json.loads(r[1]) for r in rows]
+    evidence_sha256 = _evidence_digest(
+        (kind, i, item) for kind in ("lexeme", "synset")
+        for i, item in enumerate(evidence[kind]))
+    if evidence_sha256 != meta["source"]["evidence_sha256"]:
+        raise StructuralError("source evidence digest mismatch")
     if db.execute("SELECT COUNT(*) FROM evidence").fetchone()[0] != sum(map(len, evidence.values())):
         raise StructuralError("unknown source evidence kind")
     if (len(evidence["lexeme"]), len(evidence["synset"])) != (meta["source"]["lexemes"], meta["source"]["synsets"]):
@@ -393,4 +442,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=313:45 imports_exports=15:6 calls_definitions=184:13
+# ratios: loc_comments=356:49 imports_exports=15:6 calls_definitions=205:14
