@@ -82,6 +82,12 @@ recorded with verification evidence; changing runtime requires full replay.
 
 ## Usage
 
+Building reads the OEWN YAML corpus, which needs PyYAML. The base package has
+no runtime dependencies, so install the pinned `corpus-build` extra first
+(UCHC: `pip install 'uchc[corpus-build]'`, or for the exact candidate wheel
+`pip install 'uchc-0.1.0a2-py3-none-any.whl[corpus-build]'`; Stack research
+checkout: `pip install PyYAML==6.0.2`). Verification and queries need no extra.
+
 From `research/english-gonol` (UCHC: set `PYTHONPATH=human/english`):
 
 ```bash
@@ -171,7 +177,7 @@ dependencies, plus the extracted structural tests.
 
 The committed verification receipt records a primary local source-versus-clean-wheel replay with Python 3.12.14 and SQLite 3.45.1, matching the hosted runtime versions. CI requires those exact versions and the observed raw database hash. Separately recorded earlier-source artifact 1.0.0 replays with local SQLite 3.53.1 preserve their distinct physical bytes and implementation identities; cross-runtime raw equality failed despite matching canonical manifests and queries, and changing the SQLite writer-version header alone did not explain the difference. No byte normalization is admitted. Hosted replay records actual runtime, checkout identities, artifact hashes and structural test totals in `hosted-replay.json`. Other local domain-suite totals and native attachment checks remain local evidence.
 
-Queries retain the exact verified read transaction until close, including across concurrent SQLite writers and path replacement. Evidence and metadata JSON must match the builder’s canonical encoding. `glyph_axis_set` contains the verified glyph inventory’s O_G axis indexes; ordered glyph identities remain separately recoverable.
+Queries retain the exact verified read transaction until close, including across concurrent SQLite writers and path replacement. A sealed `construct.db` must be a standalone rollback-journal file: WAL file format and any `-wal`, `-shm` or `-journal` sidecar are refused, so the sealed bytes alone carry the verified state. Partial (snapshot-only) fields carry no carrier positions; builds and replays refuse them, and only complete pinned fields expose UCNS carrier axes. Evidence and metadata JSON must match the builder’s canonical encoding. `glyph_axis_set` contains the verified glyph inventory’s O_G axis indexes; ordered glyph identities remain separately recoverable.
 
 ### Self-contained raw source evidence (artifact schema 1.1.0)
 

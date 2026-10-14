@@ -1,17 +1,17 @@
 {
   "schema": "english.structural-verification",
   "version": "1.1.0",
-  "implementation_sha256": "b6db9e9f4d75e4bafbc82f1b8ef4ac13bb74f193f137710c111e81301c24cbef",
-  "forge_source_commit": "d2e4c1de55d0b93810a62e799453a9b11270ce46",
+  "implementation_sha256": "6d3d8504e0159f191caa40755877c7fec78ff11a0c514b3fa5e0813aed8a6879",
+  "forge_source_commit": "fd819e7ebd8f1571b4bca6589fe493077f3e6495",
   "full_builds": 2,
   "comparison": "byte-identical construct.db and manifest.json",
   "build_implementations": [
     "forge source at immutable repaired commit",
     "clean-installed exact candidate wheel"
   ],
-  "construct_db_sha256": "6b8817d0e777fc172e2808054761c78816afe2e51222867cc9e93c14551f80ec",
+  "construct_db_sha256": "a8b5ba045334ee38a56e118e555c946aacc84daad5df649ec1add3ef29deb9c7",
   "database_bytes": 711983104,
-  "logical_receipt": "92daff3ea9945e32686c6cc3335692f90b7b96ec742ab971a3257a50ac1b0c99",
+  "logical_receipt": "7a942fda57763279d6592befda6e4f3295332a0b12450b05076109ffe58b2e0d",
   "definitions": 185155,
   "definition_origins": {
     "attached": 128000,
@@ -20,16 +20,16 @@
   "python": "3.12.14",
   "sqlite": "3.45.1",
   "candidate_version": "0.1.0a2",
-  "candidate_wheel_sha256": "32058e461ebcdb436a2b76b207ed40bc7a309fe74c00f07f5c87e48c67c1b292",
+  "candidate_wheel_sha256": "97e1ae14a9022e3c6445fd1cbeb4907c32e9ca80423231ea779fb18eea69e7ce",
   "tests": {
-    "stack_english": 295,
-    "stack_english_optional_replay_skips": 3,
-    "uchc_english": 278,
+    "stack_english": 304,
+    "stack_english_optional_replay_skips": 2,
+    "uchc_english": 286,
     "python_domain": 5,
     "uchc_polyglot": 5,
-    "structural_included_in_english": 148,
-    "clean_installed_structural": 148,
-    "clean_installed_total": 167
+    "structural_included_in_english": 156,
+    "clean_installed_structural": 156,
+    "clean_installed_total": 175
   },
   "msdmd": {
     "python_modules": 4,
@@ -41,9 +41,9 @@
     "UCNS geometric gonal order and displacement operations remain unresolved.",
     "57155 compound or punctuated lexical-entry definitions preserve unresolved word-origin attachment.",
     "Stable release, downstream migration and UCHC graduation remain incomplete.",
-    "Three optional Stack historical EDCM replay tests skipped because their separate EDCM/full-construct fixture roots were not supplied; these are not structural-profile passes."
+    "Two optional Stack historical replay tests skipped because their separate fixture roots were not supplied; these are not structural-profile passes."
   ],
-  "work_graph_sha256": "0f79bafa08cbdf404a4defeec9b56cd71ba612f277a247476e33d95bebf24338",
+  "work_graph_sha256": "e1bcff433d405fb17507cf513f391dddb50f284d8702b57dbacb7599ea71b6a7",
   "source_evidence_sha256": "42b18c16c786bad3801abf36e3f5966daba94df4b88792491ad22229749480d3",
   "integration_bases": {
     "stack": "07f327e1d49d3fce2fa58dcdda1a89f9041e132a",
@@ -198,9 +198,23 @@
     "source_files": 73,
     "source_tree_sha256": "3a46546a1ffbb4aed98990535ad5155c69be12ad09fdf093701b257d2a3e468f",
     "sqlite": "3.45.1",
-    "structural_construct_sha256": "5029068d5ae582ad6dee53645c4c62686b0f8490790bd3045183787c5acf5c96"
+    "structural_construct_sha256": "5029068d5ae582ad6dee53645c4c62686b0f8490790bd3045183787c5acf5c96",
+    "scope": "recorded against preceding implementation b6db9e9f (forge d2e4c1d); the later partial-carrier and SQLite-sidecar refusals do not alter raw-source handling"
   },
   "historical_structural_replays": [
+    {
+      "forge_source_commit": "d2e4c1de55d0b93810a62e799453a9b11270ce46",
+      "scope": "preceding 1.1.0 candidate before partial-carrier and SQLite-sidecar refusals; exact hosted replay passed",
+      "construct_db_sha256": "6b8817d0e777fc172e2808054761c78816afe2e51222867cc9e93c14551f80ec",
+      "logical_receipt": "92daff3ea9945e32686c6cc3335692f90b7b96ec742ab971a3257a50ac1b0c99",
+      "candidate_wheel_sha256": "32058e461ebcdb436a2b76b207ed40bc7a309fe74c00f07f5c87e48c67c1b292",
+      "python": "3.12.14",
+      "sqlite": "3.45.1",
+      "hosted_runs": [
+        "https://github.com/The-Interdependency/stack/actions/runs/38365999772",
+        "https://github.com/The-Interdependency/uchc/actions/runs/38365990858"
+      ]
+    },
     {
       "forge_source_commit": "ba76bc4e4346dd0704d47012474e8bcbe5ddef0b",
       "scope": "preceding schema1.1.0 candidate; exact hosted replay passed before later manifest/import identity repairs",

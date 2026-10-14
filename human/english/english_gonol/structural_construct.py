@@ -1,4 +1,4 @@
-# ratios: loc_comments=515:65 imports_exports=19:6 calls_definitions=314:22
+# ratios: loc_comments=534:73 imports_exports=19:6 calls_definitions=329:23
 """Complete English structural construction and byte-stable replay.
 
 Usage: python -m english_gonol.structural_construct build --source-root PATH
@@ -65,6 +65,12 @@ from english_gonol.structural_rules import (
 # id: structural_complete_raw_source
 #   given: complete-corpus standing is requested or replayed
 #   then: independently bind every raw source byte and relative filename to the pinned tree without trusting reduced snapshot claims
+# id: structural_partial_carrier_refusal
+#   given: a partial snapshot-only field
+#   then: refuse every carrier position at build and replay; only complete pinned fields expose UCNS carrier axes
+# id: structural_standalone_database
+#   given: a sealed construct.db with WAL, SHM or rollback-journal sidecars, or WAL file format
+#   then: refuse verification so the sealed file bytes alone carry the verified state
 # === END CONTRACTS ===
 
 SCHEMA = "english-gonol.structural-construct"
@@ -169,6 +175,12 @@ def _evidence_digest(rows) -> str:
     for kind, ordinal, payload in rows:
         result.update(canonical([kind, ordinal, payload]) + b"\n")
     return result.hexdigest()
+
+
+def _texts(snapshot: WordnetSnapshot) -> list[str]:
+    """Every admitted lexical surface and definition text of one snapshot."""
+    return ([s for lex in snapshot.lexemes for s in (lex.lemma, *lex.forms)]
+            + [s for syn in snapshot.synsets for s in (*syn.members, *syn.definitions)])
 
 
 def _raw_source_name(name: str) -> bytes:
@@ -331,6 +343,9 @@ def build(snapshot: WordnetSnapshot, *, out_dir: str | Path,
         raise StructuralError("complete corpus requires independent raw source")
     if source_root is not None and not complete_corpus:
         raise StructuralError("raw source requires an explicit complete corpus request")
+    if not complete_corpus and any(public_position(c) is not None
+                                   for c in {c for t in _texts(snapshot) for c in t}):
+        raise StructuralError("partial fields refuse unverified carrier positions")
     output = Path(out_dir).resolve()
     if output.exists():
         raise StructuralError("output already exists; use a new directory")
@@ -414,8 +429,19 @@ def build(snapshot: WordnetSnapshot, *, out_dir: str | Path,
         raise
 
 
+SIDECARS = ("-wal", "-shm", "-journal")
+
+
 def open_readonly(path: str | Path) -> sqlite3.Connection:
-    return sqlite3.connect(Path(path).resolve().as_uri() + "?mode=ro", uri=True)
+    """Open one standalone rollback-journal database; sidecar state is refused."""
+    path = Path(path).resolve()
+    if any(Path(str(path) + suffix).exists() for suffix in SIDECARS):
+        raise StructuralError("database sidecar files are not part of the sealed artifact")
+    with path.open("rb") as stream:
+        header = stream.read(20)
+    if len(header) < 20 or header[18:20] != b"\x01\x01":
+        raise StructuralError("database must use rollback journal format, not WAL")
+    return sqlite3.connect(path.as_uri() + "?mode=ro", uri=True)
 
 
 def _schema(db: sqlite3.Connection) -> list:
@@ -440,6 +466,9 @@ def _verified_connection(out_dir: str | Path):
             expected.executescript(SQL)
             if _schema(db) != _schema(expected):
                 raise StructuralError("database schema mismatch")
+        if db.execute("PRAGMA journal_mode").fetchone() != ("delete",) or any(
+                Path(str((root / "construct.db").resolve()) + suffix).exists() for suffix in SIDECARS):
+            raise StructuralError("database sidecar files are not part of the sealed artifact")
         tables = {r[0] for r in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
         if tables != set(TABLES):
             raise StructuralError("table set mismatch")
@@ -488,6 +517,8 @@ def _verified_connection(out_dir: str | Path):
             positions = {c: i for i, c in enumerate(carrier)}
             if any(pos != positions.get(c) for c, pos in db.execute("SELECT scalar,public_position FROM characters")):
                 raise StructuralError("carrier position mismatch")
+        elif db.execute("SELECT COUNT(*) FROM characters WHERE public_position IS NOT NULL").fetchone()[0]:
+            raise StructuralError("partial fields refuse unverified carrier positions")
         for wid, word in words.items():
             parts = segment(word, p["abbreviations"])
             glyphs = db.execute("SELECT ordinal,character_id FROM word_characters WHERE word_id=? ORDER BY ordinal", (wid,)).fetchall()
@@ -633,4 +664,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=515:65 imports_exports=19:6 calls_definitions=314:22
+# ratios: loc_comments=534:73 imports_exports=19:6 calls_definitions=329:23

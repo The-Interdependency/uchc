@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@v7.0.1
         with:
           repository: The-Interdependency/stack
-          ref: d2e4c1de55d0b93810a62e799453a9b11270ce46
+          ref: fd819e7ebd8f1571b4bca6589fe493077f3e6495
           path: _deps/forge
           persist-credentials: false
       - uses: actions/checkout@v7.0.1

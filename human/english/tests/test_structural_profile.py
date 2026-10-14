@@ -1,4 +1,4 @@
-# ratios: loc_comments=825:196 imports_exports=37:59 calls_definitions=464:73
+# ratios: loc_comments=881:197 imports_exports=37:65 calls_definitions=503:79
 """Witnesses for the accepted thirteen-rule profile, including hostile records."""
 import base64
 from contextlib import closing
@@ -531,10 +531,6 @@ def test_external_changes_cannot_replace_verified_query_rows(tmp_path, monkeypat
     path = root / "construct.db"
     replacement = tmp_path / "replacement.db"
     replacement.write_bytes(path.read_bytes())
-    if operation == "update":
-        # WAL permits a committed writer while the verified reader stays open.
-        with closing(sqlite3.connect(path)) as db:
-            assert db.execute("PRAGMA journal_mode=WAL").fetchone() == ("wal",)
     with StructuralField(root) as original:
         expected_word = original.word("geometry")
         rid = original.db.execute("SELECT MIN(id) FROM records WHERE kind='definition'").fetchone()[0]
@@ -545,10 +541,16 @@ def test_external_changes_cannot_replace_verified_query_rows(tmp_path, monkeypat
 
     def mutate():
         target = path if operation == "update" else replacement
-        with closing(sqlite3.connect(target)) as db:
+        with closing(sqlite3.connect(target, timeout=0)) as db:
             db.execute("UPDATE words SET surface='forged' WHERE surface='geometry'")
             db.execute("UPDATE records SET text='forged' WHERE kind='definition'")
-            db.commit()
+            if operation == "update":
+                # The verified read snapshot holds its lock; in-place writers cannot commit.
+                with pytest.raises(sqlite3.OperationalError, match="locked"):
+                    db.commit()
+                db.rollback()
+            else:
+                db.commit()
         if operation == "replace":
             replacement.replace(path)
         mutations.append(operation)
@@ -570,8 +572,11 @@ def test_external_changes_cannot_replace_verified_query_rows(tmp_path, monkeypat
         assert field.construct("geometry") == expected_query
         assert field.manifest == expected_manifest
         assert "forged" not in field.words
-    with pytest.raises(StructuralError, match="receipt"):
-        verify(root)
+    if operation == "replace":
+        with pytest.raises(StructuralError, match="receipt"):
+            verify(root)
+    else:
+        assert verify(root) == expected_manifest
 
 
 @pytest.mark.parametrize("stage", ["verification", "initialization"])
@@ -642,21 +647,80 @@ def test_resealed_noncanonical_evidence_is_rejected(tmp_path, kind, variant):
         StructuralField(root)
 
 
-@pytest.mark.parametrize("carrier", [False, True])
-def test_word_glyph_axes_follow_inventory(tmp_path, carrier):
+def test_word_glyph_axes_follow_inventory(tmp_path):
     root = tmp_path / "state"
-    positions = {c: i for i, c in enumerate("ytromge.")} if carrier else {}
-    build(snapshot(), out_dir=root, public_position=positions.get, producer={"standing": "fixture-only"})
+    make(root)
     with StructuralField(root) as field:
         word = field.word("geometry")
         inventory = glyph_inventory(field.db)
         assert word["glyph_axis_set"] == sorted({inventory[c].axis_index for c in "geometry"})
         assert word["glyph_axis_set"] != sorted(set(word["glyph_ids"]))
-        assert word["glyph_axis_set"] == (list(range(7)) if carrier else sorted({gid - 1 for gid in word["glyph_ids"]}))
+        assert word["glyph_axis_set"] == sorted({gid - 1 for gid in word["glyph_ids"]})
         assert word["occurrence_count"] == 8
         assert word["glyph_ids"][1] == word["glyph_ids"][4]
         assert word["glyph_origin"] == "O_G"
         assert word["gonal_order"] == "hmmm:UCNS_OPERATION_REQUIRED"
+
+
+def test_verified_carrier_glyph_axes_follow_inventory(tmp_path, pinned_raw_source):
+    root = raw_field(tmp_path, pinned_raw_source)
+    carrier = pinned_raw_source[2]["producer"]["carrier"]
+    with StructuralField(root) as field:
+        word = field.word("geometry")
+        inventory = glyph_inventory(field.db)
+        assert word["glyph_axis_set"] == sorted({inventory[c].axis_index for c in "geometry"})
+        assert all(field.characters[c][1] == carrier.index(c) for c in "geometry")
+
+
+@pytest.mark.parametrize("positions", [{"g": 0}, {c: 0 for c in "geometry"}])
+def test_partial_build_refuses_unverified_carrier_positions(tmp_path, positions):
+    root = tmp_path / "state"
+    with pytest.raises(StructuralError, match="unverified carrier positions"):
+        build(snapshot(), out_dir=root, public_position=positions.get, producer={"standing": "fixture-only"})
+    assert not root.exists()
+
+
+@pytest.mark.parametrize("sql", ["UPDATE characters SET public_position=0 WHERE scalar='g'",
+                                 "UPDATE characters SET public_position=id"])
+def test_resealed_partial_carrier_positions_refuse(tmp_path, sql):
+    root = tmp_path / "state"
+    make(root)
+    reseal(root, lambda db: db.execute(sql))
+    with pytest.raises(StructuralError, match="unverified carrier positions"):
+        verify(root)
+    with pytest.raises(StructuralError, match="unverified carrier positions"):
+        StructuralField(root)
+
+
+@pytest.mark.parametrize("suffix", ["-wal", "-shm", "-journal"])
+def test_sqlite_sidecar_files_refuse(tmp_path, suffix):
+    root = tmp_path / "state"
+    make(root)
+    verify(root)
+    (root / ("construct.db" + suffix)).write_bytes(b"")
+    with pytest.raises(StructuralError, match="sidecar"):
+        verify(root)
+    with pytest.raises(StructuralError, match="sidecar"):
+        StructuralField(root)
+
+
+def test_resealed_wal_state_refuses(tmp_path):
+    root = tmp_path / "state"
+    make(root)
+    db = sqlite3.connect(root / "construct.db")
+    db.execute("PRAGMA journal_mode=WAL")
+    db.execute("PRAGMA wal_autocheckpoint=0")
+    db.execute("UPDATE words SET surface=surface WHERE id=1")
+    db.commit()
+    (root / "manifest.json").write_bytes(canonical(_manifest(db)) + b"\n")
+    assert (root / "construct.db-wal").exists()
+    with pytest.raises(StructuralError, match="sidecar|WAL"):
+        verify(root)
+    db.close()
+    for suffix in ("-wal", "-shm"):
+        (root / ("construct.db" + suffix)).unlink(missing_ok=True)
+    with pytest.raises(StructuralError, match="WAL"):
+        verify(root)
 
 
 @pytest.mark.parametrize("variant", ["pretty", "escape", "duplicate-key"])
@@ -714,6 +778,11 @@ def pinned_raw_source(tmp_path, monkeypatch):
     return root, source, {"public_position": positions.get, "producer": producer}
 
 
+def partial(options):
+    """Partial fields carry no carrier positions; only complete fields bind UCNS order."""
+    return {**options, "public_position": lambda c: None}
+
+
 def raw_field(tmp_path, pinned_raw_source):
     root, source, options = pinned_raw_source
     output = tmp_path / "raw-field"
@@ -757,7 +826,7 @@ def test_full_reduced_snapshot_requires_independent_raw_source(tmp_path, pinned_
             build(source, out_dir=output, complete_corpus=True, **options)
         assert not output.exists()
     else:
-        manifest = build(source, out_dir=output, **options)
+        manifest = build(source, out_dir=output, **partial(options))
         assert manifest["metadata"]["complete_corpus"] is False
         assert verify(output) == manifest
         assert manifest["counts"]["evidence"] == len(source.lexemes) + len(source.synsets)
@@ -856,7 +925,7 @@ def test_partial_artifact_rejects_raw_rows_and_claims(tmp_path, pinned_raw_sourc
     with pytest.raises(StructuralError, match="explicit complete corpus"):
         build(source, out_dir=tmp_path / "ambiguous", source_root=source_root, **options)
     root = tmp_path / "partial"
-    build(source, out_dir=root, **options)
+    build(source, out_dir=root, **partial(options))
     reseal(root, lambda db: db.execute("INSERT INTO evidence VALUES('source-file',0,?)",
                                     (canonical({"path": "frames.yaml", "base64": "e30K"}).decode(),)))
     with pytest.raises(StructuralError, match="partial corpus"):
@@ -970,7 +1039,7 @@ def test_embedded_replay_does_not_require_filesystem_descriptor_support(tmp_path
     with pytest.raises(StructuralError, match="no-follow directory descriptor support"):
         build(source, out_dir=tmp_path / "unsupported", source_root=source_root,
               complete_corpus=True, **options)
-    assert build(source, out_dir=tmp_path / "partial-portable", **options)["metadata"]["complete_corpus"] is False
+    assert build(source, out_dir=tmp_path / "partial-portable", **partial(options))["metadata"]["complete_corpus"] is False
 
 
 
@@ -1147,4 +1216,4 @@ except StructuralError as error:
     assert mutated.returncode == 1
     assert mutated.stderr == ""
     assert mutated.stdout.strip() == "implementation mismatch; explicit migration required"
-# ratios: loc_comments=825:196 imports_exports=37:59 calls_definitions=464:73
+# ratios: loc_comments=881:197 imports_exports=37:65 calls_definitions=503:79
