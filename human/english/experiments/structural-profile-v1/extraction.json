@@ -1,0 +1,29 @@
+{
+  "schema": "uchc.structural-profile-extraction",
+  "version": "1.0.0",
+  "source_repository": "The-Interdependency/stack",
+  "source_commit": "b7e4f50bdeaf23ccd04a446ab3ac59e373fb57da",
+  "source_root": "research/english-gonol",
+  "target_root": "human/english",
+  "authority_transfer": false,
+  "files": {
+    "english_gonol/structural_rules.py": "4686f6a847dd0cee24e3f0a05154a71203a1d4c790922952f9876a38f017db70",
+    "english_gonol/structural_construct.py": "8920759980c590719ff19a4a23906775b4058bda7f95f915a1621b1d56af18f4",
+    "english_gonol/structural_query.py": "3a97e971825468347ab76a44a3203ed0ce706ca0293836ffd4cc0d223d2987be",
+    "english_gonol/hyperspace_construct.py": "c5996470c6d3fe5387fa8f46e3d777deb44289d0b9e1e5d2f55c5d6348912a71",
+    "english_gonol/full_construct_run.py": "fbadf9cc033a154148b62e11b52d7e38b845c0d0b669ff34dfc6186cab15c064",
+    "english_gonol/language/source.py": "beb4d86f9c2a2879d3f63f4b73867af19edf33a2fdd6fea32e4e6e14c6b4ae2f",
+    "english_gonol/language/__init__.py": "0620712b60b0c51483f45212dc63fc139b1c51a561ad863512344a5477727352",
+    "english_gonol/language/affixes.py": "50df16c8dd71dcc0e1d964ac36909b3d48fbedbf404e27312492024261e36392",
+    "english_gonol/language/manifest.py": "ae0b1176398f48463c3082f46afc7cd82e7273a72555a3c76e47e8fe90e15155",
+    "english_gonol/language/model.py": "35a8ce27dcc70011cba1d31c3d6f9b1c4ec24f49a63316226ff92d12ce3332b4",
+    "english_gonol/language/morphology.py": "84ea74d3498442c313bc318f0d19c4951ef59ad8411f0122bdb7a116383460ce",
+    "english_gonol/language/relational_bridge.py": "bceb4efc4730b2c7fc5ce8cb6f4d9334deeddb27905b79d273ce9ad3204b58eb",
+    "english_gonol/language/rendering.py": "83a1b8c8fb31c7bc64a857b7f57a67079e01daa19f0d7e1d74cd501b61b0ec20",
+    "tests/test_structural_profile.py": "19fe770520f8b4a42679b309d20431043c10d8e8da3020582afe3c6e37a5eb81"
+  },
+  "hmmm": [
+    "Stable release, consumer migration and domain graduation remain incomplete."
+  ],
+  "work_graph_sha256": "26058ad29d2b27a304917a7e9915b9b7b728ffe7d45e2b8d47db93af54412c75"
+}

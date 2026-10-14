@@ -1,5 +1,18 @@
 # English Gonol Construction
 
+## Structural profile v1 — new construction entrypoint
+
+The operator-ratified [structural profile](docs/structural-profile-v1.md) replaces
+non-whitespace runs for new structural work. It builds the complete pinned
+corpus, keeps punctuation outside word identity, preserves ordered shared
+participations, and exposes read-only query/replay through
+`english_gonol.structural_query.StructuralField`. Start with the commands in
+that document and the [exact input graph](docs/structural-profile-work-graph.json).
+The v2 results below remain historical and are not receipts for the new profile.
+Stack owns the implementation; UCHC carries the extracted candidate. Geometry,
+compound lexical origins and graduation retain their explicit hmmm boundaries.
+
+
 Extracted UCHC implementation copy: `human/english/`. Source:
 `The-Interdependency/stack@ca190204de25de240662bb438af80c8dc405cea6`
 (`research/english-gonol/`). The historical 2026-09-21 extraction reported
@@ -19,7 +32,7 @@ EDCM     -> measurement/evaluation only
 English construction consumes UCNS geometry; it does not invent geometry or
 move English semantics into UCNS.
 
-## Active invariants
+## Historical v2 invariants
 
 ```text
 every admitted character is a gonol
@@ -49,7 +62,7 @@ identities, source ordinal, direct binding, and chain predecessor.
 See [`../../docs/HILBERT_INFERENCE.md`](../../docs/HILBERT_INFERENCE.md) for the
 provisional migration contract and exact Stack producer identity.
 
-## Full construct v2
+## Full construct v2 — sealed historical profile
 
 `english_gonol.full_construct_run` builds the complete pinned OEWN 2025 corpus
 without promoting bookkeeping into geometry.
@@ -100,7 +113,7 @@ Evidence is committed in `experiments/full-construct-v2/`.
 The database itself remains generated state; the compact manifest, integrity
 receipt, and resource receipt are committed.
 
-## Run
+## Run historical v2
 
 ```bash
 python -m english_gonol.full_construct_run \

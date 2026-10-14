@@ -1,0 +1,229 @@
+# Usage: executable structural-profile gates; all source records, no sample substitute.
+name: English structural profile
+on:
+  pull_request:
+    paths: ['human/english/**', 'programming/python/**', 'pyproject.toml', 'README.md', 'LICENSE', 'NOTICE', '.github/workflows/english-structural-profile.yml']
+  push:
+    branches: [main]
+    paths: ['human/english/**', 'programming/python/**', 'pyproject.toml', 'README.md', 'LICENSE', 'NOTICE', '.github/workflows/english-structural-profile.yml']
+permissions:
+  contents: read
+jobs:
+  structural-complete-corpus:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@v7.0.1
+        with:
+          repository: globalwordnet/english-wordnet
+          ref: dc343f2683279ecbb13fab4e2fd778d7b162d287
+          path: _deps/oewn
+          persist-credentials: false
+      - uses: actions/checkout@v7.0.1
+        with:
+          repository: The-Interdependency/ucns
+          ref: 4f863ad37096b7baab8f62820ad5cb937b62a3a7
+          path: _deps/ucns
+          persist-credentials: false
+      - uses: actions/checkout@v7.0.1
+        with:
+          repository: The-Interdependency/stack
+          ref: b7e4f50bdeaf23ccd04a446ab3ac59e373fb57da
+          path: _deps/forge
+          persist-credentials: false
+      - uses: actions/checkout@v7.0.1
+        with:
+          repository: The-Interdependency/metapat
+          ref: 8abffcd7766069fc835872974de31b086c6af337
+          path: _deps/metapat
+          persist-credentials: false
+      - uses: actions/checkout@v7.0.1
+        with:
+          repository: The-Interdependency/skill-lib
+          ref: 023ae12bb19ced1a4f2494ed6507fc31285a5b8e
+          path: _deps/skill-lib
+          persist-credentials: false
+      - uses: actions/checkout@v7.0.1
+        with:
+          repository: The-Interdependency/uchc
+          ref: 519cae068a0544d6094cda0fadbfcf36793d2549
+          path: _deps/uchc-baseline
+          persist-credentials: false
+      - name: Verify immutable forge extraction and work graph
+        env:
+          PYTHONPATH: human/english
+        run: |
+          python - <<'PYTHON'
+          import hashlib, json, pathlib, subprocess
+          from english_gonol.structural_construct import IMPLEMENTATION_FILES
+          root = pathlib.Path('human/english')
+          forge = pathlib.Path('_deps/forge/research/english-gonol')
+          graph = json.loads((root / 'docs/structural-profile-work-graph.json').read_text())
+          assert (graph['schema'], graph['version']) == ('the-interdependency.stack-manifest', '1.0.0')
+          repositories = graph['repositories']
+          assert len({r['repository'] for r in repositories}) == len(repositories)
+          assert all(len(r['commit']) == 40 and all(c in '0123456789abcdef' for c in r['commit']) for r in repositories)
+          assert all(graph['boundaries'][flag] is False for flag in ['authority_transfer', 'proof_status_transfer', 'measurement_status_transfer'])
+          identity = {k: graph[k] for k in ('repositories', 'boundaries')}
+          assert hashlib.sha256(json.dumps(identity, sort_keys=True, separators=(',', ':')).encode()).hexdigest() == graph['work_graph_sha256']
+          participants = [('The-Interdependency/stack', '_deps/forge'), ('The-Interdependency/ucns', '_deps/ucns'), ('globalwordnet/english-wordnet', '_deps/oewn'), ('The-Interdependency/metapat', '_deps/metapat'), ('The-Interdependency/skill-lib', '_deps/skill-lib'), ('The-Interdependency/uchc', '_deps/uchc-baseline')]
+          assert {r['repository'] for r in repositories} == {r for r, _ in participants}
+          for repository, checkout in participants:
+              expected = next(r['commit'] for r in graph['repositories'] if r['repository'] == repository)
+              assert subprocess.check_output(['git', '-C', checkout, 'rev-parse', 'HEAD'], text=True).strip() == expected, repository
+          source = next(r['commit'] for r in graph['repositories'] if r['repository'] == 'The-Interdependency/stack')
+          assert subprocess.check_output(['git', '-C', '_deps/forge', 'rev-parse', 'HEAD'], text=True).strip() == source
+          files = ['english_gonol/' + name for name in IMPLEMENTATION_FILES] + ['tests/test_structural_profile.py']
+          hashes = {}
+          for name in files:
+              assert (root / name).read_bytes() == (forge / name).read_bytes(), name
+              hashes[name] = hashlib.sha256((root / name).read_bytes()).hexdigest()
+          receipt = json.loads((root / 'experiments/structural-profile-v1/extraction.json').read_text())
+          expected_extraction = {
+              'schema': 'uchc.structural-profile-extraction', 'version': '1.0.0',
+              'source_repository': 'The-Interdependency/stack', 'source_commit': source,
+              'source_root': 'research/english-gonol', 'target_root': 'human/english',
+              'authority_transfer': False, 'files': hashes,
+              'hmmm': ['Stable release, consumer migration and domain graduation remain incomplete.'],
+              'work_graph_sha256': graph['work_graph_sha256'],
+          }
+          assert json.dumps(receipt, sort_keys=True, separators=(',', ':')) == json.dumps(expected_extraction, sort_keys=True, separators=(',', ':'))
+          PYTHON
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.12.14'
+      - name: Resource preflight and prerequisites
+        run: |
+          python - <<'PYTHON'
+          import os, shutil
+          assert shutil.disk_usage('.').free >= 8 * 1024**3
+          assert os.sysconf('SC_PHYS_PAGES') * os.sysconf('SC_PAGE_SIZE') >= 5 * 1024**3
+          PYTHON
+          python -m pip install pytest==8.3.5 PyYAML==6.0.2 setuptools==82.0.1 wheel==0.46.3 packaging==26.0
+      - name: Structural regressions
+        env:
+          PYTHONPATH: human/english
+        run: python -m pytest -q human/english/tests/test_structural_profile.py --junitxml=_state/structural.xml
+      - name: Build and test the exact clean candidate wheel
+        env:
+          SOURCE_DATE_EPOCH: '1790308800'
+        run: |
+          python -m pip wheel --no-deps --no-build-isolation . -w _state/dist
+          python -m venv _state/clean
+          _state/clean/bin/python -m pip install pytest==8.3.5 PyYAML==6.0.2
+          _state/clean/bin/python -m pip install --no-index --no-deps _state/dist/uchc-0.1.0a2-py3-none-any.whl
+          mkdir -p _state/isolated-tests
+          cp ./human/english/tests/test_structural_profile.py _state/isolated-tests/
+          _state/clean/bin/python -I -m pytest -q _state/isolated-tests --junitxml=_state/installed.xml
+      - name: Build every corpus construction twice and compare exact artifacts
+        env:
+          PYTHONPATH: human/english
+        run: |
+          python -m english_gonol.structural_construct build --source-root _deps/oewn/src/yaml --ucns-source-root _deps/ucns --out-dir _state/first
+          _state/clean/bin/python -I -m english_gonol.structural_construct build --source-root _deps/oewn/src/yaml --ucns-source-root _deps/ucns --out-dir _state/second
+          cmp _state/first/construct.db _state/second/construct.db
+          cmp _state/first/manifest.json _state/second/manifest.json
+          python -m english_gonol.structural_query _state/first 'Dr. creates geometry. Dr. creates 3.14...' > _state/query.json
+          cmp _state/first/manifest.json human/english/experiments/structural-profile-v1/manifest.json
+          cmp _state/query.json human/english/experiments/structural-profile-v1/query.json
+      - name: Diagnose physical SQLite replay identity without relaxing the gate
+        run: |
+          python - <<'PYTHON'
+          import hashlib, json, pathlib, platform, sqlite3
+          verification = json.loads(pathlib.Path('human/english/experiments/structural-profile-v1/verification.json').read_text())
+          observed = {'python': platform.python_version(), 'sqlite': sqlite3.sqlite_version, 'local_sqlite': verification['sqlite'], 'local_db_sha256': verification['construct_db_sha256'], 'databases': {}}
+          version = [int(p) for p in verification['sqlite'].split('.')]
+          writer = version[0] * 1000000 + version[1] * 1000 + version[2]
+          for name in ['first', 'second']:
+              path = pathlib.Path('_state') / name / 'construct.db'
+              with path.open('rb') as stream:
+                  header = stream.read(100)
+                  raw = hashlib.sha256(header)
+                  adjusted = hashlib.sha256(header[:96] + writer.to_bytes(4, 'big'))
+                  while block := stream.read(1024 * 1024):
+                      raw.update(block)
+                      adjusted.update(block)
+              observed['databases'][name] = {'bytes': path.stat().st_size, 'header_hex': header.hex(), 'sha256': raw.hexdigest(), 'local_writer_header_sha256': adjusted.hexdigest()}
+          pathlib.Path('_state/sqlite-diagnostic.json').write_text(json.dumps(observed, indent=2) + '\n')
+          print(json.dumps(observed))
+          PYTHON
+      - name: Bind committed local evidence and record hosted replay separately
+        env:
+          REPLAY_COMMIT: ${{ github.sha }}
+          REPLAY_RUN: ${{ github.run_id }}
+        run: |
+          python - <<'PYTHON'
+          import hashlib, json, os, pathlib, platform, sqlite3, subprocess, xml.etree.ElementTree as ET
+          root = pathlib.Path('human/english')
+          verification = json.loads((root / 'experiments/structural-profile-v1/verification.json').read_text())
+          manifest = json.loads(pathlib.Path('_state/first/manifest.json').read_text())
+          graph = json.loads((root / 'docs/structural-profile-work-graph.json').read_text())
+          def digest(path):
+              with pathlib.Path(path).open('rb') as stream:
+                  return hashlib.file_digest(stream, 'sha256').hexdigest()
+          assert verification['evidence_scope'] == 'local observed source versus clean-wheel replay; hosted replay records its own runtime and test observations'
+          assert platform.python_version() == verification['python']
+          assert sqlite3.sqlite_version == verification['sqlite']
+          assert verification['full_builds'] == 2
+          assert verification['construct_db_sha256'] == digest('_state/first/construct.db') == digest('_state/second/construct.db')
+          assert verification['database_bytes'] == pathlib.Path('_state/first/construct.db').stat().st_size
+          with sqlite3.connect('file:_state/first/construct.db?mode=ro', uri=True) as database:
+              origins = dict(database.execute("SELECT origin_state, count(*) FROM records WHERE kind='definition' GROUP BY origin_state"))
+          assert verification['definition_origins'] == origins
+          assert verification['definitions'] == sum(origins.values())
+          assert verification['artifact_version'] == manifest['version'] == '1.1.0'
+          raw = verification['raw_source_evidence']
+          import base64
+          with sqlite3.connect('file:_state/first/construct.db?mode=ro', uri=True) as database:
+              payloads = list(database.execute("SELECT payload FROM evidence WHERE kind='source-file' ORDER BY ordinal"))
+          assert raw['files'] == len(payloads) == manifest['metadata']['source']['files']
+          assert raw['decoded_bytes'] == sum(len(base64.b64decode(json.loads(row[0])['base64'], validate=True)) for row in payloads)
+          assert raw['tree_sha256'] == manifest['metadata']['source']['tree_sha256']
+          for metadata_key in ['source', 'producer']:
+              participant = manifest['metadata'][metadata_key]
+              assert participant['commit'] == next(r['commit'] for r in graph['repositories'] if r['repository'] == participant['repository'])
+          assert verification['logical_receipt'] == manifest['receipt_sha256']
+          assert verification['implementation_sha256'] == manifest['metadata']['implementation_sha256']
+          assert verification['source_evidence_sha256'] == manifest['metadata']['source']['evidence_sha256']
+          assert verification['work_graph_sha256'] == graph['work_graph_sha256']
+          assert verification['forge_source_commit'] == next(r['commit'] for r in graph['repositories'] if r['repository'] == 'The-Interdependency/stack')
+          wheel = pathlib.Path('_state/dist') / ('uchc-' + verification['candidate_version'] + '-py3-none-any.whl')
+          assert verification['candidate_wheel_sha256'] == digest(wheel)
+          tests = {}
+          for name, expected in [('structural', verification['tests']['structural_included_in_english']), ('installed', verification['tests']['clean_installed_structural'])]:
+              suites = list(ET.parse('_state/' + name + '.xml').getroot().iter('testsuite'))
+              counts = {k: sum(int(s.get(k, 0)) for s in suites) for k in ['tests', 'failures', 'errors', 'skipped']}
+              assert counts['tests'] == expected and not any(counts[k] for k in ['failures', 'errors', 'skipped']), counts
+              tests[name] = counts
+          assert verification['tests']['clean_installed_structural'] == tests['structural']['tests']
+          record = {'schema': 'english.structural-hosted-replay', 'commit': os.environ['REPLAY_COMMIT'], 'run_id': os.environ['REPLAY_RUN'], 'python': platform.python_version(), 'sqlite': sqlite3.sqlite_version, 'local_evidence_python': verification['python'], 'local_evidence_sqlite': verification['sqlite'], 'verification_sha256': digest(root / 'experiments/structural-profile-v1/verification.json'), 'construct_db_sha256': digest('_state/first/construct.db'), 'logical_receipt': manifest['receipt_sha256'], 'candidate_wheel_sha256': digest(wheel), 'work_graph_sha256': graph['work_graph_sha256'], 'tests': tests, 'scope': 'hosted source and clean-wheel artifact equivalence; local domain and combined-suite totals and native-attachment observations remain separately scoped historical observations'}
+          record['source_checkout'] = {key: subprocess.check_output(['git', 'rev-parse', revision], text=True).strip() for key, revision in [('commit', 'HEAD'), ('tree', 'HEAD^{tree}')]}
+          record['participants'] = {checkout: subprocess.check_output(['git', '-C', checkout, 'rev-parse', 'HEAD'], text=True).strip() for checkout in ['_deps/forge', '_deps/ucns', '_deps/oewn', '_deps/metapat', '_deps/skill-lib', '_deps/uchc-baseline']}
+          record['manifest_sha256'] = digest('_state/first/manifest.json')
+          record['query_sha256'] = digest('_state/query.json')
+          pathlib.Path('_state/hosted-replay.json').write_text(json.dumps(record, indent=2) + '\n')
+          print(json.dumps(record))
+          PYTHON
+      - name: Preserve upstream corpus attribution
+        if: always()
+        run: |
+          mkdir -p _state/corpus-attribution
+          cp _deps/oewn/LICENSE.md _state/corpus-attribution/OEWN-LICENSE.md
+          cp _deps/oewn/README.md _state/corpus-attribution/OEWN-README.md
+          printf '%s\n' 'Open English WordNet 2025' 'https://github.com/globalwordnet/english-wordnet/tree/dc343f2683279ecbb13fab4e2fd778d7b162d287' 'Raw source-file evidence retains its original Princeton WordNet License and CC BY 4.0 terms; no UCHC code-license substitution.' > _state/corpus-attribution/PROVENANCE.txt
+      - name: Preserve replay evidence
+        if: always()
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: english-structural-replay
+          path: |
+            _state/first/manifest.json
+            _state/query.json
+            _state/hosted-replay.json
+            _state/sqlite-diagnostic.json
+            _state/structural.xml
+            _state/installed.xml
+            _state/corpus-attribution/
+          if-no-files-found: error
