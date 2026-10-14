@@ -1,4 +1,4 @@
-# ratios: loc_comments=175:34 imports_exports=9:2 calls_definitions=67:14
+# ratios: loc_comments=179:35 imports_exports=9:2 calls_definitions=67:15
 """Read-only text construction, atomic word recovery and explicit refusals.
 
 Usage: ``with StructuralField(path) as field: graph = field.construct(text)``.
@@ -45,6 +45,7 @@ class StructuralField:
             self._manifest_bytes = canonical(verified)
             self._field_receipt = verified["receipt_sha256"]
             self._profile_sha256 = verified["metadata"]["profile_sha256"]
+            self._complete_corpus = verified["metadata"]["complete_corpus"] is True
             self._abbreviations = tuple(verified["metadata"]["profile"]["abbreviations"])
             self.words = MappingProxyType(dict(self.db.execute("SELECT surface,id FROM words")))
             self.characters = MappingProxyType({s: (cid, pos) for cid, s, pos in self.db.execute("SELECT * FROM characters")})
@@ -58,6 +59,11 @@ class StructuralField:
     def manifest(self) -> dict:
         """Return a detached JSON snapshot; caller edits cannot alter receipts."""
         return json.loads(self._manifest_bytes)
+
+    @property
+    def complete_corpus(self) -> bool:
+        """True only for a verified complete pinned field; partial fixtures are False."""
+        return self._complete_corpus
 
     @property
     def abbreviations(self) -> tuple[str, ...]:
@@ -231,4 +237,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=175:34 imports_exports=9:2 calls_definitions=67:14
+# ratios: loc_comments=179:35 imports_exports=9:2 calls_definitions=67:15

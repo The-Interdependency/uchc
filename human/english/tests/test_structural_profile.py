@@ -1,4 +1,4 @@
-# ratios: loc_comments=881:197 imports_exports=37:65 calls_definitions=503:79
+# ratios: loc_comments=920:197 imports_exports=39:69 calls_definitions=525:83
 """Witnesses for the accepted thirteen-rule profile, including hostile records."""
 import base64
 from contextlib import closing
@@ -675,9 +675,56 @@ def test_verified_carrier_glyph_axes_follow_inventory(tmp_path, pinned_raw_sourc
 @pytest.mark.parametrize("positions", [{"g": 0}, {c: 0 for c in "geometry"}])
 def test_partial_build_refuses_unverified_carrier_positions(tmp_path, positions):
     root = tmp_path / "state"
-    with pytest.raises(StructuralError, match="unverified carrier positions"):
+    with pytest.raises(StructuralError, match="partial build refuses carrier positions before writing"):
         build(snapshot(), out_dir=root, public_position=positions.get, producer={"standing": "fixture-only"})
     assert not root.exists()
+    assert not list(tmp_path.glob(".structural-*"))
+
+
+def test_partial_build_records_no_source_commit(tmp_path):
+    root = tmp_path / "state"
+    manifest = make(root)
+    assert manifest["metadata"]["source"]["commit"] is None
+    from english_gonol.structural_construct import OEWN_COMMIT
+    reseal(root, lambda db: db.execute("UPDATE meta SET value=? WHERE key='source'", (
+        canonical({**manifest["metadata"]["source"], "commit": OEWN_COMMIT}).decode(),)))
+    with pytest.raises(StructuralError, match="pinned source completeness"):
+        verify(root)
+
+
+def test_complete_build_claims_pinned_source_commit(tmp_path, pinned_raw_source):
+    from english_gonol.structural_construct import OEWN_COMMIT
+    root = raw_field(tmp_path, pinned_raw_source)
+    assert verify(root)["metadata"]["source"]["commit"] == OEWN_COMMIT
+    with StructuralField(root) as field:
+        assert field.complete_corpus is True
+
+
+def test_partial_field_reports_complete_corpus_false(tmp_path):
+    root = tmp_path / "state"
+    make(root)
+    with StructuralField(root) as field:
+        assert field.complete_corpus is False
+        with pytest.raises(AttributeError):
+            field.complete_corpus = True
+
+
+@pytest.mark.parametrize("kind", ["symlink", "directory"])
+def test_nonregular_database_refuses(tmp_path, kind):
+    root = tmp_path / "state"
+    make(root)
+    db = root / "construct.db"
+    if kind == "symlink":
+        outside = tmp_path / "outside.db"
+        db.rename(outside)
+        db.symlink_to(outside)
+    else:
+        db.unlink()
+        db.mkdir()
+    with pytest.raises(StructuralError, match="regular"):
+        verify(root)
+    with pytest.raises(StructuralError, match="regular"):
+        StructuralField(root)
 
 
 @pytest.mark.parametrize("sql", ["UPDATE characters SET public_position=0 WHERE scalar='g'",
@@ -831,7 +878,7 @@ def test_full_reduced_snapshot_requires_independent_raw_source(tmp_path, pinned_
         assert verify(output) == manifest
         assert manifest["counts"]["evidence"] == len(source.lexemes) + len(source.synsets)
         reseal(output, lambda db: db.execute("UPDATE meta SET value='true' WHERE key='complete_corpus'"))
-        with pytest.raises(StructuralError, match="raw source file count"):
+        with pytest.raises(StructuralError, match="pinned source completeness"):
             verify(output)
 
 
@@ -1216,4 +1263,4 @@ except StructuralError as error:
     assert mutated.returncode == 1
     assert mutated.stderr == ""
     assert mutated.stdout.strip() == "implementation mismatch; explicit migration required"
-# ratios: loc_comments=881:197 imports_exports=37:65 calls_definitions=503:79
+# ratios: loc_comments=920:197 imports_exports=39:69 calls_definitions=525:83

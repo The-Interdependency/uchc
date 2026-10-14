@@ -1,4 +1,4 @@
-# ratios: loc_comments=534:73 imports_exports=19:6 calls_definitions=329:23
+# ratios: loc_comments=540:80 imports_exports=19:6 calls_definitions=333:23
 """Complete English structural construction and byte-stable replay.
 
 Usage: python -m english_gonol.structural_construct build --source-root PATH
@@ -71,6 +71,12 @@ from english_gonol.structural_rules import (
 # id: structural_standalone_database
 #   given: a sealed construct.db with WAL, SHM or rollback-journal sidecars, or WAL file format
 #   then: refuse verification so the sealed file bytes alone carry the verified state
+# id: structural_partial_source_identity
+#   given: a partial snapshot-only build
+#   then: record a null source commit; only complete pinned builds claim the OEWN commit
+# id: structural_regular_database
+#   given: construct.db is a symlink or other nonregular file
+#   then: refuse verification before opening it
 # === END CONTRACTS ===
 
 SCHEMA = "english-gonol.structural-construct"
@@ -329,7 +335,8 @@ def build(snapshot: WordnetSnapshot, *, out_dir: str | Path,
     """
     if type(complete_corpus) is not bool:
         raise StructuralError("complete_corpus must be boolean")
-    source = {"repository": OEWN_REPOSITORY, "commit": OEWN_COMMIT,
+    # Only a complete, pinned build may claim the OEWN commit; partial snapshots record none.
+    source = {"repository": OEWN_REPOSITORY, "commit": OEWN_COMMIT if complete_corpus else None,
               "tree_sha256": snapshot.source_tree_sha256,
               "files": snapshot.source_file_count,
               "lexemes": len(snapshot.lexemes), "synsets": len(snapshot.synsets),
@@ -345,7 +352,7 @@ def build(snapshot: WordnetSnapshot, *, out_dir: str | Path,
         raise StructuralError("raw source requires an explicit complete corpus request")
     if not complete_corpus and any(public_position(c) is not None
                                    for c in {c for t in _texts(snapshot) for c in t}):
-        raise StructuralError("partial fields refuse unverified carrier positions")
+        raise StructuralError("partial build refuses carrier positions before writing")
     output = Path(out_dir).resolve()
     if output.exists():
         raise StructuralError("output already exists; use a new directory")
@@ -434,6 +441,12 @@ SIDECARS = ("-wal", "-shm", "-journal")
 
 def open_readonly(path: str | Path) -> sqlite3.Connection:
     """Open one standalone rollback-journal database; sidecar state is refused."""
+    try:
+        mode = os.lstat(path).st_mode
+    except OSError as exc:
+        raise StructuralError("database must be a regular file") from exc
+    if not stat.S_ISREG(mode):
+        raise StructuralError("database must be a regular nonsymlink file")
     path = Path(path).resolve()
     if any(Path(str(path) + suffix).exists() for suffix in SIDECARS):
         raise StructuralError("database sidecar files are not part of the sealed artifact")
@@ -486,7 +499,7 @@ def _verified_connection(out_dir: str | Path):
             raise StructuralError("fixed metadata boundary mismatch")
         source = meta["source"]
         if (set(source) != set(PINNED_SOURCE)
-            or source["repository"] != OEWN_REPOSITORY or source["commit"] != OEWN_COMMIT
+            or source["repository"] != OEWN_REPOSITORY or source["commit"] != (OEWN_COMMIT if meta["complete_corpus"] else None)
             or (meta["complete_corpus"] and canonical(source) != canonical(PINNED_SOURCE))):
             raise StructuralError("pinned source completeness mismatch")
         p = meta["profile"]
@@ -664,4 +677,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=534:73 imports_exports=19:6 calls_definitions=329:23
+# ratios: loc_comments=540:80 imports_exports=19:6 calls_definitions=333:23

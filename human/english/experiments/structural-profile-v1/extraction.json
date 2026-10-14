@@ -2,14 +2,14 @@
   "schema": "uchc.structural-profile-extraction",
   "version": "1.0.0",
   "source_repository": "The-Interdependency/stack",
-  "source_commit": "fd819e7ebd8f1571b4bca6589fe493077f3e6495",
+  "source_commit": "b7e4f50bdeaf23ccd04a446ab3ac59e373fb57da",
   "source_root": "research/english-gonol",
   "target_root": "human/english",
   "authority_transfer": false,
   "files": {
     "english_gonol/structural_rules.py": "4686f6a847dd0cee24e3f0a05154a71203a1d4c790922952f9876a38f017db70",
-    "english_gonol/structural_construct.py": "1ebe274129a8db969b37c4785b7ed471a0eb7f9a391cee5e0ceb2718763479d9",
-    "english_gonol/structural_query.py": "9818ebcb5002dc0de906c88bc8e7038e55ebe5726cbf9182337cd3e062f21572",
+    "english_gonol/structural_construct.py": "8920759980c590719ff19a4a23906775b4058bda7f95f915a1621b1d56af18f4",
+    "english_gonol/structural_query.py": "3a97e971825468347ab76a44a3203ed0ce706ca0293836ffd4cc0d223d2987be",
     "english_gonol/hyperspace_construct.py": "c5996470c6d3fe5387fa8f46e3d777deb44289d0b9e1e5d2f55c5d6348912a71",
     "english_gonol/full_construct_run.py": "fbadf9cc033a154148b62e11b52d7e38b845c0d0b669ff34dfc6186cab15c064",
     "english_gonol/language/source.py": "beb4d86f9c2a2879d3f63f4b73867af19edf33a2fdd6fea32e4e6e14c6b4ae2f",
@@ -20,10 +20,10 @@
     "english_gonol/language/morphology.py": "84ea74d3498442c313bc318f0d19c4951ef59ad8411f0122bdb7a116383460ce",
     "english_gonol/language/relational_bridge.py": "bceb4efc4730b2c7fc5ce8cb6f4d9334deeddb27905b79d273ce9ad3204b58eb",
     "english_gonol/language/rendering.py": "83a1b8c8fb31c7bc64a857b7f57a67079e01daa19f0d7e1d74cd501b61b0ec20",
-    "tests/test_structural_profile.py": "0995d4368452db93f0bc6bdcb88c9664d0d7c99cda5d6da6f90899002a354392"
+    "tests/test_structural_profile.py": "19fe770520f8b4a42679b309d20431043c10d8e8da3020582afe3c6e37a5eb81"
   },
   "hmmm": [
     "Stable release, consumer migration and domain graduation remain incomplete."
   ],
-  "work_graph_sha256": "e1bcff433d405fb17507cf513f391dddb50f284d8702b57dbacb7599ea71b6a7"
+  "work_graph_sha256": "26058ad29d2b27a304917a7e9915b9b7b728ffe7d45e2b8d47db93af54412c75"
 }

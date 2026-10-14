@@ -1,17 +1,17 @@
 {
   "schema": "english.structural-verification",
   "version": "1.1.0",
-  "implementation_sha256": "6d3d8504e0159f191caa40755877c7fec78ff11a0c514b3fa5e0813aed8a6879",
-  "forge_source_commit": "fd819e7ebd8f1571b4bca6589fe493077f3e6495",
+  "implementation_sha256": "771eb34cb98aeda541c8e9a63ba191c65baf623d1f8549bc7df3cc4891dfc504",
+  "forge_source_commit": "b7e4f50bdeaf23ccd04a446ab3ac59e373fb57da",
   "full_builds": 2,
   "comparison": "byte-identical construct.db and manifest.json",
   "build_implementations": [
     "forge source at immutable repaired commit",
     "clean-installed exact candidate wheel"
   ],
-  "construct_db_sha256": "a8b5ba045334ee38a56e118e555c946aacc84daad5df649ec1add3ef29deb9c7",
+  "construct_db_sha256": "13ba24116f0ff02cfdfeb4a6b060f2672fa409b46a3b7cf26e4421c65321b063",
   "database_bytes": 711983104,
-  "logical_receipt": "7a942fda57763279d6592befda6e4f3295332a0b12450b05076109ffe58b2e0d",
+  "logical_receipt": "26ab095f73306ff4fbd9f67d1c282c1df79f926bb75cc081c879db8a6989b58a",
   "definitions": 185155,
   "definition_origins": {
     "attached": 128000,
@@ -20,16 +20,16 @@
   "python": "3.12.14",
   "sqlite": "3.45.1",
   "candidate_version": "0.1.0a2",
-  "candidate_wheel_sha256": "97e1ae14a9022e3c6445fd1cbeb4907c32e9ca80423231ea779fb18eea69e7ce",
+  "candidate_wheel_sha256": "7f05fbbbdd40eb8f7d3575450a3a54153c155c46e512a96f245ac5bdfffa76e8",
   "tests": {
-    "stack_english": 304,
+    "stack_english": 309,
     "stack_english_optional_replay_skips": 2,
-    "uchc_english": 286,
+    "uchc_english": 291,
     "python_domain": 5,
     "uchc_polyglot": 5,
-    "structural_included_in_english": 156,
-    "clean_installed_structural": 156,
-    "clean_installed_total": 175
+    "structural_included_in_english": 161,
+    "clean_installed_structural": 161,
+    "clean_installed_total": 180
   },
   "msdmd": {
     "python_modules": 4,
@@ -43,7 +43,7 @@
     "Stable release, downstream migration and UCHC graduation remain incomplete.",
     "Two optional Stack historical replay tests skipped because their separate fixture roots were not supplied; these are not structural-profile passes."
   ],
-  "work_graph_sha256": "e1bcff433d405fb17507cf513f391dddb50f284d8702b57dbacb7599ea71b6a7",
+  "work_graph_sha256": "26058ad29d2b27a304917a7e9915b9b7b728ffe7d45e2b8d47db93af54412c75",
   "source_evidence_sha256": "42b18c16c786bad3801abf36e3f5966daba94df4b88792491ad22229749480d3",
   "integration_bases": {
     "stack": "07f327e1d49d3fce2fa58dcdda1a89f9041e132a",
@@ -202,6 +202,19 @@
     "scope": "recorded against preceding implementation b6db9e9f (forge d2e4c1d); the later partial-carrier and SQLite-sidecar refusals do not alter raw-source handling"
   },
   "historical_structural_replays": [
+    {
+      "forge_source_commit": "fd819e7ebd8f1571b4bca6589fe493077f3e6495",
+      "scope": "preceding 1.1.0 candidate before separate build guard, regular-file database, null partial source commit and complete_corpus property; exact hosted replay passed",
+      "construct_db_sha256": "a8b5ba045334ee38a56e118e555c946aacc84daad5df649ec1add3ef29deb9c7",
+      "logical_receipt": "7a942fda57763279d6592befda6e4f3295332a0b12450b05076109ffe58b2e0d",
+      "candidate_wheel_sha256": "97e1ae14a9022e3c6445fd1cbeb4907c32e9ca80423231ea779fb18eea69e7ce",
+      "python": "3.12.14",
+      "sqlite": "3.45.1",
+      "hosted_runs": [
+        "https://github.com/The-Interdependency/stack/actions/runs/38508447984",
+        "https://github.com/The-Interdependency/uchc/actions/runs/38508427594"
+      ]
+    },
     {
       "forge_source_commit": "d2e4c1de55d0b93810a62e799453a9b11270ce46",
       "scope": "preceding 1.1.0 candidate before partial-carrier and SQLite-sidecar refusals; exact hosted replay passed",
