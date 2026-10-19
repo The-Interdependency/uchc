@@ -150,10 +150,33 @@ def construct_glyph_gonol(text: str, *, source: str = "uchc:english.ordinal/1"):
 
 
 def geometry_record(construction) -> dict:
-    """Transport the actual UCNS geometry and receipt, not derived local coordinates."""
-    ordinal, _public, _carrier = _ucns()
+    """Carry only Public Gonol glyph constructions, not arbitrary UCNS frames."""
+    ordinal, _public, carrier = _ucns()
     if not isinstance(construction, ordinal.Construction):
         raise OrdinalGeometryError("UCNS_CONSTRUCTION_REQUIRED")
+    if (
+        construction.origin != "SPACE"
+        or construction.relation != "english.ordinal/1:glyph-instantiation"
+        or not construction.participants
+        or any(
+            participant.interior is not None
+            or participant.carrier != carrier
+            or participant.identity == " "
+            for participant in construction.participants
+        )
+        or construction.identity != "".join(p.identity for p in construction.participants)
+        or construction.recover() != tuple(construction.identity)
+    ):
+        raise OrdinalGeometryError("UCNS_PUBLIC_GLYPH_CONSTRUCTION_REQUIRED")
+    # A native UCNS object can be built using an alternate relation or carrier.
+    # Never attach Public Gonol provenance to that different construction.
+    rebuilt = ordinal.affixiate(
+        construction.identity, construction.participants,
+        origin=construction.origin, relation=construction.relation,
+        source=construction.source,
+    )
+    if construction.receipt != rebuilt.receipt:
+        raise OrdinalGeometryError("UCNS_CONSTRUCTION_RECEIPT_MISMATCH")
     return {
         "schema": SCHEMA,
         "version": VERSION,
