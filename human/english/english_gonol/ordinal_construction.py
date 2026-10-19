@@ -128,6 +128,9 @@ def construct_glyph_gonol(text: str, *, source: str = "uchc:english.ordinal/1"):
         raise OrdinalGeometryError("UNICODE_SCALAR_REQUIRED")
     if not isinstance(source, str) or not source:
         raise OrdinalGeometryError("SOURCE_IDENTITY_REQUIRED")
+    # SPACE is the fixed reference and seam event, not a radial glyph instance.
+    if " " in text:
+        raise OrdinalGeometryError("SPACE_SEAM_REQUIRES_FRAME_ATTACHMENT")
     ordinal, public, carrier = _ucns()
     missing = tuple(dict.fromkeys(
         glyph for glyph in text if public.public_gonol_position(glyph) is None
@@ -216,10 +219,6 @@ class OrdinalStructuralField(StructuralField):
         if not graph["source"]:
             return _refusal("NONEMPTY_GLYPH_SEQUENCE_REQUIRED")
         try:
-            glyph_frame = construct_glyph_gonol(
-                graph["source"],
-                source="uchc:english.structural-query:" + graph["receipt_sha256"],
-            )
             interiors: dict[str, dict] = {}
             word_order = []
             for part in graph["parts"]:
@@ -236,6 +235,21 @@ class OrdinalStructuralField(StructuralField):
                         "receipt": interior["geometry_receipt"],
                     }
                 word_order.append({"ordinal": part["ordinal"], "word_id": part["identity"]})
+            if " " in graph["source"]:
+                return {
+                    "standing": "partial",
+                    "code": "SPACE_SEAM_FRAME_NOT_SELECTED",
+                    "source_receipt": graph["receipt_sha256"],
+                    "word_interiors": list(interiors.values()),
+                    "ordered_word_references": word_order,
+                    "word_sites": graph["word_sites"],
+                    "higher_word_frame": "hmmm:WORD_CARRIER_ANGLE_NOT_SELECTED",
+                    "edges": [],
+                }
+            glyph_frame = construct_glyph_gonol(
+                graph["source"],
+                source="uchc:english.structural-query:" + graph["receipt_sha256"],
+            )
         except OrdinalGeometryError as exc:
             return _refusal(exc.code, exc.glyphs)
         return {
@@ -256,6 +270,8 @@ class OrdinalStructuralField(StructuralField):
         geometry = self.geometry(record, operation="ordinal-affixiation")
         if geometry["standing"] != "constructed":
             result["geometry_state"] = "hmmm:" + geometry["code"]
+            result["word_interiors"] = geometry.get("word_interiors", [])
+            result["word_sites"] = geometry.get("word_sites", [])
             result["geometry_refusal"] = geometry
             return result
         result["geometry_state"] = "constructed-glyph-frame;higher-word-frame-hmmm"
