@@ -1,10 +1,10 @@
 name: English ordinal UCNS geometry
 on:
   pull_request:
-    paths: ['human/english/english_gonol/ordinal_construction.py', 'tests/test_ordinal_construction.py', 'human/english/docs/ordinal-geometry.md', 'docs/work-graphs/english-ordinal-geometry-v1.json', 'pyproject.toml', '.github/workflows/english-ordinal-geometry.yml']
+    paths: ['human/english/**', 'tests/test_ordinal_construction.py', 'human/english/docs/ordinal-geometry.md', 'docs/work-graphs/english-ordinal-geometry-v1.json', 'pyproject.toml', '.github/workflows/english-ordinal-geometry.yml']
   push:
     branches: [main]
-    paths: ['human/english/english_gonol/ordinal_construction.py', 'tests/test_ordinal_construction.py', 'human/english/docs/ordinal-geometry.md', 'docs/work-graphs/english-ordinal-geometry-v1.json', 'pyproject.toml', '.github/workflows/english-ordinal-geometry.yml']
+    paths: ['human/english/**', 'tests/test_ordinal_construction.py', 'human/english/docs/ordinal-geometry.md', 'docs/work-graphs/english-ordinal-geometry-v1.json', 'pyproject.toml', '.github/workflows/english-ordinal-geometry.yml']
 permissions:
   contents: read
 jobs:
