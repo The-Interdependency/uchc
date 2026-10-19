@@ -34,6 +34,13 @@
 #   timeout: 30
 #   mutates: filesystem
 #   cleanup: pytest_tmp_path
+# id: check_ordinal_rejects_unrelated_ucns_frames
+#   proves: uchc_ordinal_ucns_is_the_sole_geometry_authority, uchc_ordinal_no_fabricated_angles
+#   call: self::test_geometry_record_never_mislabels_non_glyph_frames
+#   requires: python3, pytest
+#   timeout: 30
+#   mutates: none
+#   cleanup: none
 # id: check_ordinal_partial_corpus
 #   proves: uchc_ordinal_no_fabricated_angles, uchc_ordinal_query_consumes_verified_word_interiors
 #   call: self::test_partial_corpus_refuses_public_binding
@@ -207,6 +214,27 @@ def test_ucns_nested_construction_retains_word_interior():
     assert sentence.recover() == tuple("wordword")
     assert sentence.participants[0].interior is first
     assert sentence.participants[1].interior is first
+
+
+
+def test_geometry_record_never_mislabels_non_glyph_frames():
+    public_word = construct_glyph_gonol("word")
+    other = ordinal.Carrier(("word", "other"), "fixture:word-carrier")
+    unrelated = ordinal.affixiate(
+        "test:word", (ordinal.Participant.closed(other, public_word),),
+        origin="SPACE", relation="test:word-promotion", source="fixture",
+    )
+    for obj in (unrelated, ordinal.affixiate(
+        "word", public_word.participants,
+        origin="OTHER", relation=public_word.relation, source="fixture",
+    ), ordinal.affixiate(
+        "word", public_word.participants,
+        origin="SPACE", relation="unrelated-relation", source="fixture",
+    )):
+        with pytest.raises(OrdinalGeometryError) as exc:
+            geometry_record(obj)
+        assert exc.value.code == "UCNS_PUBLIC_GLYPH_CONSTRUCTION_REQUIRED"
+    assert geometry_record(public_word)["receipt"] == public_word.receipt
 
 
 def test_geometry_record_refuses_fake_construction():
