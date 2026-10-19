@@ -1,0 +1,43 @@
+{
+  "schema": "the-interdependency.stack-manifest",
+  "version": "1.0.0",
+  "repositories": [
+    {
+      "repository": "The-Interdependency/ucns",
+      "commit": "ed0b0760f05cd975a7a811f8abeb70a11d09f00b",
+      "authority": "Public Gonol glyph carrier and exact ordinal-affixiation geometric operations",
+      "relation": "pinned producer; runtime verifies public_gonol.py and ordinal_affixiation.py Git blob identities"
+    },
+    {
+      "repository": "The-Interdependency/stack",
+      "commit": "faf265422011a7a705c712886d4369136fdbc7eb",
+      "authority": "active English construction research forge pending UCHC graduation",
+      "relation": "untouched compatibility and lifecycle authority; historical corpus receipts preserved"
+    },
+    {
+      "repository": "The-Interdependency/uchc",
+      "commit": "45f50ebce04235611223fda13cf67e1a71d45dba",
+      "authority": "verified English structural consumer and extracted candidate baseline",
+      "relation": "input baseline; proposed new consumer in branch feat/english-ordinal-ucns-consumer-20261019"
+    },
+    {
+      "repository": "The-Interdependency/skill-lib",
+      "commit": "83aef7813dbd040a67ddc07bbb8845f51eb38a3e",
+      "authority": "WDLL, gonol construction, cross-repository evidence and audit discipline",
+      "relation": "governing skills consumed; no geometry authority"
+    }
+  ],
+  "boundaries": {
+    "authority_transfer": false,
+    "proof_status_transfer": false,
+    "measurement_status_transfer": false,
+    "semantic_mapping": "UCHC admits exact glyphs; UCNS defines geometry; semantic evidence and corpus membership remain external.",
+    "agent_scope": "uchc-english-ordinal-geometry-consumer",
+    "hmmm": [
+      "Non-Public-Gonol Unicode scalars have no licensed public angular bearing in this selected 157-glyph carrier.",
+      "Higher-order angular carrier for closed word identities and cross-origin transport are not selected; no invented word angle.",
+      "The immutable historical UCHC English corpus receipts and Stack-to-UCHC graduation are unchanged."
+    ]
+  },
+  "work_graph_sha256": "00e40c52cc7a522696665d5db40eb59706bd33e7a5a2ad689d1f3ac3329cabb4"
+}

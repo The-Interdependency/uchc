@@ -4,6 +4,16 @@ UCHC is the implementation repository for **Unit Circle Hyperspace Constructs**.
 
 Applications consume UCHC; applications do not define UCHC.
 
+## Executable English ordinal geometry
+
+UCHC provides an executable, UCNS-backed English glyph construction API in [ordinal_construction.py](human/english/english_gonol/ordinal_construction.py). Run the clean-installed package with the pinned UCNS producer:
+
+    python -m english_gonol.ordinal_construction word
+
+The result contains UCNS turns, exact per-instance radial-halving exponents, and a recoverable receipt. The new OrdinalStructuralField supplies geometry for complete verified English corpus queries; the original StructuralField remains immutable for historical replay. See the [construction law and refusals](human/english/docs/ordinal-geometry.md).
+
+**hmmm:** glyphs outside the 157-position Public Gonol and higher-scale word-carrier angular attachment require additional selected geometry; neither receives a fabricated bearing.
+
 ## Domains
 
 ```text

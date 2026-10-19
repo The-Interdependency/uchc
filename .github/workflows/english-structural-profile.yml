@@ -91,6 +91,19 @@ jobs:
           }
           assert json.dumps(receipt, sort_keys=True, separators=(',', ':')) == json.dumps(expected_extraction, sort_keys=True, separators=(',', ':'))
           PYTHON
+      # Preserve the exact sealed a2 wheel as independent historical evidence.
+      - uses: actions/checkout@v7.0.1
+        with:
+          repository: The-Interdependency/uchc
+          ref: 45f50ebce04235611223fda13cf67e1a71d45dba
+          path: _deps/uchc-a2
+          persist-credentials: false
+      - uses: actions/checkout@v7.0.1
+        with:
+          repository: The-Interdependency/ucns
+          ref: ed0b0760f05cd975a7a811f8abeb70a11d09f00b
+          path: _deps/ucns-ordinal
+          persist-credentials: false
       - uses: actions/setup-python@v7.0.0
         with:
           python-version: '3.12.14'
@@ -110,10 +123,11 @@ jobs:
         env:
           SOURCE_DATE_EPOCH: '1790308800'
         run: |
+          python -m pip wheel --no-deps --no-build-isolation ./_deps/uchc-a2 -w _state/historical-dist
           python -m pip wheel --no-deps --no-build-isolation . -w _state/dist
           python -m venv _state/clean
           _state/clean/bin/python -m pip install pytest==8.3.5 PyYAML==6.0.2
-          _state/clean/bin/python -m pip install --no-index --no-deps _state/dist/uchc-0.1.0a2-py3-none-any.whl
+          _state/clean/bin/python -m pip install --no-index --no-deps _state/dist/uchc-0.1.0a3-py3-none-any.whl
           mkdir -p _state/isolated-tests
           cp ./human/english/tests/test_structural_profile.py _state/isolated-tests/
           _state/clean/bin/python -I -m pytest -q _state/isolated-tests --junitxml=_state/installed.xml
@@ -128,6 +142,66 @@ jobs:
           python -m english_gonol.structural_query _state/first 'Dr. creates geometry. Dr. creates 3.14...' > _state/query.json
           cmp _state/first/manifest.json human/english/experiments/structural-profile-v1/manifest.json
           cmp _state/query.json human/english/experiments/structural-profile-v1/query.json
+      - name: Exercise UCNS ordinal geometry across every corpus word
+        run: |
+          _state/clean/bin/python -m pip install ./_deps/ucns-ordinal
+          _state/clean/bin/python -I - <<'PYTHON'
+          from collections import Counter
+          import hashlib, json
+          from pathlib import Path
+          from english_gonol.ordinal_construction import (
+              OrdinalGeometryError, OrdinalStructuralField, construct_glyph_gonol,
+              PUBLIC_GONOL_SHA256, UCNS_COMMIT,
+          )
+          with OrdinalStructuralField('_state/first') as field:
+              assert field.complete_corpus
+              word = field.word('geometry')
+              assert word['geometry_state'] == 'constructed'
+              assert word['occurrence_count'] == 8
+              assert [p['radius']['power_of_two_denominator'] for p in word['gonal_order']['placements']] == list(range(8, 0, -1))
+              graph = field.construct('geometry')
+              geometry = field.geometry(graph, operation='ordinal-affixiation')
+              assert geometry['standing'] == 'constructed'
+              assert len(geometry['word_interiors']) == 1
+              assert geometry['word_interiors'][0]['receipt'] == word['geometry_receipt']
+              assert field.compose(graph, relation='ordered-text')['glyph_geometry'] == geometry['glyph_frame']
+              with_space = field.geometry(field.construct('geometry geometry'), operation='ordinal-affixiation')
+              assert with_space['standing'] == 'partial' and with_space['code'] == 'SPACE_SEAM_FRAME_NOT_SELECTED'
+              assert len(with_space['word_interiors']) == 1 and len(with_space['ordered_word_references']) == 2
+              assert 'glyph_frame' not in with_space
+              census = hashlib.sha256()
+              total = constructed = unresolved = glyph_occurrences = 0
+              missing = Counter()
+              source = 'uchc:english.structural/1:' + field.manifest['receipt_sha256']
+              for wid, surface in field.db.execute('SELECT id,surface FROM words ORDER BY id'):
+                  total += 1
+                  glyph_occurrences += len(surface)
+                  try:
+                      obj = construct_glyph_gonol(surface, source=source + ':word:' + str(wid))
+                  except OrdinalGeometryError as exc:
+                      assert exc.code == 'PUBLIC_GONOL_ANGLE_UNAVAILABLE', exc.code
+                      unresolved += 1
+                      missing.update(exc.glyphs)
+                      item = {'word_id': wid, 'standing': 'hmmm', 'missing': list(exc.glyphs)}
+                  else:
+                      constructed += 1
+                      assert obj.recover() == tuple(surface)
+                      assert obj.placement(0).exponent == len(surface)
+                      assert obj.placement(len(surface) - 1).exponent == 1
+                      item = {'word_id': wid, 'standing': 'constructed', 'receipt': obj.receipt}
+                  census.update(json.dumps(item, sort_keys=True, ensure_ascii=False, separators=(',', ':')).encode() + b'\n')
+              assert total > 0 and total == constructed + unresolved
+              record = {'schema': 'uchc.english-ordinal-corpus-census',
+                        'version': '1.0.0', 'corpus_receipt': field.manifest['receipt_sha256'],
+                        'ucns_commit': UCNS_COMMIT, 'public_gonol_sha256': PUBLIC_GONOL_SHA256,
+                        'word_identities': total, 'placed_words': constructed,
+                        'unplaced_words': unresolved, 'glyph_occurrences': glyph_occurrences,
+                        'missing_bearings': dict(sorted((f'U+{ord(g):04X}', n) for g, n in missing.items())),
+                        'ordered_census_sha256': census.hexdigest(),
+                        'standing': 'SURVIVED' if not unresolved else 'hmmm:expanded_public_gonol_required'}
+              Path('_state/ordinal-corpus-census.json').write_text(json.dumps(record, indent=2, sort_keys=True) + '\n')
+              print(json.dumps(record))
+          PYTHON
       - name: Diagnose physical SQLite replay identity without relaxing the gate
         run: |
           python - <<'PYTHON'
@@ -189,8 +263,10 @@ jobs:
           assert verification['source_evidence_sha256'] == manifest['metadata']['source']['evidence_sha256']
           assert verification['work_graph_sha256'] == graph['work_graph_sha256']
           assert verification['forge_source_commit'] == next(r['commit'] for r in graph['repositories'] if r['repository'] == 'The-Interdependency/stack')
-          wheel = pathlib.Path('_state/dist') / ('uchc-' + verification['candidate_version'] + '-py3-none-any.whl')
-          assert verification['candidate_wheel_sha256'] == digest(wheel)
+          historical_wheel = pathlib.Path('_state/historical-dist') / ('uchc-' + verification['candidate_version'] + '-py3-none-any.whl')
+          assert verification['candidate_wheel_sha256'] == digest(historical_wheel)
+          wheel = pathlib.Path('_state/dist/uchc-0.1.0a3-py3-none-any.whl')
+          assert wheel.is_file() and digest(wheel) != digest(historical_wheel)
           tests = {}
           for name, expected in [('structural', verification['tests']['structural_included_in_english']), ('installed', verification['tests']['clean_installed_structural'])]:
               suites = list(ET.parse('_state/' + name + '.xml').getroot().iter('testsuite'))
@@ -198,7 +274,7 @@ jobs:
               assert counts['tests'] == expected and not any(counts[k] for k in ['failures', 'errors', 'skipped']), counts
               tests[name] = counts
           assert verification['tests']['clean_installed_structural'] == tests['structural']['tests']
-          record = {'schema': 'english.structural-hosted-replay', 'commit': os.environ['REPLAY_COMMIT'], 'run_id': os.environ['REPLAY_RUN'], 'python': platform.python_version(), 'sqlite': sqlite3.sqlite_version, 'local_evidence_python': verification['python'], 'local_evidence_sqlite': verification['sqlite'], 'verification_sha256': digest(root / 'experiments/structural-profile-v1/verification.json'), 'construct_db_sha256': digest('_state/first/construct.db'), 'logical_receipt': manifest['receipt_sha256'], 'candidate_wheel_sha256': digest(wheel), 'work_graph_sha256': graph['work_graph_sha256'], 'tests': tests, 'scope': 'hosted source and clean-wheel artifact equivalence; local domain and combined-suite totals and native-attachment observations remain separately scoped historical observations'}
+          record = {'schema': 'english.structural-hosted-replay', 'commit': os.environ['REPLAY_COMMIT'], 'run_id': os.environ['REPLAY_RUN'], 'python': platform.python_version(), 'sqlite': sqlite3.sqlite_version, 'local_evidence_python': verification['python'], 'local_evidence_sqlite': verification['sqlite'], 'verification_sha256': digest(root / 'experiments/structural-profile-v1/verification.json'), 'construct_db_sha256': digest('_state/first/construct.db'), 'logical_receipt': manifest['receipt_sha256'], 'candidate_wheel_sha256': digest(wheel), 'historical_a2_wheel_sha256': digest(historical_wheel), 'work_graph_sha256': graph['work_graph_sha256'], 'tests': tests, 'scope': 'hosted source and clean-wheel artifact equivalence; local domain and combined-suite totals and native-attachment observations remain separately scoped historical observations'}
           record['source_checkout'] = {key: subprocess.check_output(['git', 'rev-parse', revision], text=True).strip() for key, revision in [('commit', 'HEAD'), ('tree', 'HEAD^{tree}')]}
           record['participants'] = {checkout: subprocess.check_output(['git', '-C', checkout, 'rev-parse', 'HEAD'], text=True).strip() for checkout in ['_deps/forge', '_deps/ucns', '_deps/oewn', '_deps/metapat', '_deps/skill-lib', '_deps/uchc-baseline']}
           record['manifest_sha256'] = digest('_state/first/manifest.json')
@@ -222,6 +298,7 @@ jobs:
             _state/first/manifest.json
             _state/query.json
             _state/hosted-replay.json
+            _state/ordinal-corpus-census.json
             _state/sqlite-diagnostic.json
             _state/structural.xml
             _state/installed.xml
