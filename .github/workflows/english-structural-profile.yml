@@ -98,6 +98,12 @@ jobs:
           ref: 45f50ebce04235611223fda13cf67e1a71d45dba
           path: _deps/uchc-a2
           persist-credentials: false
+      - uses: actions/checkout@v7.0.1
+        with:
+          repository: The-Interdependency/ucns
+          ref: ed0b0760f05cd975a7a811f8abeb70a11d09f00b
+          path: _deps/ucns-ordinal
+          persist-credentials: false
       - uses: actions/setup-python@v7.0.0
         with:
           python-version: '3.12.14'
@@ -136,6 +142,62 @@ jobs:
           python -m english_gonol.structural_query _state/first 'Dr. creates geometry. Dr. creates 3.14...' > _state/query.json
           cmp _state/first/manifest.json human/english/experiments/structural-profile-v1/manifest.json
           cmp _state/query.json human/english/experiments/structural-profile-v1/query.json
+      - name: Exercise UCNS ordinal geometry across every corpus word
+        run: |
+          _state/clean/bin/python -m pip install ./_deps/ucns-ordinal
+          _state/clean/bin/python -I - <<'PYTHON'
+          from collections import Counter
+          import hashlib, json
+          from pathlib import Path
+          from english_gonol.ordinal_construction import (
+              OrdinalGeometryError, OrdinalStructuralField, construct_glyph_gonol,
+              PUBLIC_GONOL_SHA256, UCNS_COMMIT,
+          )
+          with OrdinalStructuralField('_state/first') as field:
+              assert field.complete_corpus
+              word = field.word('geometry')
+              assert word['geometry_state'] == 'constructed'
+              assert word['occurrence_count'] == 8
+              assert [p['radius']['power_of_two_denominator'] for p in word['gonal_order']['placements']] == list(range(8, 0, -1))
+              graph = field.construct('geometry')
+              geometry = field.geometry(graph, operation='ordinal-affixiation')
+              assert geometry['standing'] == 'constructed'
+              assert len(geometry['word_interiors']) == 1
+              assert geometry['word_interiors'][0]['receipt'] == word['geometry_receipt']
+              assert field.compose(graph, relation='ordered-text')['glyph_geometry'] == geometry['glyph_frame']
+              census = hashlib.sha256()
+              total = constructed = unresolved = glyph_occurrences = 0
+              missing = Counter()
+              source = 'uchc:english.structural/1:' + field.manifest['receipt_sha256']
+              for wid, surface in field.db.execute('SELECT id,surface FROM words ORDER BY id'):
+                  total += 1
+                  glyph_occurrences += len(surface)
+                  try:
+                      obj = construct_glyph_gonol(surface, source=source + ':word:' + str(wid))
+                  except OrdinalGeometryError as exc:
+                      assert exc.code == 'PUBLIC_GONOL_ANGLE_UNAVAILABLE', exc.code
+                      unresolved += 1
+                      missing.update(exc.glyphs)
+                      item = {'word_id': wid, 'standing': 'hmmm', 'missing': list(exc.glyphs)}
+                  else:
+                      constructed += 1
+                      assert obj.recover() == tuple(surface)
+                      assert obj.placement(0).exponent == len(surface)
+                      assert obj.placement(len(surface) - 1).exponent == 1
+                      item = {'word_id': wid, 'standing': 'constructed', 'receipt': obj.receipt}
+                  census.update(json.dumps(item, sort_keys=True, ensure_ascii=False, separators=(',', ':')).encode() + b'\n')
+              assert total > 0 and total == constructed + unresolved
+              record = {'schema': 'uchc.english-ordinal-corpus-census',
+                        'version': '1.0.0', 'corpus_receipt': field.manifest['receipt_sha256'],
+                        'ucns_commit': UCNS_COMMIT, 'public_gonol_sha256': PUBLIC_GONOL_SHA256,
+                        'word_identities': total, 'placed_words': constructed,
+                        'unplaced_words': unresolved, 'glyph_occurrences': glyph_occurrences,
+                        'missing_bearings': dict(sorted((f'U+{ord(g):04X}', n) for g, n in missing.items())),
+                        'ordered_census_sha256': census.hexdigest(),
+                        'standing': 'SURVIVED' if not unresolved else 'hmmm:expanded_public_gonol_required'}
+              Path('_state/ordinal-corpus-census.json').write_text(json.dumps(record, indent=2, sort_keys=True) + '\n')
+              print(json.dumps(record))
+          PYTHON
       - name: Diagnose physical SQLite replay identity without relaxing the gate
         run: |
           python - <<'PYTHON'
@@ -232,6 +294,7 @@ jobs:
             _state/first/manifest.json
             _state/query.json
             _state/hosted-replay.json
+            _state/ordinal-corpus-census.json
             _state/sqlite-diagnostic.json
             _state/structural.xml
             _state/installed.xml
