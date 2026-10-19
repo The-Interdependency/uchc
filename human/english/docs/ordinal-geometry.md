@@ -45,7 +45,7 @@ To consume a complete **verified** structural English corpus:
 
 The new OrdinalStructuralField is the geometry-enabled API. The historical StructuralField remains available for byte-identical verification of its immutable artifacts. The new consumer does not rewrite historical database rows or receipts.
 
-The geometry API constructs a raw glyph frame for verified admitted text and separately preserves the ordered internal geometry of each closed word identity. It does **not** assign an invented angular carrier to the higher word frame; that separate geometry remains hmmm. Other operations, such as displacement, retain their explicit refusal.
+The geometry API constructs a raw glyph frame when the admitted text has no literal SPACE seam and separately preserves the ordered internal geometry of each closed word identity. The Public Gonol's fixed SPACE position is an origin/seam, not a glyph inserted at nonzero radius. Text crossing a literal SPACE returns **partial** geometry with its word interiors and word-site events preserved, while the cross-word frame remains hmmm. It does **not** invent an angular carrier for the higher word frame. Other operations, such as displacement, retain their explicit refusal.
 
 ## Evidence and failure
 
