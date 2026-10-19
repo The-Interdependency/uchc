@@ -20,6 +20,13 @@
 #   timeout: 30
 #   mutates: none
 #   cleanup: none
+# id: check_ordinal_space_is_reference
+#   proves: uchc_ordinal_no_fabricated_angles
+#   call: self::test_space_is_origin_not_radial_glyph
+#   requires: python3, pytest
+#   timeout: 30
+#   mutates: none
+#   cleanup: none
 # id: check_ordinal_source_drift
 #   proves: uchc_ordinal_no_fabricated_angles
 #   call: self::test_source_drift_refuses
@@ -130,6 +137,14 @@ def test_missing_public_gonol_angles_fail_closed():
         construct_glyph_gonol("word", source="")
     assert exc.value.code == "SOURCE_IDENTITY_REQUIRED"
     assert public.public_gonol_sha256() == PUBLIC_GONOL_SHA256
+
+
+def test_space_is_origin_not_radial_glyph():
+    assert public.public_gonol_position(" ") == 0
+    for text in (" ", "w o", "word "):
+        with pytest.raises(OrdinalGeometryError) as exc:
+            construct_glyph_gonol(text)
+        assert exc.value.code == "SPACE_SEAM_REQUIRES_FRAME_ATTACHMENT"
 
 
 def test_source_drift_refuses(tmp_path, monkeypatch):
