@@ -165,6 +165,10 @@ jobs:
               assert len(geometry['word_interiors']) == 1
               assert geometry['word_interiors'][0]['receipt'] == word['geometry_receipt']
               assert field.compose(graph, relation='ordered-text')['glyph_geometry'] == geometry['glyph_frame']
+              with_space = field.geometry(field.construct('geometry geometry'), operation='ordinal-affixiation')
+              assert with_space['standing'] == 'partial' and with_space['code'] == 'SPACE_SEAM_FRAME_NOT_SELECTED'
+              assert len(with_space['word_interiors']) == 1 and len(with_space['ordered_word_references']) == 2
+              assert 'glyph_frame' not in with_space
               census = hashlib.sha256()
               total = constructed = unresolved = glyph_occurrences = 0
               missing = Counter()
