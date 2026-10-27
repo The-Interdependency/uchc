@@ -74,6 +74,17 @@ Each returned word and each detached `word_interiors` entry carries its UCNS
 separately records the tested UCHC commit, PR head, work-graph digest, Stack
 extraction identity, construction receipt and built wheel hash.
 
+## Ratified forward requirements
+
+The [2026-10-27 operator decision](https://github.com/The-Interdependency/stack/blob/2909ffa0268c9535ea2b6ad1dd892caa82f447b4/research/english-gonol/docs/ordinal-decisions-2026-10-27.md)
+selects construction-derived parent bearing through SPACE, definition ownership
+by the whole closed lexical construction, and permission to rebase existing
+glyph bearings in a new carrier version with new receipts. These policy choices
+are settled. The linked record distinguishes them from the exact angular rule,
+typed-origin implementation, carrier specification and replay still required.
+The source extraction pinned above remains the tested implementation; this
+decision does not change its geometry or reinterpret its receipts.
+
 ## DONE WHEN / PROVEN BY / FAILS IF
 
 **DONE WHEN:** UCHC constructs real UCNS glyph geometry for admitted sequences and exposes it in a corpus-aware consumer.
@@ -84,6 +95,7 @@ extraction identity, construction receipt and built wheel hash.
 
 ## hmmm
 
-1. The public 157-glyph carrier does not yet give every Unicode scalar in the broader English corpus a licensed angular bearing. Unsupported glyphs refuse; an explicitly specified expanded public angular carrier is needed for complete coverage.
-2. Angular attachment of closed words to a higher carrier and transport between word/definition frames are not selected.
-3. This consumer does not by itself complete Stack-to-UCHC graduation, full-corpus geometric census, native Möbius lift, or semantic measurement.
+1. The expanded carrier still needs an exact inventory/order and implementation. Rebasing in a new version is authorized; unsupported glyphs continue to refuse in the current pinned implementation.
+2. Parent bearing must derive from the closed construction and SPACE attachment. Its exact numerical rule remains unresolved.
+3. Whole-lexical definition ownership is ratified; its typed-origin implementation and complete-corpus replay remain pending.
+4. Stable release, released-artifact reconsumption and Stack-to-UCHC graduation remain incomplete. Native Möbius lift, sheet-state transport and 360°/720° return tests are outside this English ordinal construction's scope.
