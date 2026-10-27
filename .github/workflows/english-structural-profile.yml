@@ -2,10 +2,10 @@
 name: English structural profile
 on:
   pull_request:
-    paths: ['human/english/**', 'programming/python/**', 'pyproject.toml', 'README.md', 'LICENSE', 'NOTICE', '.github/workflows/english-structural-profile.yml']
+    paths: ['human/english/**', 'tests/test_ordinal*.py', 'docs/work-graphs/english-ordinal-geometry-v1.json', 'programming/python/**', 'pyproject.toml', 'README.md', 'LICENSE', 'NOTICE', '.github/workflows/english-structural-profile.yml']
   push:
     branches: [main]
-    paths: ['human/english/**', 'programming/python/**', 'pyproject.toml', 'README.md', 'LICENSE', 'NOTICE', '.github/workflows/english-structural-profile.yml']
+    paths: ['human/english/**', 'tests/test_ordinal*.py', 'docs/work-graphs/english-ordinal-geometry-v1.json', 'programming/python/**', 'pyproject.toml', 'README.md', 'LICENSE', 'NOTICE', '.github/workflows/english-structural-profile.yml']
 permissions:
   contents: read
 jobs:
@@ -104,6 +104,12 @@ jobs:
           ref: ed0b0760f05cd975a7a811f8abeb70a11d09f00b
           path: _deps/ucns-ordinal
           persist-credentials: false
+      - uses: actions/checkout@v7.0.1
+        with:
+          repository: The-Interdependency/stack
+          ref: c8bddd5ae02fdaa001c2ba6962da66117384437e
+          path: _deps/ordinal-forge
+          persist-credentials: false
       - uses: actions/setup-python@v7.0.0
         with:
           python-version: '3.12.14'
@@ -142,6 +148,61 @@ jobs:
           python -m english_gonol.structural_query _state/first 'Dr. creates geometry. Dr. creates 3.14...' > _state/query.json
           cmp _state/first/manifest.json human/english/experiments/structural-profile-v1/manifest.json
           cmp _state/query.json human/english/experiments/structural-profile-v1/query.json
+      - name: Verify detached partial geometry against Stack and installed wheel
+        env:
+          UCHC_STRUCTURAL_FIELD: ${{ github.workspace }}/_state/first
+          UCHC_SOURCE_COMMIT: ${{ github.sha }}
+        run: |
+          python -m pip install ./_deps/ucns-ordinal
+          _state/clean/bin/python -m pip install ./_deps/ucns-ordinal
+          mkdir -p _state/corpus-tests
+          cp tests/test_ordinal_corpus.py _state/corpus-tests/
+          PYTHONPATH=_deps/ordinal-forge/research/english-gonol python -m pytest -q _deps/ordinal-forge/research/english-gonol/ordinal_tests/test_ordinal_corpus.py --junitxml=_state/ordinal-corpus-forge.xml
+          _state/clean/bin/python -I -m pytest -q _state/corpus-tests --junitxml=_state/ordinal-corpus-installed.xml
+          python - <<'PYTHON'
+          import hashlib, json, os, subprocess, sys, xml.etree.ElementTree as ET
+          from pathlib import Path
+          source_commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+          assert source_commit == os.environ['UCHC_SOURCE_COMMIT']
+          graph = json.loads(Path('docs/work-graphs/english-ordinal-geometry-v1.json').read_text())
+          payload = {key: graph[key] for key in ('repositories', 'boundaries')}
+          assert hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(',', ':')).encode()).hexdigest() == graph['work_graph_sha256']
+          forge_commit = subprocess.check_output(['git', '-C', '_deps/ordinal-forge', 'rev-parse', 'HEAD'], text=True).strip()
+          assert forge_commit == next(r['commit'] for r in graph['repositories'] if r['repository'] == 'The-Interdependency/stack')
+          extraction_path = Path('human/english/experiments/ordinal-geometry-v1/extraction.json')
+          extraction = json.loads(extraction_path.read_text())
+          assert extraction['source_commit'] == forge_commit
+          assert extraction['work_graph_sha256'] == graph['work_graph_sha256']
+          for item in extraction['files']:
+              source = Path('_deps/ordinal-forge/research/english-gonol') / item['source']
+              assert source.read_bytes() == Path(item['target']).read_bytes()
+              assert hashlib.sha256(source.read_bytes()).hexdigest() == item['sha256']
+          tests = {}
+          for name in ('forge', 'installed'):
+              suites = list(ET.parse('_state/ordinal-corpus-' + name + '.xml').getroot().iter('testsuite'))
+              counts = {k: sum(int(s.get(k, 0)) for s in suites) for k in ('tests', 'failures', 'errors', 'skipped')}
+              assert counts == {'tests': 3, 'failures': 0, 'errors': 0, 'skipped': 0}, counts
+              tests[name] = counts
+          env = dict(os.environ, PYTHONPATH=str(Path('_deps/ordinal-forge/research/english-gonol').resolve()))
+          outputs = {}
+          for name, command in [('forge', [sys.executable]), ('installed', [str(Path('_state/clean/bin/python').absolute()), '-I'])]:
+              completed = subprocess.run(command + ['-m', 'english_gonol.ordinal_construction', ' word  word ', '--state-dir', os.environ['UCHC_STRUCTURAL_FIELD']], env=env, capture_output=True, text=True)
+              assert completed.returncode == 2, (name, completed.returncode, completed.stderr)
+              outputs[name] = completed.stdout
+              Path('_state/ordinal-partial-' + name + '.json').write_text(completed.stdout)
+          assert outputs['forge'] == outputs['installed']
+          partial = json.loads(outputs['installed'])
+          assert partial['standing'] == 'partial' and partial['code'] == 'SPACE_SEAM_FRAME_NOT_SELECTED'
+          record = {'schema': 'uchc.ordinal-corpus-acceptance', 'version': '1.0.0',
+                    'uchc_source_commit': source_commit, 'forge_source_commit': forge_commit,
+                    'work_graph_sha256': graph['work_graph_sha256'],
+                    'extraction_sha256': hashlib.sha256(extraction_path.read_bytes()).hexdigest(),
+                    'corpus_receipt': json.loads(Path('_state/first/manifest.json').read_text())['receipt_sha256'],
+                    'partial_output_sha256': hashlib.sha256(outputs['installed'].encode()).hexdigest(),
+                    'tests': tests, 'standing': 'exact candidate partial-result equivalence; no domain graduation'}
+          Path('_state/ordinal-corpus-acceptance.json').write_text(json.dumps(record, indent=2) + '\n')
+          print(json.dumps(record))
+          PYTHON
       - name: Exercise UCNS ordinal geometry across every corpus word
         run: |
           _state/clean/bin/python -m pip install ./_deps/ucns-ordinal
@@ -168,6 +229,7 @@ jobs:
               with_space = field.geometry(field.construct('geometry geometry'), operation='ordinal-affixiation')
               assert with_space['standing'] == 'partial' and with_space['code'] == 'SPACE_SEAM_FRAME_NOT_SELECTED'
               assert len(with_space['word_interiors']) == 1 and len(with_space['ordered_word_references']) == 2
+              assert with_space['word_interiors'][0]['geometry_authority'] == word['geometry_authority'] == geometry['glyph_frame']['geometry_authority']
               assert 'glyph_frame' not in with_space
               census = hashlib.sha256()
               total = constructed = unresolved = glyph_occurrences = 0
@@ -299,6 +361,13 @@ jobs:
             _state/query.json
             _state/hosted-replay.json
             _state/ordinal-corpus-census.json
+            _state/ordinal-corpus-acceptance.json
+            _state/ordinal-corpus-forge.xml
+            _state/ordinal-corpus-installed.xml
+            _state/ordinal-partial-forge.json
+            _state/ordinal-partial-installed.json
+            human/english/experiments/ordinal-geometry-v1/extraction.json
+            docs/work-graphs/english-ordinal-geometry-v1.json
             _state/sqlite-diagnostic.json
             _state/structural.xml
             _state/installed.xml

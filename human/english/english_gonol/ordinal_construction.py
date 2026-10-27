@@ -1,7 +1,10 @@
+# ratios: loc_comments=234:76 imports_exports=8:5 calls_definitions=72:13
+# SPDX-License-Identifier: FSL-1.1-ALv2
+# Copyright 2026 Erin Spencer
 # === MODULE_BUILD ===
 # id: uchc_english_ordinal_ucns_consumer
 #   module_name: ordinal_construction
-#   module_kind: consumer
+#   module_kind: adapter
 #   summary: exact glyph instantiation from the UCNS Public Gonol carrier and ordinal-affixiation geometry
 #   owner: Erin Spencer
 #   public_surface: construct_glyph_gonol, geometry_record, OrdinalStructuralField, OrdinalGeometryError
@@ -11,8 +14,8 @@
 #   network_boundary: none
 #   user_data_boundary: caller source remains in local computation
 #   admin_only: false
-#   tests: tests/test_ordinal_construction.py
-#   rollout: use the new OrdinalStructuralField for geometry; historical StructuralField receipts remain immutable
+#   tests: ordinal_tests/test_ordinal_construction.py in Stack; tests/test_ordinal_construction.py in UCHC; paired complete-corpus acceptance
+#   rollout: extract the verified Stack candidate; historical StructuralField receipts remain immutable
 #   rollback: remove consumer module and its explicit API; do not modify UCNS or sealed corpus artifacts
 #   requires: ucns.ordinal_affixiation, ucns.public_gonol, english_gonol.structural_query
 #   since: 2026-10-19
@@ -39,15 +42,22 @@
 #   given: an admitted verified English structural query and Public Gonol glyphs
 #   then: returned glyph geometry and each word's recoverable interior come from UCNS without inventing a parent word carrier
 #   class: correctness
+#
+# id: uchc_ordinal_detached_interiors_keep_authority
+#   given: a word or partial SPACE-seam result is detached from its query
+#   then: every constructed word interior carries the exact UCNS repository, commit and source blob identities
+#   class: evidence
 # === END CONTRACTS ===
 
-"""Executable English glyph geometry, consuming UCNS instead of reimplementing it.
+"""Stack-forged English ordinal candidate, consuming UCNS geometry.
 
 Usage with exact UCNS producer installed:
     python -m english_gonol.ordinal_construction word
 
 Use OrdinalStructuralField for a verified English corpus. The older
 StructuralField remains the immutable historical-replay surface.
+Stack owns this candidate until domain graduation. UCHC verifies its exact
+extraction; see the ordinal work graph and extraction receipt before editing.
 The Public Gonol fixes angular ordering; UCNS computes turns, radial halvings,
 closure and receipts. Hyperspace before instantiation is NOT a gonol.
 """
@@ -226,8 +236,10 @@ class OrdinalStructuralField(StructuralField):
     def word(self, surface: str) -> dict:
         result = super().word(surface)
         constructed = self._word_geometry(surface, result)
-        result["gonal_order"] = constructed.record()
-        result["geometry_receipt"] = constructed.receipt
+        geometry = geometry_record(constructed)
+        result["gonal_order"] = geometry["construction"]
+        result["geometry_receipt"] = geometry["receipt"]
+        result["geometry_authority"] = geometry["geometry_authority"]
         result["geometry_state"] = "constructed"
         return result
 
@@ -256,6 +268,7 @@ class OrdinalStructuralField(StructuralField):
                         "source": surface,
                         "construction": interior["gonal_order"],
                         "receipt": interior["geometry_receipt"],
+                        "geometry_authority": interior["geometry_authority"],
                     }
                 word_order.append({"ordinal": part["ordinal"], "word_id": part["identity"]})
             if " " in graph["source"]:
@@ -327,3 +340,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+# ratios: loc_comments=234:76 imports_exports=8:5 calls_definitions=72:13

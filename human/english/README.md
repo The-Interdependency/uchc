@@ -1,6 +1,8 @@
-## Current UCNS-backed ordinal geometry consumer
+## Extracted Stack ordinal candidate
 
 The executable [ordinal-geometry contract](docs/ordinal-geometry.md) constructs admitted glyph instances through UCNS ordinal_affixiation and the Public Gonol angular registry. For 'word', it returns radii R/16, R/8, R/4, R/2, real UCNS placements and exact source recovery.
+
+Stack owns this implementation until graduation; the [extraction receipt](experiments/ordinal-geometry-v1/extraction.json) binds its exact source and tests.
 
 Use OrdinalStructuralField for verified English corpus geometric queries; legacy StructuralField remains the immutable historical replay API. No replacement coordinates are fabricated.
 

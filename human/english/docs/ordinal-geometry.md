@@ -1,6 +1,9 @@
 # English ordinal geometry — executable UCNS consumer
 
-**Status:** New UCHC consumer of existing UCNS geometry. The sealed English corpus and Stack's forge authority do not change.
+**Status:** Extracted Stack ordinal candidate consuming existing UCNS geometry.
+Stack owns the candidate source and tests until domain graduation. UCHC verifies
+their exact extraction before building its candidate wheel. The sealed English
+corpus and UCNS geometry authority do not change.
 
 ## Construction
 
@@ -59,7 +62,17 @@ The new consumer:
 
 The hosted workflow uses a pinned actual UCNS checkout, runs independent append-oracle and source-drift tests, and verifies the clean-installed UCHC wheel.
 
-Machine authority graph: [english-ordinal-geometry-v1.json](../../docs/work-graphs/english-ordinal-geometry-v1.json).
+Machine authority graph: [english-ordinal-geometry-v1.json](../../../docs/work-graphs/english-ordinal-geometry-v1.json).
+
+The [extraction receipt](../experiments/ordinal-geometry-v1/extraction.json)
+pins the Stack source commit, source/test paths and SHA-256 values. Make candidate
+implementation changes in Stack first, then extract and verify the exact bytes
+here. This is candidate equivalence, not completed release or graduation.
+
+Each returned word and each detached `word_interiors` entry carries its UCNS
+`geometry_authority`, including partial SPACE-seam results. The CI evidence
+separately records the tested UCHC commit, PR head, work-graph digest, Stack
+extraction identity, construction receipt and built wheel hash.
 
 ## DONE WHEN / PROVEN BY / FAILS IF
 

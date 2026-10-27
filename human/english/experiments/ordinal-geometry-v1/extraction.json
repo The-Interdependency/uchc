@@ -1,0 +1,95 @@
+{
+  "schema": "uchc.english-ordinal-extraction",
+  "version": "1.0.0",
+  "source_repository": "The-Interdependency/stack",
+  "source_commit": "c8bddd5ae02fdaa001c2ba6962da66117384437e",
+  "source_root": "research/english-gonol",
+  "files": [
+    {
+      "source": "english_gonol/full_construct_run.py",
+      "target": "human/english/english_gonol/full_construct_run.py",
+      "sha256": "fbadf9cc033a154148b62e11b52d7e38b845c0d0b669ff34dfc6186cab15c064"
+    },
+    {
+      "source": "english_gonol/hyperspace_construct.py",
+      "target": "human/english/english_gonol/hyperspace_construct.py",
+      "sha256": "c5996470c6d3fe5387fa8f46e3d777deb44289d0b9e1e5d2f55c5d6348912a71"
+    },
+    {
+      "source": "english_gonol/language/__init__.py",
+      "target": "human/english/english_gonol/language/__init__.py",
+      "sha256": "0620712b60b0c51483f45212dc63fc139b1c51a561ad863512344a5477727352"
+    },
+    {
+      "source": "english_gonol/language/affixes.py",
+      "target": "human/english/english_gonol/language/affixes.py",
+      "sha256": "50df16c8dd71dcc0e1d964ac36909b3d48fbedbf404e27312492024261e36392"
+    },
+    {
+      "source": "english_gonol/language/manifest.py",
+      "target": "human/english/english_gonol/language/manifest.py",
+      "sha256": "ae0b1176398f48463c3082f46afc7cd82e7273a72555a3c76e47e8fe90e15155"
+    },
+    {
+      "source": "english_gonol/language/model.py",
+      "target": "human/english/english_gonol/language/model.py",
+      "sha256": "35a8ce27dcc70011cba1d31c3d6f9b1c4ec24f49a63316226ff92d12ce3332b4"
+    },
+    {
+      "source": "english_gonol/language/morphology.py",
+      "target": "human/english/english_gonol/language/morphology.py",
+      "sha256": "84ea74d3498442c313bc318f0d19c4951ef59ad8411f0122bdb7a116383460ce"
+    },
+    {
+      "source": "english_gonol/language/relational_bridge.py",
+      "target": "human/english/english_gonol/language/relational_bridge.py",
+      "sha256": "bceb4efc4730b2c7fc5ce8cb6f4d9334deeddb27905b79d273ce9ad3204b58eb"
+    },
+    {
+      "source": "english_gonol/language/rendering.py",
+      "target": "human/english/english_gonol/language/rendering.py",
+      "sha256": "83a1b8c8fb31c7bc64a857b7f57a67079e01daa19f0d7e1d74cd501b61b0ec20"
+    },
+    {
+      "source": "english_gonol/language/source.py",
+      "target": "human/english/english_gonol/language/source.py",
+      "sha256": "beb4d86f9c2a2879d3f63f4b73867af19edf33a2fdd6fea32e4e6e14c6b4ae2f"
+    },
+    {
+      "source": "english_gonol/ordinal_construction.py",
+      "target": "human/english/english_gonol/ordinal_construction.py",
+      "sha256": "5b43d0efe7661cda69b2fd2c50998834795adb4467febb7a9d7a3d54883a3da7"
+    },
+    {
+      "source": "english_gonol/structural_construct.py",
+      "target": "human/english/english_gonol/structural_construct.py",
+      "sha256": "8920759980c590719ff19a4a23906775b4058bda7f95f915a1621b1d56af18f4"
+    },
+    {
+      "source": "english_gonol/structural_query.py",
+      "target": "human/english/english_gonol/structural_query.py",
+      "sha256": "3a97e971825468347ab76a44a3203ed0ce706ca0293836ffd4cc0d223d2987be"
+    },
+    {
+      "source": "english_gonol/structural_rules.py",
+      "target": "human/english/english_gonol/structural_rules.py",
+      "sha256": "4686f6a847dd0cee24e3f0a05154a71203a1d4c790922952f9876a38f017db70"
+    },
+    {
+      "source": "ordinal_tests/test_ordinal_construction.py",
+      "target": "tests/test_ordinal_construction.py",
+      "sha256": "6e4efc2eef6e0c74f1f57f26fdbd083edbfdb54a494148ab6ff1a2b45f2ff651"
+    },
+    {
+      "source": "ordinal_tests/test_ordinal_corpus.py",
+      "target": "tests/test_ordinal_corpus.py",
+      "sha256": "55c2c4be6681ffe2964af85193176a72fea8cb298d6b03686c92c88b2eacd142"
+    }
+  ],
+  "work_graph_sha256": "39da6181572b57e90510bf307c05da87ef4c1ddab4dba9c89280707507e1b1f8",
+  "authority_transfer": false,
+  "hmmm": [
+    "Pinned Stack source is proposed in Stack #93; merge the producer before this dependent candidate.",
+    "Stable release, released-artifact reconsumption and English domain graduation remain incomplete."
+  ]
+}

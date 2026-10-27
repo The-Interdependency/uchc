@@ -6,11 +6,13 @@ Applications consume UCHC; applications do not define UCHC.
 
 ## Executable English ordinal geometry
 
-UCHC provides an executable, UCNS-backed English glyph construction API in [ordinal_construction.py](human/english/english_gonol/ordinal_construction.py). Run the clean-installed package with the pinned UCNS producer:
+UCHC carries a verified extraction of the Stack-owned, UCNS-backed English ordinal candidate in [ordinal_construction.py](human/english/english_gonol/ordinal_construction.py). Run the clean-installed package with the pinned UCNS producer:
 
     python -m english_gonol.ordinal_construction word
 
 The result contains UCNS turns, exact per-instance radial-halving exponents, and a recoverable receipt. The new OrdinalStructuralField supplies geometry for complete verified English corpus queries; the original StructuralField remains immutable for historical replay. See the [construction law and refusals](human/english/docs/ordinal-geometry.md).
+
+Implementation changes start in the [pinned Stack forge](https://github.com/The-Interdependency/stack/tree/c8bddd5ae02fdaa001c2ba6962da66117384437e/research/english-gonol). The [extraction receipt](human/english/experiments/ordinal-geometry-v1/extraction.json) and CI bind source/test bytes, complete-corpus behavior and the clean wheel; domain graduation remains incomplete.
 
 **hmmm:** glyphs outside the 157-position Public Gonol and higher-scale word-carrier angular attachment require additional selected geometry; neither receives a fabricated bearing.
 

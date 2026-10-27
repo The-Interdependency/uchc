@@ -1,3 +1,6 @@
+# ratios: loc_comments=155:63 imports_exports=8:10 calls_definitions=76:10
+# SPDX-License-Identifier: FSL-1.1-ALv2
+# Copyright 2026 Erin Spencer
 # === CHECKS ===
 # id: check_ordinal_ucns_exact_prefixes
 #   proves: uchc_ordinal_ucns_is_the_sole_geometry_authority, uchc_ordinal_glyph_occurrences_preserve_geometry
@@ -241,3 +244,4 @@ def test_geometry_record_refuses_fake_construction():
     with pytest.raises(OrdinalGeometryError) as exc:
         geometry_record({"receipt": "made-up"})
     assert exc.value.code == "UCNS_CONSTRUCTION_REQUIRED"
+# ratios: loc_comments=155:63 imports_exports=8:10 calls_definitions=76:10

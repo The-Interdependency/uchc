@@ -228,3 +228,23 @@ installing that candidate into the existing Stack/ZFAE consumer. Its gate 8
 remains pending for `0.1.0a2`; the historical `0.1.0a1` integration receipt does
 not establish it. Release, released-artifact reconsumption and authority transfer
 remain uncompleted.
+
+## Ordinal candidate extraction
+
+The `0.1.0a3` ordinal extension is extracted from Stack
+`c8bddd5ae02fdaa001c2ba6962da66117384437e`, proposed in
+[Stack #93](https://github.com/The-Interdependency/stack/pull/93). That source
+preserves the earlier UCHC #10 proposal identity rather than retroactively
+claiming it originated in Stack. Stack owns ongoing implementation changes.
+
+The [ordinal graph](work-graphs/english-ordinal-geometry-v1.json) and
+[extraction receipt](../human/english/experiments/ordinal-geometry-v1/extraction.json)
+bind the native producer, complete structural import closure, candidate source
+and both test suites. The ordinal gate compares Stack/source/clean-wheel CLI
+results. The structural gate additionally compares real complete-corpus partial
+results and verifies producer identity on every detached word interior.
+
+Use [ordinal geometry](../human/english/docs/ordinal-geometry.md) for installation
+and query commands. Candidate equivalence is distinct from stable publication,
+AHBG lock migration and domain graduation. Merge the Stack producer before its
+dependent UCHC extraction; no authority-transition receipt is issued here.
