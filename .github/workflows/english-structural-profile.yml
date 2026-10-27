@@ -1,3 +1,4 @@
+# Pytest uses -c /dev/null so checkout pythonpath settings cannot shadow the selected source or installed wheel.
 # Usage: executable structural-profile gates; all source records, no sample substitute.
 name: English structural profile
 on:
@@ -124,7 +125,7 @@ jobs:
       - name: Structural regressions
         env:
           PYTHONPATH: human/english
-        run: python -m pytest -q human/english/tests/test_structural_profile.py --junitxml=_state/structural.xml
+        run: python -m pytest -c /dev/null -q human/english/tests/test_structural_profile.py --junitxml=_state/structural.xml
       - name: Build and test the exact clean candidate wheel
         env:
           SOURCE_DATE_EPOCH: '1790308800'
@@ -136,7 +137,7 @@ jobs:
           _state/clean/bin/python -m pip install --no-index --no-deps _state/dist/uchc-0.1.0a3-py3-none-any.whl
           mkdir -p _state/isolated-tests
           cp ./human/english/tests/test_structural_profile.py _state/isolated-tests/
-          _state/clean/bin/python -I -m pytest -q _state/isolated-tests --junitxml=_state/installed.xml
+          _state/clean/bin/python -I -m pytest -c /dev/null -q _state/isolated-tests --junitxml=_state/installed.xml
       - name: Build every corpus construction twice and compare exact artifacts
         env:
           PYTHONPATH: human/english
@@ -157,8 +158,8 @@ jobs:
           _state/clean/bin/python -m pip install ./_deps/ucns-ordinal
           mkdir -p _state/corpus-tests
           cp tests/test_ordinal_corpus.py _state/corpus-tests/
-          PYTHONPATH=_deps/ordinal-forge/research/english-gonol python -m pytest -q _deps/ordinal-forge/research/english-gonol/ordinal_tests/test_ordinal_corpus.py --junitxml=_state/ordinal-corpus-forge.xml
-          _state/clean/bin/python -I -m pytest -q _state/corpus-tests --junitxml=_state/ordinal-corpus-installed.xml
+          PYTHONPATH=_deps/ordinal-forge/research/english-gonol python -m pytest -c /dev/null -q _deps/ordinal-forge/research/english-gonol/ordinal_tests/test_ordinal_corpus.py --junitxml=_state/ordinal-corpus-forge.xml
+          _state/clean/bin/python -I -m pytest -c /dev/null -q _state/corpus-tests --junitxml=_state/ordinal-corpus-installed.xml
           python - <<'PYTHON'
           import hashlib, json, os, subprocess, sys, xml.etree.ElementTree as ET
           from pathlib import Path

@@ -1,3 +1,4 @@
+# Pytest uses -c /dev/null so checkout pythonpath settings cannot shadow the selected source or installed wheel.
 name: English ordinal UCNS geometry
 on:
   pull_request:
@@ -78,13 +79,13 @@ jobs:
           PYTHONPATH: human/english
         run: |
           mkdir -p _state
-          python -m pytest -q tests/test_ordinal_construction.py --junitxml=_state/source.xml
+          python -m pytest -c /dev/null -q tests/test_ordinal_construction.py --junitxml=_state/source.xml
           python -m english_gonol.ordinal_construction word > _state/word-source.json
       - name: Execute the exact Stack source before candidate comparison
         env:
           PYTHONPATH: _deps/ordinal-forge/research/english-gonol
         run: |
-          python -m pytest -q _deps/ordinal-forge/research/english-gonol/ordinal_tests/test_ordinal_construction.py --junitxml=_state/forge.xml
+          python -m pytest -c /dev/null -q _deps/ordinal-forge/research/english-gonol/ordinal_tests/test_ordinal_construction.py --junitxml=_state/forge.xml
           python -m english_gonol.ordinal_construction word > _state/word-forge.json
       - name: Build and clean-install UCHC with UCNS
         run: |
@@ -95,7 +96,7 @@ jobs:
           _state/clean/bin/python -m pip install --no-index --no-deps _state/dist/uchc-0.1.0a3-py3-none-any.whl
           mkdir -p _state/isolated-tests
           cp tests/test_ordinal_construction.py _state/isolated-tests/test_ordinal_construction.py
-          _state/clean/bin/python -I -m pytest -q _state/isolated-tests --junitxml=_state/installed.xml
+          _state/clean/bin/python -I -m pytest -c /dev/null -q _state/isolated-tests --junitxml=_state/installed.xml
           _state/clean/bin/python -I -m english_gonol.ordinal_construction word > _state/word-installed.json
       - name: Verify exact end-to-end artifact, receipt and test outcomes
         env:
