@@ -76,7 +76,7 @@ extraction identity, construction receipt and built wheel hash.
 
 ## Ratified forward requirements
 
-The [2026-10-27 operator decision](https://github.com/The-Interdependency/stack/blob/2909ffa0268c9535ea2b6ad1dd892caa82f447b4/research/english-gonol/docs/ordinal-decisions-2026-10-27.md)
+The [2026-10-27 operator decision](https://github.com/The-Interdependency/stack/blob/c17ed27a935a5583880f2a29d79f9152f2362ea3/research/english-gonol/docs/ordinal-decisions-2026-10-27.md)
 selects construction-derived parent bearing through SPACE, definition ownership
 by the whole closed lexical construction, and permission to rebase existing
 glyph bearings in a new carrier version with new receipts. These policy choices
@@ -84,6 +84,13 @@ are settled. The linked record distinguishes them from the exact angular rule,
 typed-origin implementation, carrier specification and replay still required.
 The source extraction pinned above remains the tested implementation; this
 decision does not change its geometry or reinterpret its receipts.
+
+The compound clarification fixes the terminal glyph occurrence as the next
+component's SPACE reference: in `bull + shit`, use the second `l`. Established
+radial distances remain unchanged; the angular change expresses the join. The
+linked record includes an explicitly derived angular-reference candidate.
+Sentence joining by distance, angle or both remains a comparison of alternatives;
+no sentence operator has been ratified or substituted into this runtime.
 
 ## DONE WHEN / PROVEN BY / FAILS IF
 
@@ -96,6 +103,6 @@ decision does not change its geometry or reinterpret its receipts.
 ## hmmm
 
 1. The expanded carrier still needs an exact inventory/order and implementation. Rebasing in a new version is authorized; unsupported glyphs continue to refuse in the current pinned implementation.
-2. Parent bearing must derive from the closed construction and SPACE attachment. Its exact numerical rule remains unresolved.
+2. Compound attachment uses the terminal occurrence as SPACE and preserves radial distance. The derived angular-reference candidate still needs native implementation and verification. Sentence distance/angle operators remain candidates.
 3. Whole-lexical definition ownership is ratified; its typed-origin implementation and complete-corpus replay remain pending.
 4. Stable release, released-artifact reconsumption and Stack-to-UCHC graduation remain incomplete. Native Möbius lift, sheet-state transport and 360°/720° return tests are outside this English ordinal construction's scope.
