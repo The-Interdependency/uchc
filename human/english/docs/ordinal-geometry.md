@@ -74,14 +74,14 @@ Each returned word and each detached `word_interiors` entry carries its UCNS
 separately records the tested UCHC commit, PR head, work-graph digest, Stack
 extraction identity, construction receipt and built wheel hash.
 
-## Ratified forward requirements
+## Forward decisions and construction assumptions
 
-The [operator decisions, clarified 2026-10-28](https://github.com/The-Interdependency/stack/blob/147583a6f23fdc48d5ba59e3baa1d984309c20fb/research/english-gonol/docs/ordinal-decisions-2026-10-27.md)
+The [operator decisions, clarified through 2026-10-29](https://github.com/The-Interdependency/stack/blob/f19389bd7b15e6540f812ec47d67274e429daec5/research/english-gonol/docs/ordinal-decisions-2026-10-27.md)
 select construction-derived parent bearing through SPACE, definition ownership
 by the whole closed lexical construction, and permission to rebase existing
 glyph bearings in a new carrier version with new receipts.
 
-The clarified attachment and storage requirements are also selected:
+The attachment and direction requirements remain selected:
 
 - Word origins sit at their declared attachments. In `bull + shit`, the second
   `l` occurrence supplies the incoming SPACE attachment while the whole lexical
@@ -89,28 +89,31 @@ The clarified attachment and storage requirements are also selected:
 - The preceding placed letter's direction becomes the next frame's SPACE
   direction. Glyph angles remain relative to their own local SPACE; their
   parent-frame headings can differ even for repeated glyphs.
-- Every glyph begins as SPACE. Its original SPACE storage remains together
-  with its glyph, origin and angular reference; glyph assignment must not
-  discard or replace that support.
 - Compound joining preserves component-local radii. Glyph appending remains
   the distinct ordinal-halving operation.
 
-Retained SPACE is a geometric/storage role, not an extra literal U+0020 text
-occurrence. The source extraction pinned above remains the tested
-implementation. It does not yet implement retained per-glyph SPACE storage,
-inherited local-frame direction or origin-at-attachment transport. A word-level
-`origin='SPACE'` label does not establish those behaviors.
+Every glyph beginning as SPACE, with SPACE remaining alongside it, is a
+construction assumption. Erin clarified that this does not necessarily require
+storage. A separately stored SPACE object or field is not mandated; origins,
+directions and attachment relations may be implicit or derived when recoverable.
+The SPACE role does not insert an extra literal U+0020 text occurrence.
 
-The earlier shared-origin angular drawing is a projected view, not the complete
-attachment construction. Common-origin and individual-origin views require a
-recoverable correspondence preserving occurrences, frame relations and SPACE
-supports. Sentence joining by distance, angle or both remains a comparison of
-alternatives; no sentence operator has been substituted into this runtime.
+The source extraction pinned above remains the tested implementation. It does
+not implement the selected inherited local-frame direction or origin-at-
+attachment transport. A word-level `origin='SPACE'` label does not establish
+those behaviors; absence of a separate SPACE record is not itself a failure.
+
+The earlier shared-origin angular drawing is a projected view. Common-origin
+and individual-origin views require a recoverable correspondence preserving
+occurrences and frame relations consistently with the SPACE assumption. The
+disk-stack picture is a proposed depth interpretation; disk arrangement,
+viewpoint, projection, exact halving and the changing angle remain unresolved.
+Sentence distance/angle alternatives remain unselected.
 
 ## DONE WHEN / PROVEN BY / FAILS IF
 
 These acceptance criteria describe the pinned executable extraction above;
-they do not mark the newer forward attachment/storage requirements complete.
+they do not mark the newer forward attachment/direction requirements complete.
 
 **DONE WHEN:** UCHC constructs real UCNS glyph geometry for admitted sequences and exposes it in a corpus-aware consumer.
 
@@ -121,6 +124,6 @@ they do not mark the newer forward attachment/storage requirements complete.
 ## hmmm
 
 1. The expanded carrier still needs an exact inventory/order and implementation. Rebasing in a new version is authorized; unsupported glyphs continue to refuse in the current pinned implementation.
-2. Native retained-SPACE storage, inherited SPACE direction, origin-at-attachment transport and both-view recovery still need implementation and verification. The requirements are selected; sentence distance/angle operators remain candidates.
+2. Native inherited SPACE direction, origin-at-attachment transport and both-view recovery still need implementation and verification. Explicit SPACE storage is not required; its representation and the proposed disk-stack projection remain open. Sentence distance/angle operators remain candidates.
 3. Whole-lexical definition ownership is ratified; its typed-origin implementation and complete-corpus replay remain pending.
 4. Stable release, released-artifact reconsumption and Stack-to-UCHC graduation remain incomplete. Native Möbius lift, sheet-state transport and 360°/720° return tests are outside this English ordinal construction's scope.
