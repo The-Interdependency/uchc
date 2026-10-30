@@ -93,7 +93,7 @@ jobs:
           python -m venv _state/clean
           _state/clean/bin/python -m pip install pytest==8.3.5 PyYAML==6.0.2
           _state/clean/bin/python -m pip install ./_deps/ucns-ordinal
-          _state/clean/bin/python -m pip install --no-index --no-deps _state/dist/uchc-0.1.0a3-py3-none-any.whl
+          _state/clean/bin/python -m pip install --no-index --no-deps _state/dist/uchc-0.1.0a4-py3-none-any.whl
           mkdir -p _state/isolated-tests
           cp tests/test_ordinal_construction.py _state/isolated-tests/test_ordinal_construction.py
           _state/clean/bin/python -I -m pytest -c /dev/null -q _state/isolated-tests --junitxml=_state/installed.xml
@@ -122,7 +122,7 @@ jobs:
               totals = {k: sum(int(x.get(k,0)) for x in cases) for k in ('tests','failures','errors','skipped')}
               assert totals['tests'] >= 10 and totals['failures'] == totals['errors'] == totals['skipped'] == 0, totals
               tests[name] = totals
-          wheel = Path('_state/dist/uchc-0.1.0a3-py3-none-any.whl')
+          wheel = Path('_state/dist/uchc-0.1.0a4-py3-none-any.whl')
           source_commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
           assert source_commit == os.environ['UCHC_SOURCE_COMMIT']
           graph = json.loads(Path('docs/work-graphs/english-ordinal-geometry-v1.json').read_text())

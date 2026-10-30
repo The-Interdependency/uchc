@@ -1,10 +1,11 @@
-## Extracted Stack ordinal candidate
+## Extracted recursive attachment profile
 
-The executable [ordinal-geometry contract](docs/ordinal-geometry.md) constructs admitted glyph instances through UCNS ordinal_affixiation and the Public Gonol angular registry. For 'word', it returns radii R/16, R/8, R/4, R/2, real UCNS placements and exact source recovery.
-
-Stack owns this implementation until graduation; the [extraction receipt](experiments/ordinal-geometry-v1/extraction.json) binds its exact source and tests.
-
-Use OrdinalStructuralField for verified English corpus geometric queries; legacy StructuralField remains the immutable historical replay API. No replacement coordinates are fabricated.
+Start with [recursive-stack.md](docs/recursive-stack.md) and the
+[exact extraction receipt](experiments/recursive-attachment-v1/extraction.json).
+Sentences stack closed words through the same native operation as glyphs within
+words. Whole lexical ownership is represented by a typed source closure.
+Bearing candidates remain explicit; historical ordinal/structural replay remains
+available. Stack retains implementation authority pending graduation.
 
 ---
 # English Gonol Construction

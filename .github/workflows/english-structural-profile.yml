@@ -134,7 +134,7 @@ jobs:
           python -m pip wheel --no-deps --no-build-isolation . -w _state/dist
           python -m venv _state/clean
           _state/clean/bin/python -m pip install pytest==8.3.5 PyYAML==6.0.2
-          _state/clean/bin/python -m pip install --no-index --no-deps _state/dist/uchc-0.1.0a3-py3-none-any.whl
+          _state/clean/bin/python -m pip install --no-index --no-deps _state/dist/uchc-0.1.0a4-py3-none-any.whl
           mkdir -p _state/isolated-tests
           cp ./human/english/tests/test_structural_profile.py _state/isolated-tests/
           _state/clean/bin/python -I -m pytest -c /dev/null -q _state/isolated-tests --junitxml=_state/installed.xml
@@ -328,7 +328,7 @@ jobs:
           assert verification['forge_source_commit'] == next(r['commit'] for r in graph['repositories'] if r['repository'] == 'The-Interdependency/stack')
           historical_wheel = pathlib.Path('_state/historical-dist') / ('uchc-' + verification['candidate_version'] + '-py3-none-any.whl')
           assert verification['candidate_wheel_sha256'] == digest(historical_wheel)
-          wheel = pathlib.Path('_state/dist/uchc-0.1.0a3-py3-none-any.whl')
+          wheel = pathlib.Path('_state/dist/uchc-0.1.0a4-py3-none-any.whl')
           assert wheel.is_file() and digest(wheel) != digest(historical_wheel)
           tests = {}
           for name, expected in [('structural', verification['tests']['structural_included_in_english']), ('installed', verification['tests']['clean_installed_structural'])]:

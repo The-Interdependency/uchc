@@ -4,17 +4,29 @@ UCHC is the implementation repository for **Unit Circle Hyperspace Constructs**.
 
 Applications consume UCHC; applications do not define UCHC.
 
-## Executable English ordinal geometry
+## Recursive English attachment
 
-UCHC carries a verified extraction of the Stack-owned, UCNS-backed English ordinal candidate in [ordinal_construction.py](human/english/english_gonol/ordinal_construction.py). Run the clean-installed package with the pinned UCNS producer:
+The [recursive attachment profile](human/english/docs/recursive-stack.md) stacks
+glyphs into words and closed words into sentences using one native UCNS operation.
+Compound joins preserve component-local radii; both origin views replay exactly.
 
-    python -m english_gonol.ordinal_construction word
+```bash
+python -m english_gonol.attachment_construction word bull
+python -m english_gonol.attachment_construction compound bull shit
+python -m english_gonol.attachment_construction sequence bull shit --bearing root-endpoint-v1
+```
 
-The result contains UCNS turns, exact per-instance radial-halving exponents, and a recoverable receipt. The new OrdinalStructuralField supplies geometry for complete verified English corpus queries; the original StructuralField remains immutable for historical replay. See the [construction law and refusals](human/english/docs/ordinal-geometry.md).
+Install the exact UCNS producer named by the
+[work graph](docs/work-graphs/english-recursive-attachment-v1.json).
+The [extraction receipt](human/english/experiments/recursive-attachment-v1/extraction.json)
+binds Stack source, tests and import closure. `RecursiveStructuralField` preserves
+corpus admission, sentence closure, source punctuation/SPACE and every occurrence;
+it overlays a typed whole lexical definition owner. Historical ordinal and
+structural APIs remain versioned replay interfaces.
 
-Implementation changes start in the [pinned Stack forge](https://github.com/The-Interdependency/stack/tree/c8bddd5ae02fdaa001c2ba6962da66117384437e/research/english-gonol). The [extraction receipt](human/english/experiments/ordinal-geometry-v1/extraction.json) and CI bind source/test bytes, complete-corpus behavior and the clean wheel; domain graduation remains incomplete.
-
-**hmmm:** glyphs outside the 157-position Public Gonol and higher-scale word-carrier angular attachment require additional selected geometry; neither receives a fabricated bearing.
+**hmmm:** the closed-word bearing functional remains unselected; both named
+candidates are explicit. Numerical definition attachment, expanded glyph
+inventory, punctuation geometry, native sheet lift and graduation remain open.
 
 ## Domains
 

@@ -248,3 +248,17 @@ Use [ordinal geometry](../human/english/docs/ordinal-geometry.md) for installati
 and query commands. Candidate equivalence is distinct from stable publication,
 AHBG lock migration and domain graduation. Merge the Stack producer before its
 dependent UCHC extraction; no authority-transition receipt is issued here.
+
+## Recursive attachment candidate — 0.1.0a4
+
+This candidate extracts the Stack forward `english.attachment/1` profile and
+consumes UCNS `9cc00771e54336d58ee377faeec87a3a33dbd4bf`. It adds native recursive
+stacks, closed compound transport, both origin views, complete graph replay and
+a typed whole lexical-owner overlay. The exact source/test/import-closure receipt
+is `human/english/experiments/recursive-attachment-v1/extraction.json`.
+
+The new acceptance workflow verifies the pinned forge, native bytes, clean
+installed package, complete-corpus queries and all-word/all-definition stream
+digests. Existing historical corpus and ordinal receipts keep their identities.
+Bearing selection, numerical definition attachment, stable release,
+released-artifact reconsumption and authority transition remain hmmm.
