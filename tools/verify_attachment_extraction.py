@@ -1,4 +1,4 @@
-# ratios: loc_comments=47:30 imports_exports=8:1 calls_definitions=23:1
+# ratios: loc_comments=50:30 imports_exports=8:1 calls_definitions=25:1
 # SPDX-License-Identifier: FSL-1.1-ALv2
 # Copyright 2026 Erin Spencer
 # === MODULE_BUILD ===
@@ -65,6 +65,9 @@ def main():
     for item in extraction['files']:
         original = args.forge / 'research/english-gonol' / item['source']
         copied = root / item['target']
+        committed = subprocess.check_output(['git', '-C', str(args.forge), 'show',
+                                             source + ':research/english-gonol/' + item['source']])
+        assert original.read_bytes() == committed, item['source']
         assert original.read_bytes() == copied.read_bytes(), item['target']
         assert hashlib.sha256(copied.read_bytes()).hexdigest() == item['sha256']
         if item['source'].startswith('english_gonol/'):
@@ -82,4 +85,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-# ratios: loc_comments=47:30 imports_exports=8:1 calls_definitions=23:1
+# ratios: loc_comments=50:30 imports_exports=8:1 calls_definitions=25:1
