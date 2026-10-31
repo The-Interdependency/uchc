@@ -6,6 +6,8 @@ Applications consume UCHC; applications do not define UCHC.
 
 ## Recursive English attachment
 
+Start with [candidate installation, use and acceptance](docs/RECURSIVE_INTEGRATION.md).
+
 The [recursive attachment profile](human/english/docs/recursive-stack.md) stacks
 glyphs into words and closed words into sentences using one native UCNS operation.
 Compound joins preserve component-local radii; both origin views replay exactly.

@@ -1,4 +1,4 @@
-# ratios: loc_comments=65:31 imports_exports=7:2 calls_definitions=31:2
+# ratios: loc_comments=76:37 imports_exports=8:3 calls_definitions=38:3
 # SPDX-License-Identifier: FSL-1.1-ALv2
 # Copyright 2026 Erin Spencer
 # === MODULE_BUILD ===
@@ -7,7 +7,7 @@
 #   module_kind: verification-tool
 #   summary: complete forward word and typed lexical ownership census over a verified corpus
 #   owner: Erin Spencer
-#   public_surface: audit, main
+#   public_surface: audit, verify_report, main
 #   internal_surface: ordered stream digests
 #   auth_boundary: verified structural field and pinned native modules
 #   storage_boundary: corpus read-only; JSON report to stdout
@@ -24,17 +24,23 @@
 # id: english_attachment_complete_census
 #   given: a verified complete structural corpus
 #   then: every word is reconstructed or explicitly refused and every definition retains its whole lexical owner, constituents and source succession
+# id: english_attachment_census_baseline
+#   given: an observed census and an explicitly supplied preserved baseline
+#   then: refuse any changed result even when forge and installed outputs agree; refuse optimized execution that disables the audit assertions
 # === END CONTRACTS ===
 """GPT generated; context, prompt Erin Spencer.
 
 Usage: python -m english_gonol.attachment_audit /path/to/structural-field
+       --expect experiments/recursive-attachment-v1/corpus-audit.json
 This finite complete audit has no sampling or scientific runtime cutoff.
 Stream hashes bind ordered results without retaining a second corpus in memory.
+Omit --expect only for a new observation, never for baseline acceptance.
 """
 import argparse
 from collections import Counter
 import hashlib
 import json
+from pathlib import Path
 
 from english_gonol.attachment_construction import RecursiveStructuralField, authority
 from english_gonol.ordinal_construction import OrdinalGeometryError
@@ -42,6 +48,8 @@ from english_gonol.structural_rules import digest
 
 
 def audit(path):
+    if not __debug__:
+        raise RuntimeError('OPTIMIZED_AUDIT_FORBIDDEN: verification requires assertions')
     counts, refusals = Counter(), Counter()
     words_hash, definitions_hash = hashlib.sha256(), hashlib.sha256()
     with RecursiveStructuralField(path) as field:
@@ -94,13 +102,24 @@ def audit(path):
         return {**result, 'receipt': digest(result)}
 
 
+def verify_report(observed, expected):
+    """Bind the whole census, including exclusions, provenance and stream identities."""
+    if digest(observed) != digest(expected):
+        raise ValueError('CENSUS_BASELINE_MISMATCH')
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('field')
+    parser.add_argument('--expect', type=Path, help='require the complete preserved census JSON')
     args = parser.parse_args()
-    print(json.dumps(audit(args.field), sort_keys=True, ensure_ascii=False, indent=2))
+    expected = json.loads(args.expect.read_text()) if args.expect else None
+    result = audit(args.field)
+    if args.expect is not None:
+        verify_report(result, expected)
+    print(json.dumps(result, sort_keys=True, ensure_ascii=False, indent=2))
 
 
 if __name__ == '__main__':
     main()
-# ratios: loc_comments=65:31 imports_exports=7:2 calls_definitions=31:2
+# ratios: loc_comments=76:37 imports_exports=8:3 calls_definitions=38:3

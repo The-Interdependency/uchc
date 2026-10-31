@@ -1,4 +1,4 @@
-# ratios: loc_comments=106:39 imports_exports=10:5 calls_definitions=70:5
+# ratios: loc_comments=141:53 imports_exports=14:7 calls_definitions=86:7
 # === CHECKS ===
 # id: check_english_word_uses_native_attachment_and_exact_views
 #   proves: english_attachment_native_authority
@@ -31,6 +31,18 @@
 #   mutates: filesystem
 #   cleanup: pytest_fixture_teardown
 # === END CHECKS ===
+# === CHECKS ===
+# id: check_attachment_census_rejects_shared_regressions
+#   proves: english_attachment_census_baseline
+#   call: self::test_census_rejects_shared_regressions
+#   mutates: none
+#   cleanup: none
+# id: check_attachment_audit_refuses_disabled_assertions
+#   proves: english_attachment_census_baseline
+#   call: self::test_audit_refuses_disabled_assertions
+#   mutates: none
+#   cleanup: subprocess_exit
+# === END CHECKS ===
 # SPDX-License-Identifier: FSL-1.1-ALv2
 # Copyright 2026 Erin Spencer
 """Native consumer tests: pytest -c /dev/null ordinal_tests/test_attachment_construction.py.
@@ -42,10 +54,14 @@ fixture is represented as verified Public Gonol corpus geometry.
 from copy import deepcopy
 from fractions import Fraction
 import json
+from pathlib import Path
+import subprocess
+import sys
 
 import pytest
 
 from english_gonol import attachment_construction as api
+from english_gonol.attachment_audit import verify_report
 from english_gonol.ordinal_construction import OrdinalGeometryError
 from english_gonol.language.source import LexemeRecord, SenseRecord, SynsetRecord, WordnetSnapshot
 from english_gonol.structural_construct import build
@@ -157,4 +173,39 @@ def test_partial_corpus_and_whole_lexical_owner(tmp_path):
         assert definition['definition_succession']['ordinal'] == 0
         assert definition['historical_origin']['state'] == 'hmmm:compound-lexical-origin'
         assert all(p['owner'] == definition['origin'] for p in definition['constituent_direct'])
-# ratios: loc_comments=106:39 imports_exports=10:5 calls_definitions=70:5
+def test_census_rejects_shared_regressions():
+    """Equal consumer outputs must still fail when both regress from the baseline."""
+    baseline = {'counts': {'words': 103053, 'constructed_words': 103027,
+                           'refused_words': 26, 'definitions': 185155,
+                           'formerly_compound_definitions': 57155},
+                'word_stream_sha256': 'a' * 64, 'definition_stream_sha256': 'b' * 64,
+                'unplaced_glyph_word_counts': {'é': 8}, 'field_receipt': 'c' * 64,
+                'geometry_authority': {'commit': api.UCNS_COMMIT}}
+    verify_report(json.loads(json.dumps(baseline)), baseline)
+    for mutate in (
+        lambda r: r['counts'].update(constructed_words=103026, refused_words=27),
+        lambda r: r['counts'].update(definitions=185154),
+        lambda r: r.update(word_stream_sha256='0' * 64),
+        lambda r: r.update(definition_stream_sha256='0' * 64),
+        lambda r: r['unplaced_glyph_word_counts'].update(é=7),
+        lambda r: r.update(field_receipt='0' * 64),
+        lambda r: r['geometry_authority'].update(commit='0' * 40),
+    ):
+        forge = deepcopy(baseline)
+        mutate(forge)
+        installed = deepcopy(forge)
+        assert installed == forge
+        for observed in (forge, installed):
+            with pytest.raises(ValueError, match='CENSUS_BASELINE_MISMATCH'):
+                verify_report(observed, baseline)
+
+
+def test_audit_refuses_disabled_assertions():
+    """Reject -O before opening a corpus or reporting verification success."""
+    package_root = str(Path(api.__file__).resolve().parents[1])
+    code = (f'import sys; sys.path.insert(0, {package_root!r}); '
+            'from english_gonol.attachment_audit import audit; audit("unused")')
+    result = subprocess.run([sys.executable, '-I', '-O', '-c', code], capture_output=True, text=True)
+    assert result.returncode != 0 and not result.stdout
+    assert 'OPTIMIZED_AUDIT_FORBIDDEN' in result.stderr
+# ratios: loc_comments=141:53 imports_exports=14:7 calls_definitions=86:7

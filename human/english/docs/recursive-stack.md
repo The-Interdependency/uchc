@@ -58,7 +58,7 @@ python -m english_gonol.attachment_construction compound bull shit
 python -m english_gonol.attachment_construction sequence bull shit --bearing root-endpoint-v1
 python -m pytest -c /dev/null ordinal_tests/test_attachment_construction.py
 UCHC_STRUCTURAL_FIELD=/path/to/complete/field python -m pytest -c /dev/null ordinal_tests/test_attachment_corpus.py
-python -m english_gonol.attachment_audit /path/to/complete/field
+python -m english_gonol.attachment_audit /path/to/complete/field --expect experiments/recursive-attachment-v1/corpus-audit.json
 ```
 
 CLI sequence arguments declare word boundaries; they do not infer sentence
@@ -89,6 +89,9 @@ The complete corpus audit visits every word and definition, checking retained
 parts, source succession and typed lexical ownership. Its deterministic stream
 digests can be compared across forge and installed consumer. Read the adjacent
 experiment evidence for executed counts and exact producer identities.
+Acceptance also requires the complete report to match the preserved census via
+`--expect`; two equally regressed consumers do not pass. Optimized Python (`-O`
+or `PYTHONOPTIMIZE`) is refused because it disables verification assertions.
 
 **hmmm:** select the closed-word bearing functional; numerical definition
 attachment; expanded carrier inventory/order; punctuation geometry and sheet

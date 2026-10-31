@@ -1,4 +1,4 @@
-# ratios: loc_comments=50:30 imports_exports=8:1 calls_definitions=25:1
+# ratios: loc_comments=52:34 imports_exports=8:1 calls_definitions=26:1
 # SPDX-License-Identifier: FSL-1.1-ALv2
 # Copyright 2026 Erin Spencer
 # === MODULE_BUILD ===
@@ -24,11 +24,15 @@
 # id: uchc_attachment_exact_extraction
 #   given: pinned Stack checkout and candidate files
 #   then: require complete declared source closure, matching source bytes, graph identity and native producer identity
+# id: uchc_attachment_verification_not_optimized
+#   given: optimized Python disables verification assertions
+#   then: refuse before emitting an exact-extraction claim
 # === END CONTRACTS ===
 """GPT generated; context, prompt Erin Spencer.
 
 Usage: PYTHONPATH=human/english python tools/verify_attachment_extraction.py /path/to/stack
 Run the same command with isolated installed Python to verify packaged modules.
+Optimized Python (-O or PYTHONOPTIMIZE) is not an evidence-producing mode.
 """
 import argparse
 import hashlib
@@ -42,6 +46,8 @@ from english_gonol.structural_construct import IMPLEMENTATION_FILES
 
 
 def main():
+    if not __debug__:
+        raise SystemExit('OPTIMIZED_VERIFICATION_FORBIDDEN: extraction requires assertions')
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('forge', type=Path)
     args = parser.parse_args()
@@ -85,4 +91,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-# ratios: loc_comments=50:30 imports_exports=8:1 calls_definitions=25:1
+# ratios: loc_comments=52:34 imports_exports=8:1 calls_definitions=26:1

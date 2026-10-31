@@ -1,10 +1,10 @@
 {
   "schema": "uchc.recursive-attachment-extraction.v1",
   "source_repository": "The-Interdependency/stack",
-  "source_commit": "86a5fb1936dc6ca04ad6fb9bb161ea3fd7f4da88",
+  "source_commit": "251ba2290675a21154582f0b3fb0d7a9d509ed50",
   "source_root": "research/english-gonol",
   "authority_transfer": false,
-  "work_graph_sha256": "a8e9be098fc1fb21bbf8af555ee0271377f9114263dad2bf259ce27847155603",
+  "work_graph_sha256": "a17bdf8c1fda5fec60f7d1b819b48fa493b873c8e3f8997d83144b038fb14dd5",
   "geometry_authority": {
     "repository": "The-Interdependency/ucns",
     "commit": "9cc00771e54336d58ee377faeec87a3a33dbd4bf",
@@ -95,12 +95,12 @@
     {
       "source": "english_gonol/attachment_audit.py",
       "target": "human/english/english_gonol/attachment_audit.py",
-      "sha256": "28563495fab1ea7bd497a2e7689632fa80a46162242ae3e04b39c42a891402f0"
+      "sha256": "57f057cea6defd01001edf9a6443d1b51d4f3ebe4d1f56d480ac2b3398199d07"
     },
     {
       "source": "ordinal_tests/test_attachment_construction.py",
       "target": "tests/test_attachment_construction.py",
-      "sha256": "b86dabc4303dd9b63c82fe7d76188311b5c91637d918ea23738d0a45477991fc"
+      "sha256": "d58b367607a83336ea100afd2723de0359f6d38db58214e773fa89b303b0915c"
     },
     {
       "source": "ordinal_tests/test_attachment_corpus.py",
