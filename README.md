@@ -4,6 +4,32 @@ UCHC is the implementation repository for **Unit Circle Hyperspace Constructs**.
 
 Applications consume UCHC; applications do not define UCHC.
 
+## Recursive English attachment
+
+Start with [candidate installation, use and acceptance](docs/RECURSIVE_INTEGRATION.md).
+
+The [recursive attachment profile](human/english/docs/recursive-stack.md) stacks
+glyphs into words and closed words into sentences using one native UCNS operation.
+Compound joins preserve component-local radii; both origin views replay exactly.
+
+```bash
+python -m english_gonol.attachment_construction word bull
+python -m english_gonol.attachment_construction compound bull shit
+python -m english_gonol.attachment_construction sequence bull shit --bearing root-endpoint-v1
+```
+
+Install the exact UCNS producer named by the
+[work graph](docs/work-graphs/english-recursive-attachment-v1.json).
+The [extraction receipt](human/english/experiments/recursive-attachment-v1/extraction.json)
+binds Stack source, tests and import closure. `RecursiveStructuralField` preserves
+corpus admission, sentence closure, source punctuation/SPACE and every occurrence;
+it overlays a typed whole lexical definition owner. Historical ordinal and
+structural APIs remain versioned replay interfaces.
+
+**hmmm:** the closed-word bearing functional remains unselected; both named
+candidates are explicit. Numerical definition attachment, expanded glyph
+inventory, punctuation geometry, native sheet lift and graduation remain open.
+
 ## Domains
 
 ```text

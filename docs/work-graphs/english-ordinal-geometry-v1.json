@@ -1,0 +1,43 @@
+{
+  "schema": "the-interdependency.stack-manifest",
+  "version": "1.0.0",
+  "repositories": [
+    {
+      "repository": "The-Interdependency/ucns",
+      "commit": "ed0b0760f05cd975a7a811f8abeb70a11d09f00b",
+      "authority": "Public Gonol glyph carrier and exact ordinal-affixiation geometric operations",
+      "relation": "pinned producer; runtime verifies public_gonol.py and ordinal_affixiation.py Git blob identities"
+    },
+    {
+      "repository": "The-Interdependency/stack",
+      "commit": "c8bddd5ae02fdaa001c2ba6962da66117384437e",
+      "authority": "active English implementation and public-contract forge pending UCHC graduation",
+      "relation": "exact repaired ordinal source and tests extracted into this UCHC candidate; source and behavior equivalence required"
+    },
+    {
+      "repository": "The-Interdependency/uchc",
+      "commit": "45f50ebce04235611223fda13cf67e1a71d45dba",
+      "authority": "verified English structural consumer and extracted candidate baseline",
+      "relation": "pre-change extracted baseline; current tested candidate identity is recorded by CI, not inferred from this input pin"
+    },
+    {
+      "repository": "The-Interdependency/skill-lib",
+      "commit": "e46accffcb67a10630516d486c89e67f6ad19c7a",
+      "authority": "WDLL, gonol construction, cross-repository evidence and audit discipline",
+      "relation": "governing skills consumed; no geometry authority"
+    }
+  ],
+  "boundaries": {
+    "authority_transfer": false,
+    "proof_status_transfer": false,
+    "measurement_status_transfer": false,
+    "semantic_mapping": "UCNS owns geometry; Stack owns the English candidate; UCHC carries a verified extraction without transferring authority.",
+    "agent_scope": "uchc-english-ordinal-geometry-consumer",
+    "hmmm": [
+      "Non-Public-Gonol Unicode scalars have no licensed public angular bearing in this selected 157-glyph carrier.",
+      "Higher-order angular carrier for closed word identities and cross-origin transport are not selected; no invented word angle.",
+      "The immutable historical UCHC English corpus receipts and Stack-to-UCHC graduation are unchanged."
+    ]
+  },
+  "work_graph_sha256": "39da6181572b57e90510bf307c05da87ef4c1ddab4dba9c89280707507e1b1f8"
+}

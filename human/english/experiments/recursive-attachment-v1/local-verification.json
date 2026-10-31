@@ -1,0 +1,246 @@
+{
+  "archive_permission_normalization": [
+    "LICENSE: 0664 to 0644",
+    "NOTICE: 0664 to 0644"
+  ],
+  "artifacts_sha256": {
+    "authority/consumer-committed-dist/uchc-0.1.0a4-py3-none-any.whl": "a5ad321549152411ff736124a09d50ea665603d5d8be791ecd2e2e85039b45cd",
+    "ucns/dist/ucns-0.0.0.dev0-py3-none-any.whl": "ccdbb2de6228e153e9e9065ff7aa9c099f87371fa1c55206b001535d9c51464d",
+    "ucns/dist/ucns-0.0.0.dev0.tar.gz": "5c5de04e6431fc79ad5f5c7a090d47c8f220209ef877f555502f998d2e3638b3"
+  },
+  "attribution": "GPT generated; context, prompt Erin Spencer.",
+  "authority_transfer": false,
+  "bearing_selection": "none",
+  "cli_operations": [
+    {
+      "operation": [
+        "word",
+        "bull"
+      ],
+      "sha256": "b9add37dbdd3e65832054adcdd190151241667bc3973f7f792df404dd04dcbfb"
+    },
+    {
+      "operation": [
+        "compound",
+        "bull",
+        "shit"
+      ],
+      "sha256": "c15836e0ef0d4778523be891760bf32ed22176983deb0a6ab72ccc447259e695"
+    },
+    {
+      "operation": [
+        "sequence",
+        "bull",
+        "shit",
+        "--bearing",
+        "root-endpoint-v1"
+      ],
+      "sha256": "f11e62b7feaa3ea559dd3423592613bb358af3844f4ef4bf5bfb9b234df8be79"
+    },
+    {
+      "operation": [
+        "sequence",
+        "bull",
+        "shit",
+        "--bearing",
+        "exit-heading-v1"
+      ],
+      "sha256": "49ab6d6833a94fac1b7ebf7b450dcead118ea46fec8871b3d4ea6de03997556f"
+    }
+  ],
+  "corpus_build_pyyaml": "6.0.3",
+  "extraction": {
+    "files": 18,
+    "geometry_authority": {
+      "commit": "9cc00771e54336d58ee377faeec87a3a33dbd4bf",
+      "public_gonol_sha256": "55d10c84529a4d7bc7714786357e977b68d9df2ac3f73d20e229580b552c2ef5",
+      "repository": "The-Interdependency/ucns",
+      "source_blobs": {
+        "attachment_codec": "5e761f8e2169ddb24aa6744a8a577ee4aa4989bd",
+        "attachment_stack": "0ce3879257b40d264749c1b65fff23abf186fded",
+        "ordinal_affixiation": "9fa84ef20f19fe0c04df680f49b50ea307e6d624",
+        "public_gonol": "c1955e46e2dc918fb657cb346e42106d71937e91"
+      }
+    },
+    "source_commit": "86a5fb1936dc6ca04ad6fb9bb161ea3fd7f4da88",
+    "standing": "exact",
+    "work_graph_sha256": "a8e9be098fc1fb21bbf8af555ee0271377f9114263dad2bf259ce27847155603"
+  },
+  "extraction_verifier": "checks both pinned committed Git blobs and working tree bytes",
+  "hmmm": [
+    "Closed-word bearing functional unselected",
+    "Numerical definition attachment, punctuation geometry, expanded carrier and native sheet lift remain open",
+    "Hosted CI and stable release/graduation remain incomplete"
+  ],
+  "hosted_ci": "failed before any job steps; cause not established",
+  "hosted_ci_evidence": {
+    "stack": {
+      "jobs": [
+        {
+          "conclusion": "failure",
+          "name": "native-consumer",
+          "steps": []
+        }
+      ],
+      "run": 40988619431
+    },
+    "uchc": {
+      "jobs": [
+        {
+          "conclusion": "failure",
+          "name": "complete-installed-consumer",
+          "steps": []
+        }
+      ],
+      "run": 40989143484
+    },
+    "ucns": {
+      "jobs": [
+        {
+          "conclusion": "failure",
+          "name": "verify (3.10)",
+          "steps": []
+        },
+        {
+          "conclusion": "failure",
+          "name": "verify (3.11)",
+          "steps": []
+        },
+        {
+          "conclusion": "failure",
+          "name": "verify (3.12)",
+          "steps": []
+        }
+      ],
+      "run": 40988417301
+    }
+  },
+  "independent_handoff_review": "all 18 files matched immutable Stack Git blobs; no substantive findings",
+  "installed_corpus_audit": {
+    "counts": {
+      "constructed_words": 103027,
+      "definitions": 185155,
+      "formerly_compound_definitions": 57155,
+      "refused_words": 26,
+      "words": 103053
+    },
+    "definition_stream_sha256": "9d28ce7be9d073498b20ebd1064a71911d05822d363ffa4e3a2f4a455d69d59f",
+    "field_receipt": "26ab095f73306ff4fbd9f67d1c282c1df79f926bb75cc081c879db8a6989b58a",
+    "geometry_authority": {
+      "commit": "9cc00771e54336d58ee377faeec87a3a33dbd4bf",
+      "public_gonol_sha256": "55d10c84529a4d7bc7714786357e977b68d9df2ac3f73d20e229580b552c2ef5",
+      "repository": "The-Interdependency/ucns",
+      "source_blobs": {
+        "attachment_codec": "5e761f8e2169ddb24aa6744a8a577ee4aa4989bd",
+        "attachment_stack": "0ce3879257b40d264749c1b65fff23abf186fded",
+        "ordinal_affixiation": "9fa84ef20f19fe0c04df680f49b50ea307e6d624",
+        "public_gonol": "c1955e46e2dc918fb657cb346e42106d71937e91"
+      }
+    },
+    "hmmm": [
+      "Numerical definition attachment and bearing selection remain open."
+    ],
+    "receipt": "10b484f2e025f39160a6af7f67d3da5b3f88732d42288361347a2345f7216dd7",
+    "schema": "english.attachment-corpus-audit.v1",
+    "scope": "all corpus words and all definition ownership overlays; no bearing candidate selected",
+    "unplaced_glyph_word_counts": {
+      "\u00e1": 1,
+      "\u00e4": 1,
+      "\u00e7": 3,
+      "\u00e9": 8,
+      "\u00ea": 1,
+      "\u00eb": 1,
+      "\u00f0": 1,
+      "\u00f1": 3,
+      "\u00f2": 2,
+      "\u0161": 1,
+      "\u02b0": 1,
+      "\u03b8": 1,
+      "\u042a": 1,
+      "\u042c": 1,
+      "\u044a": 1,
+      "\u044c": 1
+    },
+    "word_stream_sha256": "a8a1c8248ad97711055dacb698f863a3fe8d36eb29013391900d7506da37edc1"
+  },
+  "installed_verification_pyyaml": "6.0.2",
+  "native_confirmation_sdist": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "tests": 303
+  },
+  "native_confirmation_wheel": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "tests": 303
+  },
+  "native_distribution_replay": {
+    "artifacts_sha256": {
+      "ucns-0.0.0.dev0-py3-none-any.whl": "ccdbb2de6228e153e9e9065ff7aa9c099f87371fa1c55206b001535d9c51464d",
+      "ucns-0.0.0.dev0.tar.gz": "5c5de04e6431fc79ad5f5c7a090d47c8f220209ef877f555502f998d2e3638b3"
+    },
+    "exact_input_receipt_identity": "5d9593d7c7c8dd2d240682bf53f968032194a63c6acd749ce233d2166f53e07c",
+    "receipt_sha256": "b590b990cd31823212f0cad1f541b37b04cfafe5cdeff2c211b405bc816f0b7c",
+    "status": "passed"
+  },
+  "native_first_wheel": {
+    "failed_tests": [
+      "test_geometry_suite_rejects_nonpasses",
+      "test_missing_capability_and_timeout_are_enforced"
+    ],
+    "isolated_unchanged_retry": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 2
+    },
+    "results": {
+      "errors": 0,
+      "failures": 2,
+      "skipped": 0,
+      "tests": 303
+    },
+    "thresholds_changed": false
+  },
+  "python": "3.12.14",
+  "schema": "english.recursive-integration-local-evidence.v1",
+  "source_census_comparison": {
+    "prepin_source_audit_sha256": "c1df7ff97adf1d1b9bf49b10aa912369c1fddb087021cab2f763c5c03df3428b",
+    "reason": "Source report had PENDING_NATIVE_COMMIT; installed report binds the final immutable producer.",
+    "standing": "exact word and definition streams, counts and source blobs; source process began before commit metadata was filled",
+    "whole_report_equality": false
+  },
+  "sqlite_build_version": "3.53.1",
+  "stack_source_commit": "86a5fb1936dc6ca04ad6fb9bb161ea3fd7f4da88",
+  "test_results": {
+    "consumer_complete_source": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 6
+    },
+    "consumer_installed": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 11
+    },
+    "consumer_source": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 5
+    },
+    "ucns_source": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 303
+    }
+  },
+  "uchc_clean_archive_wheel_equals_tested": true,
+  "uchc_source_commit": "8ac9ba88a40af24d332453c93d6357ccf1fb9fa7",
+  "ucns_commit": "9cc00771e54336d58ee377faeec87a3a33dbd4bf"
+}

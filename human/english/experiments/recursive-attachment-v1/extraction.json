@@ -1,0 +1,114 @@
+{
+  "schema": "uchc.recursive-attachment-extraction.v1",
+  "source_repository": "The-Interdependency/stack",
+  "source_commit": "251ba2290675a21154582f0b3fb0d7a9d509ed50",
+  "source_root": "research/english-gonol",
+  "authority_transfer": false,
+  "work_graph_sha256": "a17bdf8c1fda5fec60f7d1b819b48fa493b873c8e3f8997d83144b038fb14dd5",
+  "geometry_authority": {
+    "repository": "The-Interdependency/ucns",
+    "commit": "9cc00771e54336d58ee377faeec87a3a33dbd4bf",
+    "source_blobs": {
+      "attachment_stack": "0ce3879257b40d264749c1b65fff23abf186fded",
+      "attachment_codec": "5e761f8e2169ddb24aa6744a8a577ee4aa4989bd",
+      "ordinal_affixiation": "9fa84ef20f19fe0c04df680f49b50ea307e6d624",
+      "public_gonol": "c1955e46e2dc918fb657cb346e42106d71937e91"
+    },
+    "public_gonol_sha256": "55d10c84529a4d7bc7714786357e977b68d9df2ac3f73d20e229580b552c2ef5"
+  },
+  "files": [
+    {
+      "source": "english_gonol/structural_rules.py",
+      "target": "human/english/english_gonol/structural_rules.py",
+      "sha256": "4686f6a847dd0cee24e3f0a05154a71203a1d4c790922952f9876a38f017db70"
+    },
+    {
+      "source": "english_gonol/structural_construct.py",
+      "target": "human/english/english_gonol/structural_construct.py",
+      "sha256": "8920759980c590719ff19a4a23906775b4058bda7f95f915a1621b1d56af18f4"
+    },
+    {
+      "source": "english_gonol/structural_query.py",
+      "target": "human/english/english_gonol/structural_query.py",
+      "sha256": "3a97e971825468347ab76a44a3203ed0ce706ca0293836ffd4cc0d223d2987be"
+    },
+    {
+      "source": "english_gonol/hyperspace_construct.py",
+      "target": "human/english/english_gonol/hyperspace_construct.py",
+      "sha256": "c5996470c6d3fe5387fa8f46e3d777deb44289d0b9e1e5d2f55c5d6348912a71"
+    },
+    {
+      "source": "english_gonol/full_construct_run.py",
+      "target": "human/english/english_gonol/full_construct_run.py",
+      "sha256": "fbadf9cc033a154148b62e11b52d7e38b845c0d0b669ff34dfc6186cab15c064"
+    },
+    {
+      "source": "english_gonol/language/source.py",
+      "target": "human/english/english_gonol/language/source.py",
+      "sha256": "beb4d86f9c2a2879d3f63f4b73867af19edf33a2fdd6fea32e4e6e14c6b4ae2f"
+    },
+    {
+      "source": "english_gonol/language/__init__.py",
+      "target": "human/english/english_gonol/language/__init__.py",
+      "sha256": "0620712b60b0c51483f45212dc63fc139b1c51a561ad863512344a5477727352"
+    },
+    {
+      "source": "english_gonol/language/affixes.py",
+      "target": "human/english/english_gonol/language/affixes.py",
+      "sha256": "50df16c8dd71dcc0e1d964ac36909b3d48fbedbf404e27312492024261e36392"
+    },
+    {
+      "source": "english_gonol/language/manifest.py",
+      "target": "human/english/english_gonol/language/manifest.py",
+      "sha256": "ae0b1176398f48463c3082f46afc7cd82e7273a72555a3c76e47e8fe90e15155"
+    },
+    {
+      "source": "english_gonol/language/model.py",
+      "target": "human/english/english_gonol/language/model.py",
+      "sha256": "35a8ce27dcc70011cba1d31c3d6f9b1c4ec24f49a63316226ff92d12ce3332b4"
+    },
+    {
+      "source": "english_gonol/language/morphology.py",
+      "target": "human/english/english_gonol/language/morphology.py",
+      "sha256": "84ea74d3498442c313bc318f0d19c4951ef59ad8411f0122bdb7a116383460ce"
+    },
+    {
+      "source": "english_gonol/language/relational_bridge.py",
+      "target": "human/english/english_gonol/language/relational_bridge.py",
+      "sha256": "bceb4efc4730b2c7fc5ce8cb6f4d9334deeddb27905b79d273ce9ad3204b58eb"
+    },
+    {
+      "source": "english_gonol/language/rendering.py",
+      "target": "human/english/english_gonol/language/rendering.py",
+      "sha256": "83a1b8c8fb31c7bc64a857b7f57a67079e01daa19f0d7e1d74cd501b61b0ec20"
+    },
+    {
+      "source": "english_gonol/ordinal_construction.py",
+      "target": "human/english/english_gonol/ordinal_construction.py",
+      "sha256": "5b43d0efe7661cda69b2fd2c50998834795adb4467febb7a9d7a3d54883a3da7"
+    },
+    {
+      "source": "english_gonol/attachment_construction.py",
+      "target": "human/english/english_gonol/attachment_construction.py",
+      "sha256": "7c754e6a8e0f860e1f645af88c4d48a8894a6dcfcde55ca5ae6af96b9378e7d1"
+    },
+    {
+      "source": "english_gonol/attachment_audit.py",
+      "target": "human/english/english_gonol/attachment_audit.py",
+      "sha256": "57f057cea6defd01001edf9a6443d1b51d4f3ebe4d1f56d480ac2b3398199d07"
+    },
+    {
+      "source": "ordinal_tests/test_attachment_construction.py",
+      "target": "tests/test_attachment_construction.py",
+      "sha256": "d58b367607a83336ea100afd2723de0359f6d38db58214e773fa89b303b0915c"
+    },
+    {
+      "source": "ordinal_tests/test_attachment_corpus.py",
+      "target": "tests/test_attachment_corpus.py",
+      "sha256": "58bc964fbbfeb6f592551fea31f90ccaebdf1cf27312a6ce97d7e2cdc291ae3d"
+    }
+  ],
+  "hmmm": [
+    "Bearing candidates remain unselected; extraction does not complete graduation."
+  ]
+}

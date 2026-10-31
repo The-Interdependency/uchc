@@ -1,0 +1,163 @@
+# Pytest uses -c /dev/null so checkout pythonpath settings cannot shadow the selected source or installed wheel.
+name: English ordinal UCNS geometry
+on:
+  pull_request:
+    paths: ['human/english/**', 'tests/test_ordinal*.py', 'docs/work-graphs/english-ordinal-geometry-v1.json', 'pyproject.toml', '.github/workflows/english-ordinal-geometry.yml']
+  push:
+    branches: [main]
+    paths: ['human/english/**', 'tests/test_ordinal*.py', 'docs/work-graphs/english-ordinal-geometry-v1.json', 'pyproject.toml', '.github/workflows/english-ordinal-geometry.yml']
+permissions:
+  contents: read
+jobs:
+  installed-geometry:
+    runs-on: ubuntu-24.04
+    env:
+      SOURCE_DATE_EPOCH: '1790308800'
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@v7.0.1
+        with:
+          repository: The-Interdependency/ucns
+          ref: ed0b0760f05cd975a7a811f8abeb70a11d09f00b
+          path: _deps/ucns-ordinal
+          persist-credentials: false
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.12.14'
+      - uses: actions/checkout@v7.0.1
+        with:
+          repository: The-Interdependency/stack
+          ref: c8bddd5ae02fdaa001c2ba6962da66117384437e
+          path: _deps/ordinal-forge
+          persist-credentials: false
+      - name: Verify immutable producer and work graph
+        env:
+          PYTHONPATH: human/english
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git -C _deps/ucns-ordinal rev-parse HEAD)" = ed0b0760f05cd975a7a811f8abeb70a11d09f00b
+          test "$(git -C _deps/ucns-ordinal hash-object src/ucns/ordinal_affixiation.py)" = 9fa84ef20f19fe0c04df680f49b50ea307e6d624
+          test "$(git -C _deps/ucns-ordinal hash-object src/ucns/public_gonol.py)" = c1955e46e2dc918fb657cb346e42106d71937e91
+          python - <<'PY'
+          import json, hashlib, subprocess
+          from pathlib import Path
+          from english_gonol.structural_construct import IMPLEMENTATION_FILES
+          graph = json.loads(Path('docs/work-graphs/english-ordinal-geometry-v1.json').read_text())
+          assert graph['schema'] == 'the-interdependency.stack-manifest' and graph['version'] == '1.0.0'
+          ucns = next(r for r in graph['repositories'] if r['repository'] == 'The-Interdependency/ucns')
+          assert ucns['commit'] == 'ed0b0760f05cd975a7a811f8abeb70a11d09f00b'
+          payload = {key: graph[key] for key in ('repositories', 'boundaries')}
+          assert hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(',', ':'), ensure_ascii=True).encode()).hexdigest() == graph['work_graph_sha256']
+          assert graph['boundaries']['authority_transfer'] is False
+          source = next(r['commit'] for r in graph['repositories'] if r['repository'] == 'The-Interdependency/stack')
+          assert subprocess.check_output(['git', '-C', '_deps/ordinal-forge', 'rev-parse', 'HEAD'], text=True).strip() == source
+          extraction = json.loads(Path('human/english/experiments/ordinal-geometry-v1/extraction.json').read_text())
+          assert extraction['source_repository'] == 'The-Interdependency/stack'
+          assert extraction['source_commit'] == source and extraction['authority_transfer'] is False
+          assert extraction['work_graph_sha256'] == graph['work_graph_sha256']
+          expected = {f'human/english/english_gonol/{p}': f'english_gonol/{p}' for p in IMPLEMENTATION_FILES}
+          expected['human/english/english_gonol/ordinal_construction.py'] = 'english_gonol/ordinal_construction.py'
+          for name in ('test_ordinal_construction.py', 'test_ordinal_corpus.py'):
+              expected['tests/' + name] = 'ordinal_tests/' + name
+          assert len(extraction['files']) == len(expected)
+          assert {item['target']: item['source'] for item in extraction['files']} == expected
+          for item in extraction['files']:
+              original = Path('_deps/ordinal-forge/research/english-gonol') / item['source']
+              copied = Path(item['target'])
+              assert original.read_bytes() == copied.read_bytes(), item['target']
+              assert hashlib.sha256(copied.read_bytes()).hexdigest() == item['sha256'], item['target']
+          PY
+      - name: Install exact native producer and test tools
+        run: |
+          python -m pip install ./_deps/ucns-ordinal
+          python -m pip install pytest==8.3.5 PyYAML==6.0.2 setuptools==82.0.1 wheel==0.46.3 packaging==26.0
+      - name: Execute source consumer tests without geometry mocks
+        env:
+          PYTHONPATH: human/english
+        run: |
+          mkdir -p _state
+          python -m pytest -c /dev/null -q tests/test_ordinal_construction.py --junitxml=_state/source.xml
+          python -m english_gonol.ordinal_construction word > _state/word-source.json
+      - name: Execute the exact Stack source before candidate comparison
+        env:
+          PYTHONPATH: _deps/ordinal-forge/research/english-gonol
+        run: |
+          python -m pytest -c /dev/null -q _deps/ordinal-forge/research/english-gonol/ordinal_tests/test_ordinal_construction.py --junitxml=_state/forge.xml
+          python -m english_gonol.ordinal_construction word > _state/word-forge.json
+      - name: Build and clean-install UCHC with UCNS
+        run: |
+          python -m pip wheel --no-deps --no-build-isolation . -w _state/dist
+          python -m venv _state/clean
+          _state/clean/bin/python -m pip install pytest==8.3.5 PyYAML==6.0.2
+          _state/clean/bin/python -m pip install ./_deps/ucns-ordinal
+          _state/clean/bin/python -m pip install --no-index --no-deps _state/dist/uchc-0.1.0a4-py3-none-any.whl
+          mkdir -p _state/isolated-tests
+          cp tests/test_ordinal_construction.py _state/isolated-tests/test_ordinal_construction.py
+          _state/clean/bin/python -I -m pytest -c /dev/null -q _state/isolated-tests --junitxml=_state/installed.xml
+          _state/clean/bin/python -I -m english_gonol.ordinal_construction word > _state/word-installed.json
+      - name: Verify exact end-to-end artifact, receipt and test outcomes
+        env:
+          UCHC_SOURCE_COMMIT: ${{ github.sha }}
+          UCHC_PR_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          python - <<'PY'
+          from fractions import Fraction
+          from pathlib import Path
+          import hashlib, json, os, subprocess, xml.etree.ElementTree as ET
+          left = json.loads(Path('_state/word-source.json').read_text())
+          right = json.loads(Path('_state/word-installed.json').read_text())
+          forge = json.loads(Path('_state/word-forge.json').read_text())
+          assert left == right == forge and right['standing'] == 'constructed'
+          assert right['recovered_glyphs'] == list('word')
+          positions = right['construction']['placements']
+          assert [p['radius']['power_of_two_denominator'] for p in positions] == [4,3,2,1]
+          assert all(p['carrier_receipt'] == positions[0]['carrier_receipt'] for p in positions)
+          assert right['geometry_authority']['commit'] == 'ed0b0760f05cd975a7a811f8abeb70a11d09f00b'
+          tests = {}
+          for name in ('source', 'installed', 'forge'):
+              cases = list(ET.parse('_state/' + name + '.xml').getroot().iter('testsuite'))
+              totals = {k: sum(int(x.get(k,0)) for x in cases) for k in ('tests','failures','errors','skipped')}
+              assert totals['tests'] >= 10 and totals['failures'] == totals['errors'] == totals['skipped'] == 0, totals
+              tests[name] = totals
+          wheel = Path('_state/dist/uchc-0.1.0a4-py3-none-any.whl')
+          source_commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+          assert source_commit == os.environ['UCHC_SOURCE_COMMIT']
+          graph = json.loads(Path('docs/work-graphs/english-ordinal-geometry-v1.json').read_text())
+          payload = {key: graph[key] for key in ('repositories', 'boundaries')}
+          assert hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(',', ':')).encode()).hexdigest() == graph['work_graph_sha256']
+          forge_commit = subprocess.check_output(['git', '-C', '_deps/ordinal-forge', 'rev-parse', 'HEAD'], text=True).strip()
+          assert forge_commit == next(r['commit'] for r in graph['repositories'] if r['repository'] == 'The-Interdependency/stack')
+          evidence = {'schema': 'uchc.english-ordinal-acceptance', 'version': '1.0.0',
+                      'ucns_commit': right['geometry_authority']['commit'],
+                      'uchc_source_commit': source_commit,
+                      'uchc_pr_head_commit': os.environ['UCHC_PR_HEAD'],
+                      'uchc_source_tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
+                      'forge_source_commit': forge_commit,
+                      'work_graph_sha256': graph['work_graph_sha256'],
+                      'extraction_sha256': hashlib.sha256(Path('human/english/experiments/ordinal-geometry-v1/extraction.json').read_bytes()).hexdigest(),
+                      'construction_receipt': right['receipt'],
+                      'installed_identical': left == right == forge,
+                      'tests': tests,
+                      'wheel_sha256': hashlib.sha256(wheel.read_bytes()).hexdigest(),
+                      'standing': 'executed pinned UCNS ordinal geometry; no domain graduation'}
+          Path('_state/ordinal-evidence.json').write_text(json.dumps(evidence, sort_keys=True, indent=2) + '\n')
+          print(json.dumps(evidence))
+          PY
+      - uses: actions/upload-artifact@v7.0.1
+        if: always()
+        with:
+          name: uchc-ordinal-geometry
+          path: |
+            _state/ordinal-evidence.json
+            _state/word-source.json
+            _state/word-installed.json
+            _state/word-forge.json
+            _state/source.xml
+            _state/installed.xml
+            _state/forge.xml
+            human/english/experiments/ordinal-geometry-v1/extraction.json
+            docs/work-graphs/english-ordinal-geometry-v1.json
+          if-no-files-found: error
