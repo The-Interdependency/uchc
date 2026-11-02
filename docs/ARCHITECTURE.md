@@ -47,8 +47,9 @@ glyph identity without becoming interchangeable.
 ## Hilbert-state migration target
 
 The English Hilbert correction is a Stack-forged candidate until UCHC
-graduation completes. This repository records the intended independent contract
-without creating a second writable implementation.
+graduation completes. Candidate `0.1.0` contains an exact extraction of the
+runtime and tests. Until the release transition, fixes originate in Stack and
+the extraction inventory verifies the UCHC copy.
 
 ```text
 O_G: admitted glyph axes
@@ -85,12 +86,13 @@ that UCHC does not contain.
 ## Usage guidance
 
 Treat [`HILBERT_INFERENCE.md`](HILBERT_INFERENCE.md) as the UCHC migration
-target and provenance boundary, not as an implemented public API. The executable
-candidate remains in Stack's `research/english-gonol/` forge at
-`6504ed963d93836f66fc88e354fe52809a1a3b7a`, pinned in the
-[shared work graph](work-graphs/hilbert-inference.json). Continue using
-the existing receipt-bound UCHC input API only for the contracts it currently
-implements.
+contract and provenance boundary. The executable candidate is packaged as
+`english_gonol.hilbert_inference`; its complete extraction source is Stack
+`ca69c60032a079585ccb89d5cc7aba67f637df55`, recorded in the
+[package inventory](package-extraction.json). The
+[historical work graph](work-graphs/hilbert-inference.json) retains the original
+merged producer. The receipt-bound input API and future input-frame bridge
+remain distinct from these origin-local Hilbert helpers.
 
 Do not use a renderer, O/S/C candidate map, or external embedding dimension to
 manufacture the basis.
@@ -102,5 +104,5 @@ manufacture the basis.
 - amplitude and phase assignment;
 - learned inference operators and sense selection;
 - sentence-axis promotion;
-- migration of the Stack-forged Hilbert implementation into UCHC;
+- stable release and published-artifact reconsumption of the extracted Hilbert candidate;
 - geometric consequences of declared local definition-axis orthogonality.

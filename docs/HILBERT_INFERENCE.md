@@ -1,8 +1,12 @@
 # Hilbert inference migration contract
 
-Status: **provisional, unimplemented UCHC migration target**. English remains
-`extracted`; Stack owns this executable candidate and its public contract.
-This document introduces no UCHC Hilbert API and claims no completed graduation.
+Status: **provisional, extracted UCHC candidate**. English remains `extracted`;
+Stack owns the implementation and public contract until graduation completes.
+Candidate `0.1.0` packages `english_gonol.hilbert_inference` and its behavioral
+tests byte-for-byte from Stack `ca69c60032a079585ccb89d5cc7aba67f637df55`.
+See [the complete extraction inventory](package-extraction.json).
+The input-frame bridge remains unimplemented. Extraction does not ratify the
+mathematics or establish completed graduation.
 
 ## Exact producer and authority
 
@@ -32,7 +36,7 @@ Each row is a separate domain claim. The following fields apply to **every row**
 - authority source: the linked Stack candidate contract and implementation;
 - effective version: Stack `6504ed963d93836f66fc88e354fe52809a1a3b7a`;
 - supersedes: the unscoped UCHC wording in `7ab46c5df37fce9612eed9948fb4500f191f6746:docs/HILBERT_INFERENCE.md`, not upstream canon;
-- downstream authorization: describe and compare the candidate; UCHC encoding remains pending migration and equivalence evidence.
+- downstream authorization: describe, compare and verify the extracted candidate; release, published-artifact reconsumption and scoped authority transfer remain pending.
 
 The `term_id` values retain the producer's qualified identities. UCHC does not
 create competing definitions by copying the terms.

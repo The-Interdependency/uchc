@@ -1,0 +1,699 @@
+{
+  "attribution": "GPT generated; context, prompt Erin Spencer.",
+  "authority_transfer": false,
+  "bearing_selection": "none",
+  "build_environment": {
+    "SOURCE_DATE_EPOCH": "1790308800",
+    "packaging": "26.0",
+    "pytest": "8.3.5",
+    "python": "3.12.14",
+    "setuptools": "82.0.1",
+    "sqlite": "3.53.1",
+    "uchc_archive_permissions": [
+      "LICENSE: 0664 to 0644",
+      "NOTICE: 0664 to 0644"
+    ],
+    "wheel": "0.46.3"
+  },
+  "cli_operations": [
+    {
+      "operation": [
+        "word",
+        "bull"
+      ],
+      "sha256": "b9add37dbdd3e65832054adcdd190151241667bc3973f7f792df404dd04dcbfb",
+      "source_forge_installed_and_historical_match": true
+    },
+    {
+      "operation": [
+        "compound",
+        "bull",
+        "shit"
+      ],
+      "sha256": "c15836e0ef0d4778523be891760bf32ed22176983deb0a6ab72ccc447259e695",
+      "source_forge_installed_and_historical_match": true
+    },
+    {
+      "operation": [
+        "sequence",
+        "bull",
+        "shit",
+        "--bearing",
+        "root-endpoint-v1"
+      ],
+      "sha256": "f11e62b7feaa3ea559dd3423592613bb358af3844f4ef4bf5bfb9b234df8be79",
+      "source_forge_installed_and_historical_match": true
+    },
+    {
+      "operation": [
+        "sequence",
+        "bull",
+        "shit",
+        "--bearing",
+        "exit-heading-v1"
+      ],
+      "sha256": "49ab6d6833a94fac1b7ebf7b450dcead118ea46fec8871b3d4ea6de03997556f",
+      "source_forge_installed_and_historical_match": true
+    },
+    {
+      "exit_code": 2,
+      "operation": [
+        "sequence",
+        "bull",
+        "shit"
+      ],
+      "refusal": "argparse: explicit --bearing required"
+    },
+    {
+      "exit_code": 2,
+      "operation": [
+        "word",
+        "\u00e9"
+      ],
+      "refusal": "{\"standing\": \"refused\", \"code\": \"PUBLIC_GONOL_ANGLE_UNAVAILABLE\", \"glyphs\": [\"\\u00e9\"]}"
+    }
+  ],
+  "complete_corpus": {
+    "audit": {
+      "counts": {
+        "constructed_words": 103027,
+        "definitions": 185155,
+        "formerly_compound_definitions": 57155,
+        "refused_words": 26,
+        "words": 103053
+      },
+      "definition_stream_sha256": "9d28ce7be9d073498b20ebd1064a71911d05822d363ffa4e3a2f4a455d69d59f",
+      "field_receipt": "26ab095f73306ff4fbd9f67d1c282c1df79f926bb75cc081c879db8a6989b58a",
+      "geometry_authority": {
+        "commit": "9cc00771e54336d58ee377faeec87a3a33dbd4bf",
+        "public_gonol_sha256": "55d10c84529a4d7bc7714786357e977b68d9df2ac3f73d20e229580b552c2ef5",
+        "repository": "The-Interdependency/ucns",
+        "source_blobs": {
+          "attachment_codec": "5e761f8e2169ddb24aa6744a8a577ee4aa4989bd",
+          "attachment_stack": "0ce3879257b40d264749c1b65fff23abf186fded",
+          "ordinal_affixiation": "9fa84ef20f19fe0c04df680f49b50ea307e6d624",
+          "public_gonol": "c1955e46e2dc918fb657cb346e42106d71937e91"
+        }
+      },
+      "hmmm": [
+        "Numerical definition attachment and bearing selection remain open."
+      ],
+      "receipt": "10b484f2e025f39160a6af7f67d3da5b3f88732d42288361347a2345f7216dd7",
+      "schema": "english.attachment-corpus-audit.v1",
+      "scope": "all corpus words and all definition ownership overlays; no bearing candidate selected",
+      "unplaced_glyph_word_counts": {
+        "\u00e1": 1,
+        "\u00e4": 1,
+        "\u00e7": 3,
+        "\u00e9": 8,
+        "\u00ea": 1,
+        "\u00eb": 1,
+        "\u00f0": 1,
+        "\u00f1": 3,
+        "\u00f2": 2,
+        "\u0161": 1,
+        "\u02b0": 1,
+        "\u03b8": 1,
+        "\u042a": 1,
+        "\u042c": 1,
+        "\u044a": 1,
+        "\u044c": 1
+      },
+      "word_stream_sha256": "a8a1c8248ad97711055dacb698f863a3fe8d36eb29013391900d7506da37edc1"
+    },
+    "baseline_sha256": "99d26c9aa091e85a741ecbed77cf556807b362857ea756eb37517bd23762b92e",
+    "forge_equals_installed_equals_baseline": true,
+    "installed_build_logical_receipt": "26ab095f73306ff4fbd9f67d1c282c1df79f926bb75cc081c879db8a6989b58a"
+  },
+  "corrections": [
+    "Forge and installed census are each compared in full with the preserved baseline; shared regressions no longer pass by equality alone.",
+    "Extraction verifier and census audit refuse optimized Python before assertions can be disabled; pre-fix -O incorrectly reported exact for a changed checkout.",
+    "Workflow verifies exact test counts and records graph and baseline identities; install/use guide separates candidate usability from stable authority."
+  ],
+  "dependency_pins": {
+    "historical_corpus_carrier": "4f863ad37096b7baab8f62820ad5cb937b62a3a7",
+    "historical_lexical_test_ucns": "d7c6f51304ed6c32d48badf63132bea6de8af497",
+    "native_ucns": "9cc00771e54336d58ee377faeec87a3a33dbd4bf",
+    "oewn": "dc343f2683279ecbb13fab4e2fd778d7b162d287",
+    "stack_extraction": "251ba2290675a21154582f0b3fb0d7a9d509ed50"
+  },
+  "earlier_environment_attempts": [
+    {
+      "reason": "Missing historical checkout roots and wrong working directory; not the configured acceptance gate.",
+      "results": {
+        "errors": 0,
+        "failures": 26,
+        "skipped": 9,
+        "tests": 301
+      }
+    },
+    {
+      "reason": "One historical UCNS checkout was insufficient for independent lexical/inference pins.",
+      "results": {
+        "errors": 0,
+        "failures": 18,
+        "skipped": 8,
+        "tests": 301
+      }
+    }
+  ],
+  "evidence_commit_scope": "This record is added after the tested implementation commits; no package or verification code changes.",
+  "extraction": {
+    "files": 18,
+    "geometry_authority": {
+      "commit": "9cc00771e54336d58ee377faeec87a3a33dbd4bf",
+      "public_gonol_sha256": "55d10c84529a4d7bc7714786357e977b68d9df2ac3f73d20e229580b552c2ef5",
+      "repository": "The-Interdependency/ucns",
+      "source_blobs": {
+        "attachment_codec": "5e761f8e2169ddb24aa6744a8a577ee4aa4989bd",
+        "attachment_stack": "0ce3879257b40d264749c1b65fff23abf186fded",
+        "ordinal_affixiation": "9fa84ef20f19fe0c04df680f49b50ea307e6d624",
+        "public_gonol": "c1955e46e2dc918fb657cb346e42106d71937e91"
+      }
+    },
+    "source_commit": "251ba2290675a21154582f0b3fb0d7a9d509ed50",
+    "standing": "exact",
+    "work_graph_sha256": "a17bdf8c1fda5fec60f7d1b819b48fa493b873c8e3f8997d83144b038fb14dd5"
+  },
+  "graph_sha256": "a17bdf8c1fda5fec60f7d1b819b48fa493b873c8e3f8997d83144b038fb14dd5",
+  "historical_evidence_unchanged_sha256": {
+    "stack/corpus-audit.json": "99d26c9aa091e85a741ecbed77cf556807b362857ea756eb37517bd23762b92e",
+    "stack/local-verification.json": "f62e8f21adfcbb6683f67b0555b38f95a342a3e081c2db7f51e35ebb47359bbb",
+    "uchc/corpus-audit.json": "99d26c9aa091e85a741ecbed77cf556807b362857ea756eb37517bd23762b92e",
+    "uchc/local-verification.json": "f62e8f21adfcbb6683f67b0555b38f95a342a3e081c2db7f51e35ebb47359bbb"
+  },
+  "historical_suite_resolution": {
+    "ENGLISH_GONOL_UCNS_ROOT": "ucns at historical_lexical_test_ucns pin",
+    "PYTHONPATH": "absolute human/english, programming/python, shared/polyglot",
+    "UCNS_SOURCE_ROOT": "ucns at native_ucns pin",
+    "command": "python -m pytest -c /dev/null -q tests ../../programming/python/tests ../../shared/polyglot/tests",
+    "cwd": "uchc/human/english",
+    "product_changes": false
+  },
+  "hmmm": [
+    "root-endpoint-v1 and exit-heading-v1 remain explicit unselected candidates",
+    "26 corpus words remain refused; expanded carrier requires supported bearings",
+    "Numerical definition attachment and punctuation geometry remain unresolved",
+    "Native sheet lift remains outside this planar profile",
+    "Hosted verification, terminal review, producer-order merge and authorized publication/reconsumption/graduation remain incomplete"
+  ],
+  "hosted_ci": {
+    "stack": {
+      "annotation": "The job was not started because your account is locked due to a billing issue.",
+      "annotation_url": "https://api.github.com/repos/The-Interdependency/stack/check-runs/124472084029/annotations",
+      "annotations_sha256": "e4ba63d453d99ba274ea6f07623573768e2acb4ef418f43e0a587e5d8754b954",
+      "check_run_id": 124472084029,
+      "checks": [
+        {
+          "conclusion": "failure",
+          "details_url": "https://github.com/The-Interdependency/stack/actions/runs/41178910401/job/124472084399",
+          "id": 124472084399,
+          "name": "english-gonol-tests",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "details_url": "https://github.com/The-Interdependency/stack/actions/runs/41178910418/job/124472084051",
+          "id": 124472084051,
+          "name": "input-distinction",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "details_url": "https://github.com/The-Interdependency/stack/actions/runs/41178910449/job/124472084035",
+          "id": 124472084035,
+          "name": "consistency",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "details_url": "https://github.com/The-Interdependency/stack/actions/runs/41178910433/job/124472084029",
+          "id": 124472084029,
+          "name": "native-consumer",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "details_url": "https://github.com/The-Interdependency/stack/actions/runs/41178910417/job/124472083971",
+          "id": 124472083971,
+          "name": "ordinal-source",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "details_url": "https://github.com/The-Interdependency/stack/actions/runs/41178910367/job/124472083948",
+          "id": 124472083948,
+          "name": "sealed-evidence",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "details_url": "https://github.com/The-Interdependency/stack/actions/runs/41178910430/job/124472083936",
+          "id": 124472083936,
+          "name": "released-artifact",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "details_url": "https://github.com/The-Interdependency/stack/actions/runs/41178910384/job/124472083864",
+          "id": 124472083864,
+          "name": "installed-candidate",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "details_url": "https://github.com/The-Interdependency/stack/actions/runs/41178910364/job/124472083850",
+          "id": 124472083850,
+          "name": "contracts",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "details_url": "https://github.com/The-Interdependency/stack/actions/runs/41178910346/job/124472083776",
+          "id": 124472083776,
+          "name": "test",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "details_url": "https://github.com/The-Interdependency/stack/actions/runs/41178910340/job/124472083759",
+          "id": 124472083759,
+          "name": "structural-complete-corpus",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "details_url": "https://github.com/The-Interdependency/stack/actions/runs/41178910363/job/124472083754",
+          "id": 124472083754,
+          "name": "contracts",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "details_url": "https://github.com/The-Interdependency/stack/actions/runs/41178907554/job/124472078650",
+          "id": 124472078650,
+          "name": "Analyze (python)",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "details_url": "https://github.com/The-Interdependency/stack/actions/runs/41178907554/job/124472078610",
+          "id": 124472078610,
+          "name": "Analyze (actions)",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "details_url": "https://github.com/The-Interdependency/stack/actions/runs/41178907554/job/124472078489",
+          "id": 124472078489,
+          "name": "Analyze (javascript-typescript)",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "details_url": "https://github.com/The-Interdependency/stack/actions/runs/41178905997/job/124472072158",
+          "id": 124472072158,
+          "name": "english-gonol-tests",
+          "status": "completed"
+        }
+      ],
+      "classification": "external account billing lock before test steps",
+      "conclusion": "failure",
+      "head": "251ba2290675a21154582f0b3fb0d7a9d509ed50"
+    },
+    "uchc": {
+      "annotation": "The job was not started because your account is locked due to a billing issue.",
+      "annotation_url": "https://api.github.com/repos/The-Interdependency/uchc/check-runs/124472228538/annotations",
+      "annotations_sha256": "75e310cbc62c5abe0e25858879198f7ac404a6a1bc9ab6da4e7dc8e81ea81108",
+      "check_run_id": 124472228538,
+      "checks": [
+        {
+          "conclusion": "failure",
+          "details_url": "https://github.com/The-Interdependency/uchc/actions/runs/41178959617/job/124472228538",
+          "id": 124472228538,
+          "name": "complete-installed-consumer",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "details_url": "https://github.com/The-Interdependency/uchc/actions/runs/41178959600/job/124472228518",
+          "id": 124472228518,
+          "name": "work-graph-integrity",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "details_url": "https://github.com/The-Interdependency/uchc/actions/runs/41178959632/job/124472228512",
+          "id": 124472228512,
+          "name": "polyglot-identity",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "details_url": "https://github.com/The-Interdependency/uchc/actions/runs/41178959582/job/124472228504",
+          "id": 124472228504,
+          "name": "structural-complete-corpus",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "details_url": "https://github.com/The-Interdependency/uchc/actions/runs/41178959574/job/124472228315",
+          "id": 124472228315,
+          "name": "installed-geometry",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "details_url": "https://github.com/The-Interdependency/uchc/actions/runs/41178959569/job/124472228264",
+          "id": 124472228264,
+          "name": "complete-corpus",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "details_url": "https://github.com/The-Interdependency/uchc/actions/runs/41178956835/job/124472222700",
+          "id": 124472222700,
+          "name": "Analyze (python)",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "details_url": "https://github.com/The-Interdependency/uchc/actions/runs/41178956835/job/124472222458",
+          "id": 124472222458,
+          "name": "Analyze (actions)",
+          "status": "completed"
+        }
+      ],
+      "classification": "external account billing lock before test steps",
+      "conclusion": "failure",
+      "head": "fabe52e0e180ec508d81dc5e695a867d37a2bc51"
+    },
+    "ucns": {
+      "annotation": "The job was not started because your account is locked due to a billing issue.",
+      "annotation_url": "https://api.github.com/repos/The-Interdependency/ucns/check-runs/123844738271/annotations",
+      "annotations_sha256": "d4abed9511e5ae5cc86897c1730d6150f68502b4bf05c72c304a69da2af86670",
+      "check_run_id": 123844738271,
+      "checks": [
+        {
+          "conclusion": "failure",
+          "details_url": "https://github.com/The-Interdependency/ucns/actions/runs/40988417301/job/123844738271",
+          "id": 123844738271,
+          "name": "verify (3.12)",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "details_url": "https://github.com/The-Interdependency/ucns/actions/runs/40988417301/job/123844738267",
+          "id": 123844738267,
+          "name": "verify (3.11)",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "details_url": "https://github.com/The-Interdependency/ucns/actions/runs/40988417301/job/123844738012",
+          "id": 123844738012,
+          "name": "verify (3.10)",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "details_url": "https://github.com/The-Interdependency/ucns/actions/runs/40988415129/job/123844735062",
+          "id": 123844735062,
+          "name": "Analyze (actions)",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "details_url": "https://github.com/The-Interdependency/ucns/actions/runs/40988415129/job/123844734862",
+          "id": 123844734862,
+          "name": "Analyze (python)",
+          "status": "completed"
+        }
+      ],
+      "classification": "external account billing lock before test steps",
+      "conclusion": "failure",
+      "head": "9cc00771e54336d58ee377faeec87a3a33dbd4bf"
+    }
+  },
+  "implementation_commits": {
+    "stack": "251ba2290675a21154582f0b3fb0d7a9d509ed50",
+    "uchc": "fabe52e0e180ec508d81dc5e695a867d37a2bc51",
+    "ucns": "9cc00771e54336d58ee377faeec87a3a33dbd4bf"
+  },
+  "implementation_trees": {
+    "stack": "e4daaf4e55ac98b9f6e210f4ce56f9cc75577789",
+    "uchc": "676c36089355e5b78982f060c20e77a06efdd76d",
+    "ucns": "d871b3d8d94abc106e83e9b88c4a403019b83f21"
+  },
+  "initial_heads": {
+    "stack": "dd0af5fd985a620608b188bb10403775837334c4",
+    "uchc": "18a464d9442e56b9d76ca2411fa5ac6d4e12cc05",
+    "ucns": "9cc00771e54336d58ee377faeec87a3a33dbd4bf"
+  },
+  "installed_import_proof": "Noneditable clean wheel and sdist environments; isolated -I imports; native blob identities checked; extraction closure identical in source, wheel and sdist.",
+  "merge_admission": {
+    "blocking_gates": [
+      "Hosted checks have not executed successfully",
+      "Complete effective UCNS branch protection policy unreadable",
+      "Terminal review at current head/base remains unestablished"
+    ],
+    "current_head_approval": "none observed",
+    "merge_order": [
+      "ucns",
+      "stack",
+      "uchc"
+    ],
+    "rulesets": {
+      "stack": [],
+      "uchc": [],
+      "ucns": []
+    },
+    "stack_main_protected": false,
+    "standing": "not admitted",
+    "uchc_main_protected": false,
+    "ucns_full_protection": "hmmm: HTTP 403; integration lacks administration read access",
+    "ucns_main_protected": true
+  },
+  "merged": false,
+  "native_distribution_replay": {
+    "artifacts_sha256": {
+      "ucns-0.0.0.dev0-py3-none-any.whl": "e62016ba688e9ef20b4a8adc3a794af8fddf3e971fb772581ffcca6ed9331a97",
+      "ucns-0.0.0.dev0.tar.gz": "5d9fe7db99f0f0954bf34c434b6f52afd3e03bbe26752f8a578b1fb09e991d59"
+    },
+    "candidate_ratification": "none",
+    "exact_input_receipt_identity": "91e93c882f8db3391214804fa3a3bdc8c094593158d618653f5a7b9ce2aa8028",
+    "receipt_sha256": "73c061f783a540f76539ff2ea3de2197bef396ce75f45e2ec863543519801b91",
+    "status": "passed"
+  },
+  "native_geometry_witnesses": [
+    "UCNS DiskStack type, exact glyph headings and dyadic radii",
+    "closed word recursion and compound participants under both explicit candidates",
+    "complete corpus source structure, multiplicity, closure and replay",
+    "producer/carrier drift and missing bearings refuse"
+  ],
+  "negative_controls": {
+    "audit_optimization_mode": "-O",
+    "extraction_optimization_modes": [
+      "-O",
+      "PYTHONOPTIMIZE=1"
+    ],
+    "pre_fix_false_exact_report_sha256": "bfc6225f2ed717a94b9c1ce2dabf9f4d3ab569f5827797c908566c09eb6cb4f8",
+    "shared_census_mutations": 7
+  },
+  "observed_at": "2026-10-31T07:09:23.585570+00:00",
+  "other_gates": {
+    "build_and_twine": "passed for both packages",
+    "changed_python_ratios": "passed",
+    "exact_native_distribution_bytes": "passed",
+    "git_diff_check": "passed",
+    "stack_consistency": "passed: 7 repositories, 48 research identities",
+    "ucns_contracts": "closed",
+    "workflow_yaml_bash_python_syntax": "passed"
+  },
+  "released": false,
+  "review_snapshot": {
+    "stack": {
+      "base": "9de81c67b271df09c1d9ba5422660c96fe8af7ac",
+      "draft": false,
+      "head": "251ba2290675a21154582f0b3fb0d7a9d509ed50",
+      "mergeable": true,
+      "merged": false,
+      "resolved_threads": 0,
+      "reviews": {
+        "reviews": []
+      },
+      "state": "open",
+      "unresolved_threads": []
+    },
+    "uchc": {
+      "base": "45f50ebce04235611223fda13cf67e1a71d45dba",
+      "draft": false,
+      "head": "fabe52e0e180ec508d81dc5e695a867d37a2bc51",
+      "mergeable": true,
+      "merged": false,
+      "resolved_threads": 6,
+      "reviews": {
+        "reviews": [
+          {
+            "author": {
+              "avatar_url": "https://avatars.githubusercontent.com/in/1144995?v=4",
+              "email": null,
+              "id": null,
+              "login": "chatgpt-codex-connector",
+              "name": "chatgpt-codex-connector"
+            },
+            "body": "<!-- codex-review-receipt:v1 -->\n\n\n### \ud83d\udca1 Codex Review\n\nHere are some automated review suggestions for this pull request.\n\n**Reviewed commit:** `07d83b2824`\n    \n\n<details> <summary>\u2139\ufe0f About Codex in GitHub</summary>\n<br/>\n\n[Your team has set up Codex to review pull requests in this repo](https://chatgpt.com/codex/cloud/settings/general). Reviews are triggered when you\n- Open a pull request for review\n- Mark a draft as ready\n- Comment \"@codex review\".\n\nIf Codex has suggestions, it will comment; otherwise it will react with \ud83d\udc4d.\n\n\n\n\nCodex can also answer questions or update the PR. Try commenting \"@codex address that feedback\".\n            \n</details>",
+            "id": "PRR_kwDOUi3exM8AAAABTE_tIg",
+            "state": "COMMENTED",
+            "submitted_at": "2026-10-19T17:29:12Z"
+          },
+          {
+            "author": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/250928284?u=0560d31094b3002a9f20474298720fcba2e06acd&v=4",
+              "email": null,
+              "id": null,
+              "login": "erinepshovel-code",
+              "name": "erinepshovel-code"
+            },
+            "body": "",
+            "id": "PRR_kwDOUi3exM8AAAABTFE6KQ",
+            "state": "COMMENTED",
+            "submitted_at": "2026-10-19T17:37:00Z"
+          },
+          {
+            "author": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/250928284?u=0560d31094b3002a9f20474298720fcba2e06acd&v=4",
+              "email": null,
+              "id": null,
+              "login": "erinepshovel-code",
+              "name": "erinepshovel-code"
+            },
+            "body": "",
+            "id": "PRR_kwDOUi3exM8AAAABTFE8Jg",
+            "state": "COMMENTED",
+            "submitted_at": "2026-10-19T17:37:03Z"
+          },
+          {
+            "author": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/250928284?u=0560d31094b3002a9f20474298720fcba2e06acd&v=4",
+              "email": null,
+              "id": null,
+              "login": "erinepshovel-code",
+              "name": "erinepshovel-code"
+            },
+            "body": "",
+            "id": "PRR_kwDOUi3exM8AAAABTFE-Ww",
+            "state": "COMMENTED",
+            "submitted_at": "2026-10-19T17:37:06Z"
+          },
+          {
+            "author": {
+              "avatar_url": "https://avatars.githubusercontent.com/in/1144995?v=4",
+              "email": null,
+              "id": null,
+              "login": "chatgpt-codex-connector",
+              "name": "chatgpt-codex-connector"
+            },
+            "body": "<!-- codex-review-receipt:v1 -->\n\n\n### \ud83d\udca1 Codex Review\n\nHere are some automated review suggestions for this pull request.\n\n**Reviewed commit:** `c514e1a2a3`\n    \n\n<details> <summary>\u2139\ufe0f About Codex in GitHub</summary>\n<br/>\n\n[Your team has set up Codex to review pull requests in this repo](https://chatgpt.com/codex/cloud/settings/general). Reviews are triggered when you\n- Open a pull request for review\n- Mark a draft as ready\n- Comment \"@codex review\".\n\nIf Codex has suggestions, it will comment; otherwise it will react with \ud83d\udc4d.\n\n\n\n\nCodex can also answer questions or update the PR. Try commenting \"@codex address that feedback\".\n            \n</details>",
+            "id": "PRR_kwDOUi3exM8AAAABTFKNew",
+            "state": "COMMENTED",
+            "submitted_at": "2026-10-19T17:43:56Z"
+          }
+        ]
+      },
+      "state": "open",
+      "unresolved_threads": []
+    },
+    "ucns": {
+      "base": "ed0b0760f05cd975a7a811f8abeb70a11d09f00b",
+      "draft": false,
+      "head": "9cc00771e54336d58ee377faeec87a3a33dbd4bf",
+      "mergeable": true,
+      "merged": false,
+      "resolved_threads": 0,
+      "reviews": {
+        "reviews": []
+      },
+      "state": "open",
+      "unresolved_threads": []
+    }
+  },
+  "schema": "english.recursive-integration-local-evidence.v2",
+  "skill_lib_commit": "d71a3a938cb6d646ffc0b59186452117e4a37d13",
+  "standing": "locally verified candidate; hosted verification and merge admission incomplete",
+  "test_results": {
+    "stack_complete": {
+      "errors": 0,
+      "failures": 0,
+      "junit_sha256": "3fd262f68a3b6fd666580e212e79ee5fb28331321d47a60d891608b504a4d41f",
+      "skipped": 0,
+      "tests": 13
+    },
+    "stack_focused": {
+      "errors": 0,
+      "failures": 0,
+      "junit_sha256": "0c4a0dae05b8498372b0dc495b8c1234f8e6e06f401f15652f5d47280f4e7a3c",
+      "skipped": 0,
+      "tests": 7
+    },
+    "uchc_historical": {
+      "errors": 0,
+      "failures": 0,
+      "junit_sha256": "d6679b203e7cdf74d0298a0afc2acf492ffa755e18bb0285d744a6b839e68243",
+      "skipped": 0,
+      "tests": 301
+    },
+    "uchc_installed_complete": {
+      "errors": 0,
+      "failures": 0,
+      "junit_sha256": "d5e56e8dc2e6c7c6649a447e9a28882fe02d49db86fccc124737f441f0b5ed5f",
+      "skipped": 0,
+      "tests": 13
+    },
+    "uchc_sdist_focused": {
+      "errors": 0,
+      "failures": 0,
+      "junit_sha256": "4cad16ebf1402ff016d868fd82ffabeac2971dd3bffdd11b7d5dd6a1d19ac089",
+      "skipped": 0,
+      "tests": 7
+    },
+    "uchc_verifier": {
+      "errors": 0,
+      "failures": 0,
+      "junit_sha256": "36183aa58f5f477f22ad39ec50dea5985b739d0e0777f191e00ad5b30d3234ec",
+      "skipped": 0,
+      "tests": 1
+    },
+    "uchc_wheel_focused": {
+      "errors": 0,
+      "failures": 0,
+      "junit_sha256": "7b6e21fa07a0a29db33296caf21dcef7f4b0d4b27b1d3e848e44802f24b01cee",
+      "skipped": 0,
+      "tests": 7
+    },
+    "ucns_sdist": {
+      "errors": 0,
+      "failures": 0,
+      "junit_sha256": "2c033807865f92b1f344180dccf950046a93d32a6ffd68185880eaafac18e610",
+      "skipped": 0,
+      "tests": 303
+    },
+    "ucns_source": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 303
+    },
+    "ucns_wheel": {
+      "errors": 0,
+      "failures": 0,
+      "junit_sha256": "586eae390dc1b9c1e64e564da6c0820395417b34eca71239183449202fb24064",
+      "skipped": 0,
+      "tests": 303
+    }
+  },
+  "uchc_artifacts_sha256": {
+    "uchc-0.1.0a4-py3-none-any.whl": "e6a5fe38334bda30fc1158652e9badee91f20d35bcb00a1544d75d1285399cb2",
+    "uchc-0.1.0a4.tar.gz": "071463636bbe916211c035a1df08c47e6d7ba27506d5ee41907fd60e59c374f1"
+  }
+}

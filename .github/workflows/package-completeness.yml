@@ -1,0 +1,66 @@
+name: Package completeness
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          path: source
+          persist-credentials: false
+      - uses: actions/checkout@v7.0.1
+        with:
+          repository: The-Interdependency/stack
+          ref: ca69c60032a079585ccb89d5cc7aba67f637df55
+          path: forge
+          persist-credentials: false
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.12'
+      - uses: actions/checkout@v7.0.1
+        with:
+          repository: The-Interdependency/ucns
+          ref: 9cc00771e54336d58ee377faeec87a3a33dbd4bf
+          path: ucns
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify complete extraction and build both distributions
+        run: |
+          set -euo pipefail
+          python -m pip install build==1.6.1 twine==6.2.0 setuptools==82.0.1 wheel==0.46.3 packaging==26.0
+          python source/tools/verify_package_extraction.py forge
+          mkdir evidence
+          python source/tools/verify_installed_package.py evidence/source-manifest.json --source source
+          SOURCE_DATE_EPOCH="$(git -C source log -1 --format=%ct)" python -m build --no-isolation --outdir evidence/dist source
+          python -m twine check evidence/dist/*
+          sha256sum evidence/dist/* > evidence/artifacts.sha256
+      - name: Exercise exact wheel and source archive in separate clean environments
+        run: |
+          set -euo pipefail
+          export UCNS_SOURCE_ROOT="$PWD/ucns"
+          mkdir isolated-tests
+          cp source/shared/polyglot/tests/test_polyglot.py isolated-tests/
+          cp source/human/english/tests/test_hilbert_inference.py isolated-tests/
+          cp source/human/english/tests/test_system_set_trajectory.py isolated-tests/
+          cp source/human/english/tests/test_suffixiation.py isolated-tests/
+          cp source/human/english/tests/test_character_definitions.py isolated-tests/
+          cp source/programming/python/tests/test_construct.py isolated-tests/
+          for kind in wheel sdist; do
+            python -m venv "$kind"
+            "$kind/bin/python" -m pip install pytest==8.3.5 PyYAML==6.0.2 setuptools==82.0.1 wheel==0.46.3 packaging==26.0
+            if [ "$kind" = wheel ]; then artifact=(evidence/dist/*.whl); else artifact=(evidence/dist/*.tar.gz); fi
+            "$kind/bin/python" -m pip install --no-deps --no-build-isolation "${artifact[0]}"
+            "$kind/bin/python" -I source/tools/verify_installed_package.py evidence/source-manifest.json > "evidence/$kind-package.json"
+            "$kind/bin/python" -I -m pytest -q -c /dev/null --noconftest isolated-tests --junitxml="evidence/$kind.xml"
+          done
+          sha256sum -c evidence/artifacts.sha256
+      - uses: actions/upload-artifact@v7.0.1
+        with:
+          name: uchc-package-completeness
+          path: evidence/
+          if-no-files-found: error

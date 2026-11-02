@@ -1,3 +1,13 @@
+## Extracted recursive attachment profile
+
+Start with [recursive-stack.md](docs/recursive-stack.md) and the
+[exact extraction receipt](experiments/recursive-attachment-v1/extraction.json).
+Sentences stack closed words through the same native operation as glyphs within
+words. Whole lexical ownership is represented by a typed source closure.
+Bearing candidates remain explicit; historical ordinal/structural replay remains
+available. Stack retains implementation authority pending graduation.
+
+---
 # English Gonol Construction
 
 ## Structural profile v1 — new construction entrypoint

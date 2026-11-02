@@ -1,0 +1,47 @@
+{
+  "counts": {
+    "constructed_words": 103027,
+    "definitions": 185155,
+    "formerly_compound_definitions": 57155,
+    "refused_words": 26,
+    "words": 103053
+  },
+  "definition_stream_sha256": "9d28ce7be9d073498b20ebd1064a71911d05822d363ffa4e3a2f4a455d69d59f",
+  "field_receipt": "26ab095f73306ff4fbd9f67d1c282c1df79f926bb75cc081c879db8a6989b58a",
+  "geometry_authority": {
+    "commit": "9cc00771e54336d58ee377faeec87a3a33dbd4bf",
+    "public_gonol_sha256": "55d10c84529a4d7bc7714786357e977b68d9df2ac3f73d20e229580b552c2ef5",
+    "repository": "The-Interdependency/ucns",
+    "source_blobs": {
+      "attachment_codec": "5e761f8e2169ddb24aa6744a8a577ee4aa4989bd",
+      "attachment_stack": "0ce3879257b40d264749c1b65fff23abf186fded",
+      "ordinal_affixiation": "9fa84ef20f19fe0c04df680f49b50ea307e6d624",
+      "public_gonol": "c1955e46e2dc918fb657cb346e42106d71937e91"
+    }
+  },
+  "hmmm": [
+    "Numerical definition attachment and bearing selection remain open."
+  ],
+  "receipt": "10b484f2e025f39160a6af7f67d3da5b3f88732d42288361347a2345f7216dd7",
+  "schema": "english.attachment-corpus-audit.v1",
+  "scope": "all corpus words and all definition ownership overlays; no bearing candidate selected",
+  "unplaced_glyph_word_counts": {
+    "á": 1,
+    "ä": 1,
+    "ç": 3,
+    "é": 8,
+    "ê": 1,
+    "ë": 1,
+    "ð": 1,
+    "ñ": 3,
+    "ò": 2,
+    "š": 1,
+    "ʰ": 1,
+    "θ": 1,
+    "Ъ": 1,
+    "Ь": 1,
+    "ъ": 1,
+    "ь": 1
+  },
+  "word_stream_sha256": "a8a1c8248ad97711055dacb698f863a3fe8d36eb29013391900d7506da37edc1"
+}

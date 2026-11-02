@@ -4,12 +4,29 @@
 
 - name: UCHC
 - forge: `The-Interdependency/stack`
-- current state: `extracted`; new input-contract release candidate under verification
+- current state: `extracted`; package-complete `0.1.0` candidate under verification
 - intended independent authority: `The-Interdependency/uchc`
 - mode: execution
 
-Repository population is authorized by the operator. Implementation/public-contract
-authority transfer is **not yet complete**.
+The operator's 2026-11-01 instruction, "graduate uchc", authorizes execution,
+publication, consumer migration and the scoped implementation/public-contract
+transition. Implementation/public-contract authority transfer is **not yet complete**.
+
+The current [package extraction inventory](package-extraction.json) binds 41
+runtime/data files and eight migrated test files to Stack
+`ca69c60032a079585ccb89d5cc7aba67f637df55`. Two test adaptations remove
+Stack-workspace assumptions while retaining behavior checks. The verifier reads
+exact Git objects and checks the complete runtime inventory, including the two
+explicit exclusions: Stack's frozen full-view audit runner and its independent
+reconstruction helper. The [package extraction work graph](work-graphs/package-extraction-v1.json)
+records the authorities for this increment; prior graphs and receipts remain
+historical evidence.
+
+This candidate includes `uchc_polyglot`, the Hilbert and semantic-trajectory
+modules, and packaged EDCM fixture/provenance bytes. EDCM remains the semantic
+source and measurement authority. Stable publication, exact published-artifact
+reconsumption, retirement of the forge runtime, and the transition receipt remain
+unfulfilled gates.
 
 ## Source baseline
 
@@ -80,11 +97,10 @@ verification separately from outstanding stable release, released-artifact
 reconsumption, forge-path severance, and scoped authority-transition evidence.
 Those input-candidate gates do not establish Hilbert migration or graduation.
 
-UCHC carries only the [provisional migration contract](HILBERT_INFERENCE.md),
-including domain-qualified mathematical terms and remaining falsifiers. No
-Hilbert implementation or frame bridge is introduced here. To replay or prepare
-migration, resolve the exact Stack commit through that graph and run its linked
-candidate checks before attempting the lifecycle gates below.
+UCHC carries the [provisional contract](HILBERT_INFERENCE.md) and now packages
+the exact Hilbert implementation and tests in candidate `0.1.0`. The frame
+bridge remains unimplemented. The package extraction verifier establishes source
+identity; clean installation and behavioral replay are separate gates.
 
 ## Recurrence work graph and usage
 
@@ -97,9 +113,9 @@ into any resulting handoff. These are pinned coordination baselines, not claims
 that the commits are the latest heads or that downstream validation has passed.
 
 Stack remains the current English semantic-trajectory implementation authority.
-UCHC is a migration target only; this record introduces no recurrence code or
-public trajectory API. A future migration must first copy source and tests with
-provenance, then satisfy the remaining lifecycle gates below. Neither this
+UCHC `0.1.0` packages the exact `system_set_trajectory` candidate with its
+behavioral tests and recorded provenance. It must still satisfy the remaining
+lifecycle gates below. Neither this
 graph nor its digest transfers authority, proof, certification, measurement or
 empirical standing. All unresolved boundaries remain `hmmm`.
 
@@ -228,3 +244,37 @@ installing that candidate into the existing Stack/ZFAE consumer. Its gate 8
 remains pending for `0.1.0a2`; the historical `0.1.0a1` integration receipt does
 not establish it. Release, released-artifact reconsumption and authority transfer
 remain uncompleted.
+
+## Ordinal candidate extraction
+
+The `0.1.0a3` ordinal extension is extracted from Stack
+`c8bddd5ae02fdaa001c2ba6962da66117384437e`, proposed in
+[Stack #93](https://github.com/The-Interdependency/stack/pull/93). That source
+preserves the earlier UCHC #10 proposal identity rather than retroactively
+claiming it originated in Stack. Stack owns ongoing implementation changes.
+
+The [ordinal graph](work-graphs/english-ordinal-geometry-v1.json) and
+[extraction receipt](../human/english/experiments/ordinal-geometry-v1/extraction.json)
+bind the native producer, complete structural import closure, candidate source
+and both test suites. The ordinal gate compares Stack/source/clean-wheel CLI
+results. The structural gate additionally compares real complete-corpus partial
+results and verifies producer identity on every detached word interior.
+
+Use [ordinal geometry](../human/english/docs/ordinal-geometry.md) for installation
+and query commands. Candidate equivalence is distinct from stable publication,
+AHBG lock migration and domain graduation. Merge the Stack producer before its
+dependent UCHC extraction; no authority-transition receipt is issued here.
+
+## Recursive attachment candidate — 0.1.0a4
+
+This candidate extracts the Stack forward `english.attachment/1` profile and
+consumes UCNS `9cc00771e54336d58ee377faeec87a3a33dbd4bf`. It adds native recursive
+stacks, closed compound transport, both origin views, complete graph replay and
+a typed whole lexical-owner overlay. The exact source/test/import-closure receipt
+is `human/english/experiments/recursive-attachment-v1/extraction.json`.
+
+The new acceptance workflow verifies the pinned forge, native bytes, clean
+installed package, complete-corpus queries and all-word/all-definition stream
+digests. Existing historical corpus and ordinal receipts keep their identities.
+Bearing selection, numerical definition attachment, stable release,
+released-artifact reconsumption and authority transition remain hmmm.

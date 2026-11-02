@@ -1,0 +1,42 @@
+{
+  "schema": "the-interdependency.stack-manifest",
+  "version": "1.0.0",
+  "repositories": [
+    {
+      "repository": "The-Interdependency/ucns",
+      "commit": "9cc00771e54336d58ee377faeec87a3a33dbd4bf",
+      "authority": "native recursive planar attachment and exact expression geometry",
+      "relation": "exact producer; historical ordinal modules unchanged"
+    },
+    {
+      "repository": "The-Interdependency/stack",
+      "commit": "f19389bd7b15e6540f812ec47d67274e429daec5",
+      "authority": "English construction forge pending domain graduation",
+      "relation": "input baseline; output extraction must pin the resulting forge commit"
+    },
+    {
+      "repository": "The-Interdependency/uchc",
+      "commit": "f2528c7f4cc182912df11b92fa355b16231b1fb5",
+      "authority": "verified extraction consumer baseline",
+      "relation": "input baseline; candidate output identity is separate"
+    },
+    {
+      "repository": "The-Interdependency/skill-lib",
+      "commit": "d71a3a938cb6d646ffc0b59186452117e4a37d13",
+      "authority": "build and verification discipline",
+      "relation": "resolved governing skills; no geometry authority"
+    }
+  ],
+  "boundaries": {
+    "authority_transfer": false,
+    "proof_status_transfer": false,
+    "measurement_status_transfer": false,
+    "semantic_mapping": "UCNS owns geometry; Stack owns English; UCHC verifies extraction.",
+    "agent_scope": "english-recursive-attachment",
+    "hmmm": [
+      "Closed bearing functional remains unselected; recursive stack operation is specified.",
+      "Numerical definition attachment, expanded carrier, sheet lift and graduation remain open."
+    ]
+  },
+  "work_graph_sha256": "ba6ce1f1d3586d06c6eb8027958db8f43097a629e47c7cb79148bf6b4e048fbf"
+}
