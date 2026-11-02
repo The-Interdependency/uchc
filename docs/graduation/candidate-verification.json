@@ -1,0 +1,358 @@
+{
+  "schema": "uchc.graduation-candidate-verification",
+  "version": "1.0.0",
+  "state": "extracted",
+  "mode": "execution",
+  "source_commit": "b1d2c62fd55d2898bb37cba9ebec862c9a8d5980",
+  "source_tree": "d7f89606dd46867cd53b1f3b574be0bd3a42d217",
+  "source_date_epoch": 1793577600,
+  "artifact_version": "0.1.0",
+  "artifacts": {
+    "uchc-0.1.0.tar.gz": "ddcd9f0c29d75bb0d7e7f70c079d5d254a6ae1efcb2f8c4278c3382c1005daf6",
+    "uchc-0.1.0-py3-none-any.whl": "856d7bf01d9c55266ce3d50a20fcc7dd1e4efc729fad85120ccbf387b3454415"
+  },
+  "extraction": {
+    "source_repository": "The-Interdependency/stack",
+    "source_commit": "ca69c60032a079585ccb89d5cc7aba67f637df55",
+    "runtime_and_data_files": 41,
+    "migrated_test_files": 8,
+    "forge_only_audit_modules": 2
+  },
+  "geometry": {
+    "source_commit": "9cc00771e54336d58ee377faeec87a3a33dbd4bf",
+    "merged_commit": "3f97f5292b0bd2dab911540062ccf79dea2be1bf",
+    "source_tests_passed": 303,
+    "contract_graph": "closed",
+    "wheel_and_sdist_twine": "passed"
+  },
+  "tests": {
+    "source-english.xml": {
+      "tests": 344,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "c343135598ab8cea09ee7ff7c3bea114dd03c25fe6d0a0bf1213d60329ef74f2"
+    },
+    "source-python-polyglot.xml": {
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "292ddae40f64f8eb790108c232caa6293b2a70e3bca7d816a4ede2982b781690"
+    },
+    "forge-metric-origins.xml": {
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "9e14f532436df4878f163e7514a4a912869750d6a7cf7ede4fa3d6cdc7ae5e9e"
+    },
+    "final-wheel-package.xml": {
+      "tests": 43,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "3169882de68550daa727ef1bd11bda2c27a6c1c49b54e3dc7ec5e31b42666c59"
+    },
+    "final-sdist-package.xml": {
+      "tests": 43,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "80d0ace0ef87228f97a98c288229c6c1777aaacca6a446de0641f8d76f5f4f3a"
+    },
+    "forge-candidate.xml": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "3f57f00860354a63e35baff2482291b91c5d8b1e5fef4a95af83311ec5b6a06c"
+    },
+    "installed-native-consumers.xml": {
+      "tests": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "3bcaf605642e2d10d97d13b19a5b40ee934859fb988b7333149b550e2a026898"
+    },
+    "installed-recursive-corpus.xml": {
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "ad40b0f1004e417205911c617ef34d87f0ef10149c00fd864fb1c67cf360c6e5"
+    },
+    "ahbg-candidate.xml": {
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "39345bc81917cf4deb0cce310929880d75fadcd54297d9a5bfd72242a2c6cd8e",
+      "source_commit": "f0cd194325cbc4960c6212252a5e5812b33f60fb",
+      "candidate_lock_override": "integration/uchc/candidate-0.1.0.json; active ZFAE lock unchanged"
+    }
+  },
+  "installed_package": {
+    "wheel": {
+      "files": 49,
+      "source_manifest_sha256": "28784d7bb6d38edbb4ec03cdcda1340af5f6f6b6f7e0ef33758c0d74f9514c50",
+      "status": "passed",
+      "version": "0.1.0"
+    },
+    "sdist": {
+      "files": 49,
+      "source_manifest_sha256": "28784d7bb6d38edbb4ec03cdcda1340af5f6f6b6f7e0ef33758c0d74f9514c50",
+      "status": "passed",
+      "version": "0.1.0"
+    }
+  },
+  "full_corpus": {
+    "builder": "clean installed exact 0.1.0 wheel",
+    "runtime": {
+      "python": "3.12.14",
+      "sqlite": "3.45.1",
+      "provenance": "human/english/experiments/structural-profile-v1/verification.json#runtime_provenance"
+    },
+    "database_sha256": "af609bbba504f95e349f3c1a30aa42923acc8e48c1e67bb481521dbf7e49162b",
+    "logical_receipt": "12277b4959c0c72b7af12097b8a77bf91866bbf669e7f4ac07b6a5f1426ebb57",
+    "counts": {
+      "characters": 118,
+      "definition_components": 3535375,
+      "definitions": 185155,
+      "semantic_evidence": 866183,
+      "unresolved_semantic_evidence": 0,
+      "word_characters": 1739949,
+      "words": 164864
+    },
+    "input_acceptance": {
+      "schema": "uchc.english.inference-input-acceptance",
+      "version": "1.0.0",
+      "standing": "SURVIVED",
+      "scope": "complete pinned English construct; no sample",
+      "construct": {
+        "database_sha256": "af609bbba504f95e349f3c1a30aa42923acc8e48c1e67bb481521dbf7e49162b",
+        "logical_receipt": "12277b4959c0c72b7af12097b8a77bf91866bbf669e7f4ac07b6a5f1426ebb57",
+        "metadata": [
+          [
+            "character_identity",
+            "one exact scalar -> one character id"
+          ],
+          [
+            "corpus_commit",
+            "dc343f2683279ecbb13fab4e2fd778d7b162d287"
+          ],
+          [
+            "corpus_repository",
+            "globalwordnet/english-wordnet"
+          ],
+          [
+            "corpus_source_tree_sha256",
+            "3a46546a1ffbb4aed98990535ad5155c69be12ad09fdf093701b257d2a3e468f"
+          ],
+          [
+            "corpus_tag",
+            "2025-edition"
+          ],
+          [
+            "definition_component_rule",
+            "exact ordered source: each maximal non-whitespace run reuses one shared word identity; each whitespace scalar reuses one shared character identity; no normalization"
+          ],
+          [
+            "definition_topologies",
+            "[\"direct\",\"chain\"]"
+          ],
+          [
+            "evidence_channels",
+            "[\"ordinal\",\"semantic\",\"sentence-context\"]"
+          ],
+          [
+            "geometry_state",
+            "hmmm"
+          ],
+          [
+            "hmmm",
+            "the exact UCNS law mapping ordinal + semantic + sentence-context evidence to geometric displacement is unresolved; no weight, direction, distance, vector, coordinate, center, radius, tangency, motion, or substitute geometry is synthesized"
+          ],
+          [
+            "invented_geometry",
+            "false"
+          ],
+          [
+            "normalization",
+            "none"
+          ],
+          [
+            "resolution_rule",
+            "preponderance relative to the rest of the sentence in which the word appears"
+          ],
+          [
+            "schema",
+            "english-gonol.full-construct"
+          ],
+          [
+            "ucns_public_gonol_sha256",
+            "55d10c84529a4d7bc7714786357e977b68d9df2ac3f73d20e229580b552c2ef5"
+          ],
+          [
+            "version",
+            "2.0.0"
+          ],
+          [
+            "word_identity",
+            "one exact surface -> one word id"
+          ]
+        ],
+        "unicode_version": "15.0.0"
+      },
+      "counts": {
+        "characters": 118,
+        "words": 164864,
+        "word_characters": 1739949,
+        "definitions": 185155,
+        "definition_components": 3535375,
+        "semantic_evidence": 866183,
+        "unresolved_semantic_evidence": 0
+      },
+      "word_records_sha256": "0b5e939e169e44711c66230f0de425ca78319cab04ba421dc621ff44986d72be",
+      "definition_records_sha256": "2e36ed80ae7a82b66e8c91a7608d59ff900c7d0cab6a7f9a4fbd04d6b1328b15",
+      "reader_source_sha256": "455df28ca61d9f69c230ffaac2c96f8843e6c1e31582274b9989fb3c053b4774",
+      "native_producer_sha256": "c5996470c6d3fe5387fa8f46e3d777deb44289d0b9e1e5d2f55c5d6348912a71",
+      "python": "3.12.14",
+      "hmmm": [
+        "neural architecture, learning, propagation, readout and usefulness are not established by input acceptance"
+      ],
+      "receipt_sha256": "7be9bdc57cfecae9e1d42d71d804fdc3194945151987f8498f81fa81081dbef5",
+      "resources": {
+        "elapsed_seconds": 117.3560581809943
+      }
+    }
+  },
+  "recursive_corpus_replay": {
+    "status": "passed",
+    "builder": "unchanged clean-installed exact 0.1.0 wheel; Python 3.12.14 / SQLite 3.45.1",
+    "database_sha256": "13ba24116f0ff02cfdfeb4a6b060f2672fa409b46a3b7cf26e4421c65321b063",
+    "logical_receipt": "26ab095f73306ff4fbd9f67d1c282c1df79f926bb75cc081c879db8a6989b58a",
+    "historical_byte_and_logical_identity": "exact match",
+    "counts": {
+      "characters": 118,
+      "components": 3895493,
+      "evidence": 243561,
+      "meta": 10,
+      "records": 316953,
+      "word_characters": 896806,
+      "words": 103053
+    },
+    "attachment_audit": {
+      "counts": {
+        "constructed_words": 103027,
+        "definitions": 185155,
+        "formerly_compound_definitions": 57155,
+        "refused_words": 26,
+        "words": 103053
+      },
+      "definition_stream_sha256": "9d28ce7be9d073498b20ebd1064a71911d05822d363ffa4e3a2f4a455d69d59f",
+      "field_receipt": "26ab095f73306ff4fbd9f67d1c282c1df79f926bb75cc081c879db8a6989b58a",
+      "geometry_authority": {
+        "commit": "9cc00771e54336d58ee377faeec87a3a33dbd4bf",
+        "public_gonol_sha256": "55d10c84529a4d7bc7714786357e977b68d9df2ac3f73d20e229580b552c2ef5",
+        "repository": "The-Interdependency/ucns",
+        "source_blobs": {
+          "attachment_codec": "5e761f8e2169ddb24aa6744a8a577ee4aa4989bd",
+          "attachment_stack": "0ce3879257b40d264749c1b65fff23abf186fded",
+          "ordinal_affixiation": "9fa84ef20f19fe0c04df680f49b50ea307e6d624",
+          "public_gonol": "c1955e46e2dc918fb657cb346e42106d71937e91"
+        }
+      },
+      "hmmm": [
+        "Numerical definition attachment and bearing selection remain open."
+      ],
+      "receipt": "10b484f2e025f39160a6af7f67d3da5b3f88732d42288361347a2345f7216dd7",
+      "schema": "english.attachment-corpus-audit.v1",
+      "scope": "all corpus words and all definition ownership overlays; no bearing candidate selected",
+      "unplaced_glyph_word_counts": {
+        "\u00e1": 1,
+        "\u00e4": 1,
+        "\u00e7": 3,
+        "\u00e9": 8,
+        "\u00ea": 1,
+        "\u00eb": 1,
+        "\u00f0": 1,
+        "\u00f1": 3,
+        "\u00f2": 2,
+        "\u0161": 1,
+        "\u02b0": 1,
+        "\u03b8": 1,
+        "\u042a": 1,
+        "\u042c": 1,
+        "\u044a": 1,
+        "\u044c": 1
+      },
+      "word_stream_sha256": "a8a1c8248ad97711055dacb698f863a3fe8d36eb29013391900d7506da37edc1"
+    },
+    "diagnostic_build": {
+      "status": "passed",
+      "same_database_sha256": true,
+      "instrumentation": "added query plans and table logging; preserved failed staging directory"
+    },
+    "earlier_failed_attempts": [
+      {
+        "runtime": "Python 3.12.14 / SQLite 3.53.1",
+        "stage": "structural_construct._receipt, ordered table reads",
+        "exception": "sqlite3.DatabaseError: database disk image is malformed"
+      },
+      {
+        "runtime": "Python 3.12.14 / SQLite 3.45.1",
+        "stage": "structural_construct._receipt, ordered table reads",
+        "exception": "sqlite3.DatabaseError: database disk image is malformed"
+      }
+    ],
+    "diagnosis": "The unchanged artifact subsequently completed full build and verification in a fresh output directory, reproducing both expected hashes. Earlier failures were not reproduced in that run; their cause remains unknown. No source repair or runtime-version explanation is claimed."
+  },
+  "publication": {
+    "status": "pending",
+    "published_immutable_identity": null,
+    "blocker": "An authenticated release-asset upload session is not available."
+  },
+  "hosted_ci": {
+    "status": "did not start",
+    "run_url": "https://github.com/The-Interdependency/ucns/actions/runs/40988417301",
+    "attempt": 2,
+    "annotation": "The job was not started because your account is locked due to a billing issue."
+  },
+  "authority_transfer": false,
+  "hmmm": [
+    "Stable publication, public artifact reconsumption, forge-path retirement and scoped authority-transition receipt remain incomplete.",
+    "Canonical Hilbert field, cross-origin geometry and input-frame bridge remain unresolved.",
+    "Two earlier structural builds failed during SQLite reads; unchanged-package full replay later passed with exact historical byte identity. Failure cause remains unknown."
+  ],
+  "recursive_extraction": {
+    "files": 18,
+    "geometry_authority": {
+      "commit": "9cc00771e54336d58ee377faeec87a3a33dbd4bf",
+      "public_gonol_sha256": "55d10c84529a4d7bc7714786357e977b68d9df2ac3f73d20e229580b552c2ef5",
+      "repository": "The-Interdependency/ucns",
+      "source_blobs": {
+        "attachment_codec": "5e761f8e2169ddb24aa6744a8a577ee4aa4989bd",
+        "attachment_stack": "0ce3879257b40d264749c1b65fff23abf186fded",
+        "ordinal_affixiation": "9fa84ef20f19fe0c04df680f49b50ea307e6d624",
+        "public_gonol": "c1955e46e2dc918fb657cb346e42106d71937e91"
+      }
+    },
+    "source_commit": "251ba2290675a21154582f0b3fb0d7a9d509ed50",
+    "standing": "exact",
+    "work_graph_sha256": "a17bdf8c1fda5fec60f7d1b819b48fa493b873c8e3f8997d83144b038fb14dd5"
+  },
+  "merged_producer_chain": {
+    "ucns": "3f97f5292b0bd2dab911540062ccf79dea2be1bf",
+    "stack": "dd7fe7f7b05d51570373a18f04d53e3eb880b6cd",
+    "candidate_consumer_record": "c6adf610d7c1b3e92d3fce97b5207954b72540cb",
+    "ahbg_preflight": "1958c988806138e7d78f093181a9332616fc4e0d"
+  },
+  "additional_checks": {
+    "package_extraction": "passed: 41 runtime/data files and eight migrated tests",
+    "stack_consistency": "passed: seven repositories and 48 research participant identities",
+    "work_graph_digests": "passed: seven UCHC work graphs",
+    "workflow_yaml": "passed",
+    "whitespace": "passed"
+  }
+}
