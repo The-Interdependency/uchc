@@ -4,12 +4,29 @@
 
 - name: UCHC
 - forge: `The-Interdependency/stack`
-- current state: `extracted`; new input-contract release candidate under verification
+- current state: `extracted`; package-complete `0.1.0` candidate under verification
 - intended independent authority: `The-Interdependency/uchc`
 - mode: execution
 
-Repository population is authorized by the operator. Implementation/public-contract
-authority transfer is **not yet complete**.
+The operator's 2026-11-01 instruction, "graduate uchc", authorizes execution,
+publication, consumer migration and the scoped implementation/public-contract
+transition. Implementation/public-contract authority transfer is **not yet complete**.
+
+The current [package extraction inventory](package-extraction.json) binds 41
+runtime/data files and eight migrated test files to Stack
+`ca69c60032a079585ccb89d5cc7aba67f637df55`. Two test adaptations remove
+Stack-workspace assumptions while retaining behavior checks. The verifier reads
+exact Git objects and checks the complete runtime inventory, including the two
+explicit exclusions: Stack's frozen full-view audit runner and its independent
+reconstruction helper. The [package extraction work graph](work-graphs/package-extraction-v1.json)
+records the authorities for this increment; prior graphs and receipts remain
+historical evidence.
+
+This candidate includes `uchc_polyglot`, the Hilbert and semantic-trajectory
+modules, and packaged EDCM fixture/provenance bytes. EDCM remains the semantic
+source and measurement authority. Stable publication, exact published-artifact
+reconsumption, retirement of the forge runtime, and the transition receipt remain
+unfulfilled gates.
 
 ## Source baseline
 
@@ -80,11 +97,10 @@ verification separately from outstanding stable release, released-artifact
 reconsumption, forge-path severance, and scoped authority-transition evidence.
 Those input-candidate gates do not establish Hilbert migration or graduation.
 
-UCHC carries only the [provisional migration contract](HILBERT_INFERENCE.md),
-including domain-qualified mathematical terms and remaining falsifiers. No
-Hilbert implementation or frame bridge is introduced here. To replay or prepare
-migration, resolve the exact Stack commit through that graph and run its linked
-candidate checks before attempting the lifecycle gates below.
+UCHC carries the [provisional contract](HILBERT_INFERENCE.md) and now packages
+the exact Hilbert implementation and tests in candidate `0.1.0`. The frame
+bridge remains unimplemented. The package extraction verifier establishes source
+identity; clean installation and behavioral replay are separate gates.
 
 ## Recurrence work graph and usage
 
@@ -97,9 +113,9 @@ into any resulting handoff. These are pinned coordination baselines, not claims
 that the commits are the latest heads or that downstream validation has passed.
 
 Stack remains the current English semantic-trajectory implementation authority.
-UCHC is a migration target only; this record introduces no recurrence code or
-public trajectory API. A future migration must first copy source and tests with
-provenance, then satisfy the remaining lifecycle gates below. Neither this
+UCHC `0.1.0` packages the exact `system_set_trajectory` candidate with its
+behavioral tests and recorded provenance. It must still satisfy the remaining
+lifecycle gates below. Neither this
 graph nor its digest transfers authority, proof, certification, measurement or
 empirical standing. All unresolved boundaries remain `hmmm`.
 

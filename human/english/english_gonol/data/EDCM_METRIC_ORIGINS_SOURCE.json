@@ -1,0 +1,206 @@
+{
+  "schema": "edcm.metric-origin-spec-fixture",
+  "version": "0.4.0",
+  "producer_repository": "The-Interdependency/edcm",
+  "producer_commit": "0873c105799681ea1f7ccb3e619d1f7aebbd85e0",
+  "specs": {
+    "C": {
+      "surface_terms": [
+        "Constraint Strain"
+      ],
+      "semantic_definition": "constraint strain is pressure produced by contradiction within the measured window",
+      "standing": "resolved",
+      "measurement_alignment": "proxy",
+      "unresolved": [
+        "implicit contradiction semantics are not measured by the maintained proxy"
+      ],
+      "construction_terms": [
+        "constraint",
+        "strain",
+        "contradiction",
+        "pressure"
+      ],
+      "canonical_metric_id": "edcm.behavioral.C.constraint_strain"
+    },
+    "R": {
+      "surface_terms": [
+        "Refusal Density"
+      ],
+      "semantic_definition": "refusal density is the concentration of refusal relative to active constraint statements",
+      "standing": "resolved",
+      "measurement_alignment": "proxy",
+      "unresolved": [
+        "implemented denominator is token-count scale, not counted constraint statements"
+      ],
+      "construction_terms": [
+        "refusal",
+        "density",
+        "refusal",
+        "constraint"
+      ],
+      "canonical_metric_id": "edcm.behavioral.R.refusal_density"
+    },
+    "F": {
+      "surface_terms": [
+        "Fixation"
+      ],
+      "semantic_definition": "fixation is persistence of substantially the same constraint-bearing pattern across successive states",
+      "standing": "resolved",
+      "measurement_alignment": "proxy",
+      "unresolved": [
+        "maintained implementation is a lexical structural proxy, not embedding similarity"
+      ],
+      "construction_terms": [
+        "fixation",
+        "persistence",
+        "repetition"
+      ],
+      "canonical_metric_id": "edcm.behavioral.F.fixation"
+    },
+    "E": {
+      "surface_terms": [
+        "Escalation"
+      ],
+      "semantic_definition": "escalation is positive change in commitment or constraint intensity across sequence",
+      "standing": "resolved",
+      "measurement_alignment": "proxy",
+      "unresolved": [
+        "maintained implementation does not directly compute commitment-intensity derivative"
+      ],
+      "construction_terms": [
+        "escalation",
+        "increase",
+        "commitment",
+        "intensity"
+      ],
+      "canonical_metric_id": "edcm.behavioral.E.escalation"
+    },
+    "D": {
+      "surface_terms": [
+        "Deflection"
+      ],
+      "semantic_definition": "deflection is movement away from the active constraint-bearing subject or relation",
+      "standing": "resolved",
+      "measurement_alignment": "proxy",
+      "unresolved": [
+        "prior-round lexical overlap substitutes for active-constraint topic tracking"
+      ],
+      "construction_terms": [
+        "deflection",
+        "movement",
+        "away",
+        "constraint"
+      ],
+      "canonical_metric_id": "edcm.behavioral.D.deflection"
+    },
+    "N": {
+      "surface_terms": [
+        "Noise"
+      ],
+      "semantic_definition": "noise is activity that consumes representational space without proportionate constraint resolution",
+      "standing": "resolved",
+      "measurement_alignment": "proxy",
+      "unresolved": [
+        "maintained implementation measures repetition and entropy rather than resolution ratio"
+      ],
+      "construction_terms": [
+        "noise",
+        "repetition",
+        "without",
+        "resolution"
+      ],
+      "canonical_metric_id": "edcm.behavioral.N.noise"
+    },
+    "I": {
+      "surface_terms": [
+        "Integration Failure"
+      ],
+      "semantic_definition": "integration failure is failure of a correction or newly supplied constraint to alter subsequent behavior accordingly",
+      "standing": "resolved",
+      "measurement_alignment": "proxy",
+      "unresolved": [
+        "maintained implementation does not observe subsequent integration behavior"
+      ],
+      "construction_terms": [
+        "integration",
+        "failure",
+        "correction",
+        "change"
+      ],
+      "canonical_metric_id": "edcm.behavioral.I.integration"
+    },
+    "O": {
+      "canonical_metric_id": "edcm.behavioral.O_scope",
+      "surface_terms": [
+        "Scope Motion",
+        "Overextension"
+      ],
+      "semantic_definition": "scope motion is signed boundary change from contraction through stability to expansion or overextension",
+      "standing": "resolved",
+      "measurement_alignment": "proxy",
+      "unresolved": [
+        "legacy scalar carrier O explicitly targets edcm.behavioral.O_scope; O_confidence is a distinct canonical axis and is not produced by RoundMetrics"
+      ],
+      "construction_terms": [
+        "scope",
+        "motion",
+        "expansion",
+        "contraction"
+      ]
+    },
+    "L": {
+      "canonical_metric_id": "edcm.behavioral.L_loss",
+      "surface_terms": [
+        "Coherence Loss"
+      ],
+      "semantic_definition": "coherence loss is signed continuity motion from recovery through stability to degradation",
+      "standing": "resolved",
+      "measurement_alignment": "proxy",
+      "unresolved": [
+        "legacy scalar carrier L explicitly targets edcm.behavioral.L_loss; L_load and L_resistance are distinct canonical axes"
+      ],
+      "construction_terms": [
+        "coherence",
+        "loss",
+        "continuity",
+        "degradation"
+      ]
+    },
+    "P": {
+      "surface_terms": [
+        "Progress"
+      ],
+      "semantic_definition": "progress is newly integrated information or state change that advances resolution relative to the prior state",
+      "standing": "resolved",
+      "measurement_alignment": "proxy",
+      "unresolved": [
+        "progress is explicitly implemented as a proxy"
+      ],
+      "construction_terms": [
+        "progress",
+        "novelty",
+        "change",
+        "resolution"
+      ],
+      "canonical_metric_id": "edcm.round.P_progress"
+    },
+    "kappa": {
+      "surface_terms": [
+        "Stored Tension"
+      ],
+      "semantic_definition": "stored tension is unresolved dissonance carried forward as circuit state",
+      "standing": "resolved",
+      "measurement_alignment": "proxy",
+      "unresolved": [
+        "resolution function is currently approximated from dissonance"
+      ],
+      "construction_terms": [
+        "stored",
+        "tension",
+        "unresolved",
+        "conflict"
+      ],
+      "canonical_metric_id": "edcm.state.kappa"
+    }
+  }
+}

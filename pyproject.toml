@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "uchc"
-version = "0.1.0a4"
+version = "0.1.0"
 description = "Unit Circle Hyperspace Constructs: exact language construction and receipt-bound inference inputs"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -18,8 +18,11 @@ corpus-build = ["PyYAML==6.0.2"]
 test = ["pytest==8.3.5"]
 
 [tool.setuptools]
-packages = ["english_gonol", "english_gonol.language", "python_gonol"]
-package-dir = {english_gonol = "human/english/english_gonol", python_gonol = "programming/python/python_gonol"}
+packages = ["english_gonol", "english_gonol.language", "english_gonol.language.data", "english_gonol.data", "python_gonol", "uchc_polyglot"]
+package-dir = {english_gonol = "human/english/english_gonol", python_gonol = "programming/python/python_gonol", uchc_polyglot = "shared/polyglot/uchc_polyglot"}
+
+[tool.setuptools.package-data]
+english_gonol = ["data/*.json", "language/data/*.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["human/english/tests", "programming/python/tests", "shared/polyglot/tests"]

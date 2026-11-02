@@ -91,8 +91,9 @@ Carrier position and axis participation are distinct roles of a glyph gonol.
 ## Hilbert inference target
 
 The axis-native Hilbert correction is currently forged in Stack, which remains
-the implementation owner until UCHC graduation completes. UCHC records the
-migration target without duplicating a second writable implementation.
+the implementation owner until UCHC graduation completes. Candidate `0.1.0`
+packages its exact runtime and tests; the [extraction inventory](docs/package-extraction.json)
+binds them to Stack `ca69c60032a079585ccb89d5cc7aba67f637df55`.
 
 ```text
 glyph axes
@@ -113,7 +114,8 @@ orthonormal inner products, and fails closed on cross-origin/cross-construct
 products. The exact merged producer is
 `The-Interdependency/stack@6504ed963d93836f66fc88e354fe52809a1a3b7a`.
 See [the provisional migration contract](docs/HILBERT_INFERENCE.md); these
-Hilbert helpers and the future frame bridge are not available in this UCHC package.
+Hilbert helpers are available as an extracted candidate in this package. The
+future frame bridge remains unimplemented.
 
 The current UCHC O/S/C inference and epicyclic graph paths remain downstream
 candidate operators/readouts. Their executable channel tuples do not define
@@ -207,7 +209,7 @@ the Open English WordNet input. This section is a licensing map, not legal advic
 - cross-origin inner products, angles, and attachment geometry beyond the implemented construction-derived attachment relation;
 - amplitude/phase, sense-selection, and learned inference operators;
 - sentence-axis promotion relation;
-- migration of the Stack-forged Hilbert candidate into UCHC;
+- stable release and released-artifact verification of the extracted Hilbert candidate;
 - continuum lift-selection law;
 - stable release, published-artifact reconsumption, and domain graduation;
 - Spanish, TypeScript, and Rust admission/construction profiles.

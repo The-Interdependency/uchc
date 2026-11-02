@@ -1,0 +1,405 @@
+{
+  "schema": "uchc.package-extraction",
+  "version": "1.0.0",
+  "source_repository": "The-Interdependency/stack",
+  "source_commit": "ca69c60032a079585ccb89d5cc7aba67f637df55",
+  "authority_transfer": false,
+  "files": [
+    {
+      "source": "research/english-gonol/english_gonol/attachment_audit.py",
+      "target": "human/english/english_gonol/attachment_audit.py",
+      "kind": "runtime",
+      "source_sha256": "57f057cea6defd01001edf9a6443d1b51d4f3ebe4d1f56d480ac2b3398199d07",
+      "target_sha256": "57f057cea6defd01001edf9a6443d1b51d4f3ebe4d1f56d480ac2b3398199d07",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/attachment_construction.py",
+      "target": "human/english/english_gonol/attachment_construction.py",
+      "kind": "runtime",
+      "source_sha256": "7c754e6a8e0f860e1f645af88c4d48a8894a6dcfcde55ca5ae6af96b9378e7d1",
+      "target_sha256": "7c754e6a8e0f860e1f645af88c4d48a8894a6dcfcde55ca5ae6af96b9378e7d1",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/data/EDCM_METRIC_ORIGINS_SOURCE.json",
+      "target": "human/english/english_gonol/data/EDCM_METRIC_ORIGINS_SOURCE.json",
+      "kind": "runtime",
+      "source_sha256": "4a769f493af21eb54c0f7d95307237a172e3fd17aaf43e62d6602cd80e0dba5c",
+      "target_sha256": "4a769f493af21eb54c0f7d95307237a172e3fd17aaf43e62d6602cd80e0dba5c",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/data/METRIC_ORIGIN_PROVENANCE.json",
+      "target": "human/english/english_gonol/data/METRIC_ORIGIN_PROVENANCE.json",
+      "kind": "runtime",
+      "source_sha256": "869eeca3796c10358cba8c893bb0dccb07685bf012ce5204541dab17aaf99dc6",
+      "target_sha256": "869eeca3796c10358cba8c893bb0dccb07685bf012ce5204541dab17aaf99dc6",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/definition_affixiation_run.py",
+      "target": "human/english/english_gonol/definition_affixiation_run.py",
+      "kind": "runtime",
+      "source_sha256": "edabab5f3db85bd0ca52749fe4f47038755e06c1c2e8e1fa53d2b2bcffd126a3",
+      "target_sha256": "edabab5f3db85bd0ca52749fe4f47038755e06c1c2e8e1fa53d2b2bcffd126a3",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/density_run.py",
+      "target": "human/english/english_gonol/density_run.py",
+      "kind": "runtime",
+      "source_sha256": "8c98160c4b32ccd8554f17a112f0be1922e02383e48768ec634d5093efe839b8",
+      "target_sha256": "8c98160c4b32ccd8554f17a112f0be1922e02383e48768ec634d5093efe839b8",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/describing_graph.py",
+      "target": "human/english/english_gonol/describing_graph.py",
+      "kind": "runtime",
+      "source_sha256": "99771bcd05670f2fbf0f688986943148233eebdfc6f7df05ee47e709489f9beb",
+      "target_sha256": "99771bcd05670f2fbf0f688986943148233eebdfc6f7df05ee47e709489f9beb",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/displacement_operator.py",
+      "target": "human/english/english_gonol/displacement_operator.py",
+      "kind": "runtime",
+      "source_sha256": "42a6f4b1d8e236e755eef9b6388011ac663d2596036cef270157d60847a003ca",
+      "target_sha256": "42a6f4b1d8e236e755eef9b6388011ac663d2596036cef270157d60847a003ca",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/displacement_operator_options.py",
+      "target": "human/english/english_gonol/displacement_operator_options.py",
+      "kind": "runtime",
+      "source_sha256": "319a08177c7d857bb50da34083782e49079cd6f5cc50bbc3b0455bbb14799785",
+      "target_sha256": "319a08177c7d857bb50da34083782e49079cd6f5cc50bbc3b0455bbb14799785",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/edcm_metric_origins.py",
+      "target": "human/english/english_gonol/edcm_metric_origins.py",
+      "kind": "runtime",
+      "source_sha256": "23c2db2de698717539644fdb13f3b0b0ebb7e045ef75587e26251760be4c6e78",
+      "target_sha256": "23c2db2de698717539644fdb13f3b0b0ebb7e045ef75587e26251760be4c6e78",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/full_construct_run.py",
+      "target": "human/english/english_gonol/full_construct_run.py",
+      "kind": "runtime",
+      "source_sha256": "fbadf9cc033a154148b62e11b52d7e38b845c0d0b669ff34dfc6186cab15c064",
+      "target_sha256": "fbadf9cc033a154148b62e11b52d7e38b845c0d0b669ff34dfc6186cab15c064",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/gonol.py",
+      "target": "human/english/english_gonol/gonol.py",
+      "kind": "runtime",
+      "source_sha256": "8ac63d14154293a1212a363f6bb60ec8d408b12413332deec684496eed3ee1d2",
+      "target_sha256": "8ac63d14154293a1212a363f6bb60ec8d408b12413332deec684496eed3ee1d2",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/gonol_relationship_run.py",
+      "target": "human/english/english_gonol/gonol_relationship_run.py",
+      "kind": "runtime",
+      "source_sha256": "18a7942958d515df4e1886d354b2754dc19fa3ff43dc8634eb78b222b73e5cbb",
+      "target_sha256": "18a7942958d515df4e1886d354b2754dc19fa3ff43dc8634eb78b222b73e5cbb",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/hilbert_inference.py",
+      "target": "human/english/english_gonol/hilbert_inference.py",
+      "kind": "runtime",
+      "source_sha256": "81f8dc2424c7513b598fd625101fda5371bace5969462ae3a785a160a7bc2ec4",
+      "target_sha256": "81f8dc2424c7513b598fd625101fda5371bace5969462ae3a785a160a7bc2ec4",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/hyperspace_construct.py",
+      "target": "human/english/english_gonol/hyperspace_construct.py",
+      "kind": "runtime",
+      "source_sha256": "c5996470c6d3fe5387fa8f46e3d777deb44289d0b9e1e5d2f55c5d6348912a71",
+      "target_sha256": "c5996470c6d3fe5387fa8f46e3d777deb44289d0b9e1e5d2f55c5d6348912a71",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/hyperspace_geometry.py",
+      "target": "human/english/english_gonol/hyperspace_geometry.py",
+      "kind": "runtime",
+      "source_sha256": "0b9eb4a871a47175448c12807262c7747f99275fa0d937eb68697e4cedcd63f6",
+      "target_sha256": "0b9eb4a871a47175448c12807262c7747f99275fa0d937eb68697e4cedcd63f6",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/hyperspace_views.py",
+      "target": "human/english/english_gonol/hyperspace_views.py",
+      "kind": "runtime",
+      "source_sha256": "529b536cb03a28d8e05c802b50997fb71f30d921c908a5e33fc07552e4f500fe",
+      "target_sha256": "529b536cb03a28d8e05c802b50997fb71f30d921c908a5e33fc07552e4f500fe",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/language/__init__.py",
+      "target": "human/english/english_gonol/language/__init__.py",
+      "kind": "runtime",
+      "source_sha256": "0620712b60b0c51483f45212dc63fc139b1c51a561ad863512344a5477727352",
+      "target_sha256": "0620712b60b0c51483f45212dc63fc139b1c51a561ad863512344a5477727352",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/language/affixes.py",
+      "target": "human/english/english_gonol/language/affixes.py",
+      "kind": "runtime",
+      "source_sha256": "50df16c8dd71dcc0e1d964ac36909b3d48fbedbf404e27312492024261e36392",
+      "target_sha256": "50df16c8dd71dcc0e1d964ac36909b3d48fbedbf404e27312492024261e36392",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/language/character_definitions.py",
+      "target": "human/english/english_gonol/language/character_definitions.py",
+      "kind": "runtime",
+      "source_sha256": "0fe9c8a0ee263c008e530e3df2b521ad4ccb08c50c59939872d7b6fcb9f8e67c",
+      "target_sha256": "0fe9c8a0ee263c008e530e3df2b521ad4ccb08c50c59939872d7b6fcb9f8e67c",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/language/data/bones_affixes_v1.json",
+      "target": "human/english/english_gonol/language/data/bones_affixes_v1.json",
+      "kind": "runtime",
+      "source_sha256": "430a6b4b1fe1c74de1020e66f7105b1e81d3776569fdea7a14a6b95afa23e06d",
+      "target_sha256": "430a6b4b1fe1c74de1020e66f7105b1e81d3776569fdea7a14a6b95afa23e06d",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/language/data/character_definitions_v1.json",
+      "target": "human/english/english_gonol/language/data/character_definitions_v1.json",
+      "kind": "runtime",
+      "source_sha256": "ba431162c065a033d60f66bfb84d62d93f55ca6ca954ec59756c4bacc854827d",
+      "target_sha256": "ba431162c065a033d60f66bfb84d62d93f55ca6ca954ec59756c4bacc854827d",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/language/glyph_floor.py",
+      "target": "human/english/english_gonol/language/glyph_floor.py",
+      "kind": "runtime",
+      "source_sha256": "ff224bbed8b362d423958a231391ae26bbddbf85461e630a9d14ba68b9e93c9d",
+      "target_sha256": "ff224bbed8b362d423958a231391ae26bbddbf85461e630a9d14ba68b9e93c9d",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/language/manifest.py",
+      "target": "human/english/english_gonol/language/manifest.py",
+      "kind": "runtime",
+      "source_sha256": "ae0b1176398f48463c3082f46afc7cd82e7273a72555a3c76e47e8fe90e15155",
+      "target_sha256": "ae0b1176398f48463c3082f46afc7cd82e7273a72555a3c76e47e8fe90e15155",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/language/model.py",
+      "target": "human/english/english_gonol/language/model.py",
+      "kind": "runtime",
+      "source_sha256": "35a8ce27dcc70011cba1d31c3d6f9b1c4ec24f49a63316226ff92d12ce3332b4",
+      "target_sha256": "35a8ce27dcc70011cba1d31c3d6f9b1c4ec24f49a63316226ff92d12ce3332b4",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/language/morphology.py",
+      "target": "human/english/english_gonol/language/morphology.py",
+      "kind": "runtime",
+      "source_sha256": "84ea74d3498442c313bc318f0d19c4951ef59ad8411f0122bdb7a116383460ce",
+      "target_sha256": "84ea74d3498442c313bc318f0d19c4951ef59ad8411f0122bdb7a116383460ce",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/language/relational_bridge.py",
+      "target": "human/english/english_gonol/language/relational_bridge.py",
+      "kind": "runtime",
+      "source_sha256": "bceb4efc4730b2c7fc5ce8cb6f4d9334deeddb27905b79d273ce9ad3204b58eb",
+      "target_sha256": "bceb4efc4730b2c7fc5ce8cb6f4d9334deeddb27905b79d273ce9ad3204b58eb",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/language/rendering.py",
+      "target": "human/english/english_gonol/language/rendering.py",
+      "kind": "runtime",
+      "source_sha256": "83a1b8c8fb31c7bc64a857b7f57a67079e01daa19f0d7e1d74cd501b61b0ec20",
+      "target_sha256": "83a1b8c8fb31c7bc64a857b7f57a67079e01daa19f0d7e1d74cd501b61b0ec20",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/language/source.py",
+      "target": "human/english/english_gonol/language/source.py",
+      "kind": "runtime",
+      "source_sha256": "beb4d86f9c2a2879d3f63f4b73867af19edf33a2fdd6fea32e4e6e14c6b4ae2f",
+      "target_sha256": "beb4d86f9c2a2879d3f63f4b73867af19edf33a2fdd6fea32e4e6e14c6b4ae2f",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/language/suffixiation.py",
+      "target": "human/english/english_gonol/language/suffixiation.py",
+      "kind": "runtime",
+      "source_sha256": "c5909df6fa8b78c5cc2dfb28dd17e53c245c07eaad9714e045cd5167db386e84",
+      "target_sha256": "c5909df6fa8b78c5cc2dfb28dd17e53c245c07eaad9714e045cd5167db386e84",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/motion_run.py",
+      "target": "human/english/english_gonol/motion_run.py",
+      "kind": "runtime",
+      "source_sha256": "cda7e65e0923782e3d78e88650522bc56dc95be8b2c9335ee705fa5080a050b3",
+      "target_sha256": "cda7e65e0923782e3d78e88650522bc56dc95be8b2c9335ee705fa5080a050b3",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/ordinal_construction.py",
+      "target": "human/english/english_gonol/ordinal_construction.py",
+      "kind": "runtime",
+      "source_sha256": "5b43d0efe7661cda69b2fd2c50998834795adb4467febb7a9d7a3d54883a3da7",
+      "target_sha256": "5b43d0efe7661cda69b2fd2c50998834795adb4467febb7a9d7a3d54883a3da7",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/orthogonal_carrier_sweep.py",
+      "target": "human/english/english_gonol/orthogonal_carrier_sweep.py",
+      "kind": "runtime",
+      "source_sha256": "48c1526d6a77caa6a8d838b9ee036d79243add70468527c7d400e55fb7daf773",
+      "target_sha256": "48c1526d6a77caa6a8d838b9ee036d79243add70468527c7d400e55fb7daf773",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/primitive_layer_run.py",
+      "target": "human/english/english_gonol/primitive_layer_run.py",
+      "kind": "runtime",
+      "source_sha256": "82a9c18dc08c62e6230a05d449cbbd353631b3f9cd76912cb0c188f46b5d0c30",
+      "target_sha256": "82a9c18dc08c62e6230a05d449cbbd353631b3f9cd76912cb0c188f46b5d0c30",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/structural_construct.py",
+      "target": "human/english/english_gonol/structural_construct.py",
+      "kind": "runtime",
+      "source_sha256": "8920759980c590719ff19a4a23906775b4058bda7f95f915a1621b1d56af18f4",
+      "target_sha256": "8920759980c590719ff19a4a23906775b4058bda7f95f915a1621b1d56af18f4",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/structural_query.py",
+      "target": "human/english/english_gonol/structural_query.py",
+      "kind": "runtime",
+      "source_sha256": "3a97e971825468347ab76a44a3203ed0ce706ca0293836ffd4cc0d223d2987be",
+      "target_sha256": "3a97e971825468347ab76a44a3203ed0ce706ca0293836ffd4cc0d223d2987be",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/structural_rules.py",
+      "target": "human/english/english_gonol/structural_rules.py",
+      "kind": "runtime",
+      "source_sha256": "4686f6a847dd0cee24e3f0a05154a71203a1d4c790922952f9876a38f017db70",
+      "target_sha256": "4686f6a847dd0cee24e3f0a05154a71203a1d4c790922952f9876a38f017db70",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/english_gonol/system_set_trajectory.py",
+      "target": "human/english/english_gonol/system_set_trajectory.py",
+      "kind": "runtime",
+      "source_sha256": "62ba0b8ac30b5ec13781344ea2996622ece8af8c226a59eb4f676aaa4c50c388",
+      "target_sha256": "62ba0b8ac30b5ec13781344ea2996622ece8af8c226a59eb4f676aaa4c50c388",
+      "adaptation": null
+    },
+    {
+      "source": "research/python-gonol/python_gonol/__init__.py",
+      "target": "programming/python/python_gonol/__init__.py",
+      "kind": "runtime",
+      "source_sha256": "93ce032c0d9438c424d76f2c8e2dabaa0bb7eb5e4dda5f4942e6bb0792885f06",
+      "target_sha256": "93ce032c0d9438c424d76f2c8e2dabaa0bb7eb5e4dda5f4942e6bb0792885f06",
+      "adaptation": null
+    },
+    {
+      "source": "research/python-gonol/python_gonol/__main__.py",
+      "target": "programming/python/python_gonol/__main__.py",
+      "kind": "runtime",
+      "source_sha256": "80279c9acef41aa8bab806219b4d219b83d52c94e4bd98b225d580e0b49347cf",
+      "target_sha256": "80279c9acef41aa8bab806219b4d219b83d52c94e4bd98b225d580e0b49347cf",
+      "adaptation": null
+    },
+    {
+      "source": "research/python-gonol/python_gonol/construct.py",
+      "target": "programming/python/python_gonol/construct.py",
+      "kind": "runtime",
+      "source_sha256": "e13b6d4b7d0af580225ee95e8ab7ee0ac41791e5f45eb171f11d048f687e8265",
+      "target_sha256": "e13b6d4b7d0af580225ee95e8ab7ee0ac41791e5f45eb171f11d048f687e8265",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/tests/test_describing_graph.py",
+      "target": "human/english/tests/test_describing_graph.py",
+      "kind": "test",
+      "source_sha256": "2b697538afb7e40cef548e5c3d3ea3933f235f91c708f55541bff0c9a332c96b",
+      "target_sha256": "2b697538afb7e40cef548e5c3d3ea3933f235f91c708f55541bff0c9a332c96b",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/tests/test_displacement_operator.py",
+      "target": "human/english/tests/test_displacement_operator.py",
+      "kind": "test",
+      "source_sha256": "90492723ad52787b7b457ba658abd3ec1e6293d1013a78f28b3f3bba67e0732d",
+      "target_sha256": "90492723ad52787b7b457ba658abd3ec1e6293d1013a78f28b3f3bba67e0732d",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/tests/test_displacement_operator_options.py",
+      "target": "human/english/tests/test_displacement_operator_options.py",
+      "kind": "test",
+      "source_sha256": "4c098a649a22ad82182ba17735a94d87b5e37446561270fae0fc5b7fb111e6e8",
+      "target_sha256": "4c098a649a22ad82182ba17735a94d87b5e37446561270fae0fc5b7fb111e6e8",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/tests/test_edcm_metric_origins.py",
+      "target": "human/english/tests/test_edcm_metric_origins.py",
+      "kind": "test",
+      "source_sha256": "d663d1f3b20e6930010f7223f0661a94d9fce2a22af38f7cc16d4c29c10fccca",
+      "target_sha256": "69065bc1fc9f8cc8c57b70454b351676a30438dccd01268a39585014244ec397",
+      "adaptation": "Replace Stack manifest-projection assertion with packaged producer-registration assertion; original forge assertion remains in Stack."
+    },
+    {
+      "source": "research/english-gonol/tests/test_hilbert_inference.py",
+      "target": "human/english/tests/test_hilbert_inference.py",
+      "kind": "test",
+      "source_sha256": "0fcc03bb99c566ac8e961d60bb10d05b53f59e5f433f9e2a93f95994a47df64e",
+      "target_sha256": "0fcc03bb99c566ac8e961d60bb10d05b53f59e5f433f9e2a93f95994a47df64e",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/tests/test_hyperspace_geometry.py",
+      "target": "human/english/tests/test_hyperspace_geometry.py",
+      "kind": "test",
+      "source_sha256": "7a315eba74b1d2e705abb9ed8de8e7574edd1ec4eb81b8cd853138e2acbfb8ef",
+      "target_sha256": "7a315eba74b1d2e705abb9ed8de8e7574edd1ec4eb81b8cd853138e2acbfb8ef",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/tests/test_hyperspace_views.py",
+      "target": "human/english/tests/test_hyperspace_views.py",
+      "kind": "test",
+      "source_sha256": "6ba59517422f5ac46e0213f65b6ba1b3bd902c83e41a7b388855b4e941f7c4b7",
+      "target_sha256": "6ba59517422f5ac46e0213f65b6ba1b3bd902c83e41a7b388855b4e941f7c4b7",
+      "adaptation": null
+    },
+    {
+      "source": "research/english-gonol/tests/test_system_set_trajectory.py",
+      "target": "human/english/tests/test_system_set_trajectory.py",
+      "kind": "test",
+      "source_sha256": "c5576e389191b43b073f61723104fa751c0522d63391bcc87dc1370c86234d83",
+      "target_sha256": "ed668b374c718fa6fc41872ebebe78dba591492f2a9552f1508606803bf60b32",
+      "adaptation": "Move exact Git source provenance assertion to the complete package extraction verifier; preserve all trajectory behavior assertions."
+    }
+  ],
+  "forge_only": {
+    "research/english-gonol/english_gonol/full_view_audit.py": "Frozen Stack audit runner; reads Stack protocol, graph and source inventory.",
+    "research/english-gonol/english_gonol/view_replay.py": "Independent view reconstruction helper owned by the Stack audit."
+  }
+}

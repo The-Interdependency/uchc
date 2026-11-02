@@ -1,0 +1,10 @@
+include NOTICE LICENSE
+recursive-include docs *.md *.json
+recursive-include human/english/tests *.py
+recursive-include human/english/tools *.py
+recursive-include human/english/docs *.md *.json
+include human/english/README.md
+recursive-include human/english/experiments *.json
+recursive-include programming/python/tests *.py
+recursive-include shared/polyglot/tests *.py
+recursive-include tools *.py

@@ -55,7 +55,7 @@ jobs:
           python -m pip wheel --no-deps --no-build-isolation . -w _state/dist
           python -m venv _state/clean
           _state/clean/bin/python -m pip install pytest==8.3.5 PyYAML==6.0.2
-          _state/clean/bin/python -m pip install --no-deps _state/native-dist/*.whl _state/dist/uchc-0.1.0a4-py3-none-any.whl
+          _state/clean/bin/python -m pip install --no-deps _state/native-dist/*.whl _state/dist/uchc-0.1.0-py3-none-any.whl
           mkdir -p _state/isolated
           cp tests/test_attachment_construction.py tests/test_attachment_corpus.py _state/isolated/
       - name: Verify source closure and isolated installed imports
@@ -112,7 +112,7 @@ jobs:
           audit = json.loads(Path('_state/audit-installed.json').read_text())
           assert audit['counts']['words'] == 103053
           assert audit['counts']['formerly_compound_definitions'] == 57155
-          wheel = Path('_state/dist/uchc-0.1.0a4-py3-none-any.whl')
+          wheel = Path('_state/dist/uchc-0.1.0-py3-none-any.whl')
           evidence = {'schema':'uchc.recursive-attachment-acceptance.v1','uchc_source_commit':sha,'forge_commit':'251ba2290675a21154582f0b3fb0d7a9d509ed50','ucns_commit':'9cc00771e54336d58ee377faeec87a3a33dbd4bf','tests':tests,'operations':outputs,'audit':audit,'wheel_sha256':hashlib.sha256(wheel.read_bytes()).hexdigest(),'authority_transfer':False,'bearing_selection':'none','work_graph_sha256':json.loads(Path('docs/work-graphs/english-recursive-attachment-v1.json').read_text())['work_graph_sha256'],'baseline_audit_sha256':hashlib.sha256(Path('human/english/experiments/recursive-attachment-v1/corpus-audit.json').read_bytes()).hexdigest()}
           Path('_state/recursive-evidence.json').write_text(json.dumps(evidence,indent=2,sort_keys=True)+'\n')
           PY
