@@ -1,0 +1,35 @@
+{
+  "schema": "uchc.unicode-recursive-extraction.v1",
+  "source_repository": "The-Interdependency/stack",
+  "source_commit": "9bc6172c3450bcd6bf6a16040c19389aaeda3133",
+  "source_root": "research/english-gonol",
+  "authority_transfer": false,
+  "work_graph_sha256": "2da4720ebced5c3fd6b6bbeb0707800d0514d03383dc9f9123f9b1796e09f94e",
+  "geometry_authority": {
+    "repository": "The-Interdependency/ucns",
+    "commit": "0bbed0b3ca7ba507101ada6c8019f870499429fe",
+    "source": "src/ucns/unicode_gonol.py",
+    "source_sha256": "302cdb12a1314b21a54a84e4263ec7da498b27c3ec3d82758e2b726a90e2252a",
+    "source_sha256s": {
+      "src/ucns/unicode_gonol.py": "302cdb12a1314b21a54a84e4263ec7da498b27c3ec3d82758e2b726a90e2252a",
+      "src/ucns/ordinal_affixiation.py": "d76656ada0cd464b51e5f3b58041743f0a85ab07ffe5451a5d654c465034d213",
+      "src/ucns/attachment_stack.py": "a68ce6c286345d8e94865ec73f0dff426a24fcba54738113e7a1713387c6c15f",
+      "src/ucns/unicode_recursive.py": "59adf68258324406c55ca5e93dbf4ae30ef6d0f94134a3702346d67d0fcf78d0"
+    }
+  },
+  "files": [
+    {
+      "source": "english_gonol/unicode_construction.py",
+      "target": "human/english/english_gonol/unicode_construction.py",
+      "sha256": "eea05728a6868bc50a3cec530a9c8901d5253644146c39007caad1f402dffff4"
+    },
+    {
+      "source": "unicode_tests/test_unicode_recursive.py",
+      "target": "tests/test_unicode_recursive.py",
+      "sha256": "875eddccc5cf6aeb2983425aeb1b324f5144324f46cf5521c0d6c65901e9cf50"
+    }
+  ],
+  "hmmm": [
+    "Automatic closed-object bearing selection, corpus migration and domain graduation remain separate."
+  ]
+}

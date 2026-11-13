@@ -1,4 +1,4 @@
-# ratios: loc_comments=141:53 imports_exports=14:7 calls_definitions=86:7
+# ratios: loc_comments=162:61 imports_exports=14:8 calls_definitions=102:8
 # === CHECKS ===
 # id: check_english_word_uses_native_attachment_and_exact_views
 #   proves: english_attachment_native_authority
@@ -30,6 +30,14 @@
 #   requires: pytest, pinned_ucns
 #   mutates: filesystem
 #   cleanup: pytest_fixture_teardown
+# === END CHECKS ===
+# === CHECKS ===
+# id: check_english_closed_sequence_reentry
+#   proves: english_attachment_sequence_reentry
+#   call: self::test_closed_sequence_reenters_and_rejects_counterfeits
+#   requires: pytest, pinned_ucns
+#   mutates: none
+#   cleanup: none
 # === END CHECKS ===
 # === CHECKS ===
 # id: check_attachment_census_rejects_shared_regressions
@@ -115,6 +123,29 @@ def test_compound_keeps_boundary_and_replays():
         bad = deepcopy(record); mutate(bad)
         with pytest.raises(OrdinalGeometryError, match='COMPOUND_REPLAY_MISMATCH'):
             api.replay_compound(bad)
+
+
+@pytest.mark.parametrize('policy', ('root-endpoint-v1', 'exit-heading-v1'))
+def test_closed_sequence_reenters_and_rejects_counterfeits(policy):
+    word = api.construct_word('ab')
+    sequence = api.construct_sequence((word, word), bearing=policy)
+    original = export_graph(sequence)
+    parent = api.construct_sequence((sequence, sequence), bearing=policy)
+    assert parent.recover() == tuple('abababab')
+    assert parent.participants[0].interior is sequence
+    record = api.closed_record(parent)
+    assert record['schema'] == 'english.closed-sequence.v1'
+    assert replay_graph(record['graph']).receipt == parent.receipt
+    assert export_graph(sequence) == original
+    compound = api.construct_compound(sequence, word)
+    assert api.replay_compound(compound) == compound
+    for bad in (
+        stack('forged-label', sequence.participants, relation=sequence.relation, source=sequence.source),
+        stack(sequence.identity, word.participants, relation=sequence.relation, source=sequence.source),
+        stack(sequence.identity, sequence.participants, relation=sequence.relation, source=sequence.source, radius=2),
+    ):
+        with pytest.raises(OrdinalGeometryError, match='DECLARED_SEQUENCE_REQUIRED'):
+            api.construct_sequence((bad,), bearing=policy)
 
 
 def test_no_false_native_or_carrier_provenance(tmp_path, monkeypatch):
@@ -208,4 +239,4 @@ def test_audit_refuses_disabled_assertions():
     result = subprocess.run([sys.executable, '-I', '-O', '-c', code], capture_output=True, text=True)
     assert result.returncode != 0 and not result.stdout
     assert 'OPTIMIZED_AUDIT_FORBIDDEN' in result.stderr
-# ratios: loc_comments=141:53 imports_exports=14:7 calls_definitions=86:7
+# ratios: loc_comments=162:61 imports_exports=14:8 calls_definitions=102:8

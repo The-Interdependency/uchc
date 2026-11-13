@@ -10,7 +10,7 @@
     },
     {
       "repository": "The-Interdependency/stack",
-      "commit": "251ba2290675a21154582f0b3fb0d7a9d509ed50",
+      "commit": "9bc6172c3450bcd6bf6a16040c19389aaeda3133",
       "authority": "English construction forge pending domain graduation",
       "relation": "exact implementation, audit and tests extracted into this candidate"
     },
@@ -22,7 +22,7 @@
     },
     {
       "repository": "The-Interdependency/skill-lib",
-      "commit": "d71a3a938cb6d646ffc0b59186452117e4a37d13",
+      "commit": "7fdbdc4485431cb7f43a32089d10cf882c07ad0a",
       "authority": "build and verification discipline",
       "relation": "resolved governing skills; no geometry authority"
     }
@@ -38,5 +38,5 @@
       "Numerical definition attachment, expanded carrier, sheet lift and graduation remain open."
     ]
   },
-  "work_graph_sha256": "a17bdf8c1fda5fec60f7d1b819b48fa493b873c8e3f8997d83144b038fb14dd5"
+  "work_graph_sha256": "082812e4111f20844c149cfedf9b989c6391ce17fa02223de336dac0e2e6db57"
 }

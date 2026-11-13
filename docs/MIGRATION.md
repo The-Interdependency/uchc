@@ -1,5 +1,19 @@
 # UCHC migration record
 
+## Recursive Unicode completion repair
+
+The [Unicode recursive entrypoint](../human/english/docs/unicode-recursive.md)
+extracts Stack `9bc6172c3450bcd6bf6a16040c19389aaeda3133` and consumes UCNS
+`0bbed0b3ca7ba507101ada6c8019f870499429fe`. Completed frames can participate in a
+new frame and reenter after exact graph replay. The historical word-only
+validation barrier is repaired in the same source transaction.
+
+The [current graph](work-graphs/unicode-recursive-v1.json), Unicode extraction
+receipt and full package inventory bind exact source bytes. Historical package
+and attachment extraction records remain archived alongside their replacements.
+Source and clean-installed verification must agree. Native placement requires
+explicit parent bearings; automatic selection and domain graduation remain open.
+
 ## Candidate
 
 - name: UCHC

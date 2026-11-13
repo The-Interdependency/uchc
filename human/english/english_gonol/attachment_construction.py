@@ -1,4 +1,4 @@
-# ratios: loc_comments=230:54 imports_exports=9:9 calls_definitions=103:17
+# ratios: loc_comments=240:57 imports_exports=9:9 calls_definitions=111:17
 # SPDX-License-Identifier: FSL-1.1-ALv2
 # Copyright 2026 Erin Spencer
 # === MODULE_BUILD ===
@@ -33,6 +33,9 @@
 # id: english_attachment_lexical_owner
 #   given: a definition with a source lexical owner
 #   then: the entire closed lexical construction owns the typed definition origin while original parts, succession and provenance remain recoverable
+# id: english_attachment_sequence_reentry
+#   given: a completed declared sequence or compound containing such a sequence
+#   then: validate its retained native construction and admit it recursively without rebuilding its identity label as a word
 # === END CONTRACTS ===
 """Forward English attachment profile, forged in Stack and extracted into UCHC.
 
@@ -149,9 +152,9 @@ def construct_compound(left, right, *, source='english.attachment/1:declared-com
 
 
 def closed_record(obj):
-    """Validate either a glyph-built word or a retained explicit compound."""
+    """Validate actual word, sequence and compound interiors at every depth."""
     native, codec = _native()
-    if not isinstance(obj, native.AttachmentJoin):
+    if isinstance(obj, native.DiskStack) and obj.relation == 'english.attachment/1:glyph-stack':
         return word_record(obj)
     pending, seen = [obj], set()
     while pending:
@@ -166,9 +169,19 @@ def closed_record(obj):
             if current.receipt != expected.receipt:
                 raise OrdinalGeometryError('DECLARED_COMPOUND_REQUIRED')
             pending.extend((current.right, current.left))
+        elif isinstance(current, native.DiskStack) and current.relation == 'english.attachment/1:word-stack':
+            if (not all(isinstance(p, native.Closed) for p in current.participants)
+                    or len({p.bearing for p in current.participants}) != 1):
+                raise OrdinalGeometryError('DECLARED_SEQUENCE_REQUIRED')
+            expected = native.stack('declared-word-sequence', current.participants,
+                                    relation='english.attachment/1:word-stack', source=current.source)
+            if current.receipt != expected.receipt or current.rays != expected.rays:
+                raise OrdinalGeometryError('DECLARED_SEQUENCE_REQUIRED')
+            pending.extend(p.interior for p in reversed(current.participants))
         else:
             word_record(current)
-    return {'schema': 'english.closed-compound.v1', 'geometry_authority': authority(),
+    schema = 'english.closed-compound.v1' if isinstance(obj, native.AttachmentJoin) else 'english.closed-sequence.v1'
+    return {'schema': schema, 'geometry_authority': authority(),
             'graph': codec.export_graph(obj)}
 
 
@@ -319,4 +332,4 @@ def main():
 
 if __name__ == '__main__':
     raise SystemExit(main())
-# ratios: loc_comments=230:54 imports_exports=9:9 calls_definitions=103:17
+# ratios: loc_comments=240:57 imports_exports=9:9 calls_definitions=111:17

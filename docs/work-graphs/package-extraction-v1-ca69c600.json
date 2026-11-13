@@ -1,0 +1,56 @@
+{
+  "schema": "the-interdependency.stack-manifest",
+  "version": "1.0.0",
+  "work_graph_sha256": "8eaf4849f262e49f956aa9e43e3c4330669b368154e0f48ffa6dbc4d9c26252e",
+  "repositories": [
+    {
+      "repository": "The-Interdependency/uchc",
+      "commit": "a4a3826c9585c612e83e079eeed5715a579e8cec",
+      "authority": "extracted candidate; implementation transfer incomplete",
+      "relation": "pre-extraction baseline for package-completeness repair"
+    },
+    {
+      "repository": "The-Interdependency/stack",
+      "commit": "ca69c60032a079585ccb89d5cc7aba67f637df55",
+      "authority": "current English/Python implementation and public-contract forge",
+      "relation": "exact source for the complete runtime extraction and eight migrated test files"
+    },
+    {
+      "repository": "The-Interdependency/ucns",
+      "commit": "9cc00771e54336d58ee377faeec87a3a33dbd4bf",
+      "authority": "geometry and mathematical representation",
+      "relation": "recursive geometry producer; older geometry profiles retain their own exact pins"
+    },
+    {
+      "repository": "The-Interdependency/edcm",
+      "commit": "0873c105799681ea1f7ccb3e619d1f7aebbd85e0",
+      "authority": "EDCM metric semantics and measurement",
+      "relation": "exact semantic metric-origin fixture; packaging does not change or validate its measurement claims"
+    },
+    {
+      "repository": "The-Interdependency/metapat",
+      "commit": "1cdfb09dd00a451cee30eec2e78624df8c682662",
+      "authority": "semantic distinctions for state, vector and transformation",
+      "relation": "constrains placement of vector/state language without supplying Hilbert mathematics"
+    },
+    {
+      "repository": "The-Interdependency/skill-lib",
+      "commit": "38c64332b840b2bbe1c07e53aeee8996644548e9",
+      "authority": "reusable build and evidence discipline",
+      "relation": "governs this graph's schema, digest and authority boundaries through the propagated interdependent-work-graph contract"
+    }
+  ],
+  "boundaries": {
+    "authority_transfer": false,
+    "proof_status_transfer": false,
+    "measurement_status_transfer": false,
+    "semantic_mapping": "declared mapping",
+    "agent_scope": "cross-repository-work-graph",
+    "hmmm": [
+      "Stable publication, published-artifact reconsumption and scoped authority transition remain incomplete.",
+      "Canonical Hilbert scalar field and cross-origin geometry remain unresolved; callers must choose the existing explicit field.",
+      "The input-frame bridge remains unimplemented.",
+      "GitHub hosted verification is blocked by account billing; local evidence is recorded separately."
+    ]
+  }
+}

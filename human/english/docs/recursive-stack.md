@@ -1,5 +1,10 @@
 # Recursive attachment profile
 
+Historical compatibility profile. Active Unicode object completion lives in
+[unicode-bit-radius.md](unicode-bit-radius.md). Completed sequences can reenter
+this historical adapter too: validation now traverses their retained objects,
+including sequences inside compounds, without rebuilding labels as words.
+
 GPT generated; context, prompt Erin Spencer.
 
 `english.attachment/1` applies the same native UCNS stack to glyphs within words

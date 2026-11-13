@@ -1,0 +1,69 @@
+name: Unicode recursive installed package
+on:
+  pull_request:
+    paths: ['human/english/english_gonol/unicode_construction.py', 'human/english/experiments/unicode-recursive-v1/**', 'tests/test_unicode*.py', 'tools/verify_unicode_extraction.py', 'docs/work-graphs/unicode-recursive-v1.json', 'pyproject.toml', '.github/workflows/unicode-recursive.yml']
+  push:
+    branches: [main]
+    paths: ['human/english/english_gonol/unicode_construction.py', 'human/english/experiments/unicode-recursive-v1/**', 'tests/test_unicode*.py', 'tools/verify_unicode_extraction.py', 'docs/work-graphs/unicode-recursive-v1.json', 'pyproject.toml', '.github/workflows/unicode-recursive.yml']
+permissions:
+  contents: read
+jobs:
+  unicode-installed:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/checkout@v7.0.1
+        with:
+          repository: The-Interdependency/stack
+          ref: 9bc6172c3450bcd6bf6a16040c19389aaeda3133
+          path: _deps/forge
+          persist-credentials: false
+      - uses: actions/checkout@v7.0.1
+        with:
+          repository: The-Interdependency/ucns
+          ref: 0bbed0b3ca7ba507101ada6c8019f870499429fe
+          path: _deps/native
+          persist-credentials: false
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.12.14'
+      - name: Build and clean-install exact candidate
+        run: |
+          python -m pip install pytest==8.3.5 setuptools==82.0.1 wheel==0.46.3 packaging==26.0
+          python -m pip wheel --no-deps --no-build-isolation . -w _state/dist
+          python -m venv _state/clean
+          _state/clean/bin/python -m pip install pytest==8.3.5
+          _state/clean/bin/python -m pip install --no-deps _state/dist/*.whl
+          mkdir -p _state/isolated
+          cp tests/test_unicode_recursive.py _state/isolated/
+      - name: Verify exact source and installed recursive behavior
+        env:
+          PYTHONPATH: human/english
+          UCHC_UNICODE_UCNS_ROOT: ${{ github.workspace }}/_deps/native
+        run: |
+          python tools/verify_unicode_extraction.py _deps/forge --ucns-source-root _deps/native > _state/source.json
+          _state/clean/bin/python -I tools/verify_unicode_extraction.py _deps/forge --ucns-source-root _deps/native > _state/installed.json
+          cmp _state/source.json _state/installed.json
+          python -m pytest -c /dev/null -q tests/test_unicode_recursive.py tests/test_unicode_verification.py --junitxml=_state/source.xml
+          _state/clean/bin/python -I -m pytest -c /dev/null --noconftest -q _state/isolated --junitxml=_state/installed.xml
+          _state/clean/bin/python -I - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as E
+          from english_gonol import unicode_construction
+          assert '/_state/clean/' in str(Path(unicode_construction.__file__).resolve())
+          for name, count in (('source', 7), ('installed', 6)):
+              suites = list(E.parse('_state/' + name + '.xml').getroot().iter('testsuite'))
+              assert sum(int(s.get('tests', 0)) for s in suites) == count
+              assert all(int(s.get(k, 0)) == 0 for s in suites for k in ('failures', 'errors', 'skipped'))
+          PY
+      - uses: actions/upload-artifact@v7.0.1
+        if: always()
+        with:
+          name: unicode-recursive-installed
+          path: |
+            _state/*.json
+            _state/*.xml
+            _state/dist/*.whl
