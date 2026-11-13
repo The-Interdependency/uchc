@@ -10,7 +10,7 @@
     },
     {
       "repository": "The-Interdependency/stack",
-      "commit": "9bc6172c3450bcd6bf6a16040c19389aaeda3133",
+      "commit": "ffd6e52eb1a50291cb48e2168d82e9bc236ceef4",
       "authority": "active language construction research forge",
       "relation": "exact Unicode and historical-recursion repair source extracted into this candidate"
     },
@@ -38,5 +38,5 @@
       "Corpus replacement and extraction into the UCHC distribution remain separate from primitive width and transport."
     ]
   },
-  "work_graph_sha256": "2da4720ebced5c3fd6b6bbeb0707800d0514d03383dc9f9123f9b1796e09f94e"
+  "work_graph_sha256": "5fd5e74641968450b11c965f7d9e40eaecc01b6cb94007b5a7ff42b77d7f7ce1"
 }

@@ -26,7 +26,7 @@ jobs:
       - uses: actions/checkout@v7.0.1
         with:
           repository: The-Interdependency/stack
-          ref: 9bc6172c3450bcd6bf6a16040c19389aaeda3133
+          ref: ffd6e52eb1a50291cb48e2168d82e9bc236ceef4
           path: _deps/forge
           persist-credentials: false
       - uses: actions/checkout@v7.0.1
@@ -113,7 +113,7 @@ jobs:
           assert audit['counts']['words'] == 103053
           assert audit['counts']['formerly_compound_definitions'] == 57155
           wheel = Path('_state/dist/uchc-0.1.0-py3-none-any.whl')
-          evidence = {'schema':'uchc.recursive-attachment-acceptance.v1','uchc_source_commit':sha,'forge_commit':'9bc6172c3450bcd6bf6a16040c19389aaeda3133','ucns_commit':'9cc00771e54336d58ee377faeec87a3a33dbd4bf','tests':tests,'operations':outputs,'audit':audit,'wheel_sha256':hashlib.sha256(wheel.read_bytes()).hexdigest(),'authority_transfer':False,'bearing_selection':'none','work_graph_sha256':json.loads(Path('docs/work-graphs/english-recursive-attachment-v1.json').read_text())['work_graph_sha256'],'baseline_audit_sha256':hashlib.sha256(Path('human/english/experiments/recursive-attachment-v1/corpus-audit.json').read_bytes()).hexdigest()}
+          evidence = {'schema':'uchc.recursive-attachment-acceptance.v1','uchc_source_commit':sha,'forge_commit':'ffd6e52eb1a50291cb48e2168d82e9bc236ceef4','ucns_commit':'9cc00771e54336d58ee377faeec87a3a33dbd4bf','tests':tests,'operations':outputs,'audit':audit,'wheel_sha256':hashlib.sha256(wheel.read_bytes()).hexdigest(),'authority_transfer':False,'bearing_selection':'none','work_graph_sha256':json.loads(Path('docs/work-graphs/english-recursive-attachment-v1.json').read_text())['work_graph_sha256'],'baseline_audit_sha256':hashlib.sha256(Path('human/english/experiments/recursive-attachment-v1/corpus-audit.json').read_bytes()).hexdigest()}
           Path('_state/recursive-evidence.json').write_text(json.dumps(evidence,indent=2,sort_keys=True)+'\n')
           PY
       - uses: actions/upload-artifact@v7.0.1

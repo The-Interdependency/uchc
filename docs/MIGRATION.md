@@ -3,7 +3,7 @@
 ## Recursive Unicode completion repair
 
 The [Unicode recursive entrypoint](../human/english/docs/unicode-recursive.md)
-extracts Stack `9bc6172c3450bcd6bf6a16040c19389aaeda3133` and consumes UCNS
+extracts Stack `ffd6e52eb1a50291cb48e2168d82e9bc236ceef4` and consumes UCNS
 `0bbed0b3ca7ba507101ada6c8019f870499429fe`. Completed frames can participate in a
 new frame and reenter after exact graph replay. The historical word-only
 validation barrier is repaired in the same source transaction.

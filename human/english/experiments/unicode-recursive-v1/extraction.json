@@ -1,10 +1,10 @@
 {
   "schema": "uchc.unicode-recursive-extraction.v1",
   "source_repository": "The-Interdependency/stack",
-  "source_commit": "9bc6172c3450bcd6bf6a16040c19389aaeda3133",
+  "source_commit": "ffd6e52eb1a50291cb48e2168d82e9bc236ceef4",
   "source_root": "research/english-gonol",
   "authority_transfer": false,
-  "work_graph_sha256": "2da4720ebced5c3fd6b6bbeb0707800d0514d03383dc9f9123f9b1796e09f94e",
+  "work_graph_sha256": "5fd5e74641968450b11c965f7d9e40eaecc01b6cb94007b5a7ff42b77d7f7ce1",
   "geometry_authority": {
     "repository": "The-Interdependency/ucns",
     "commit": "0bbed0b3ca7ba507101ada6c8019f870499429fe",
@@ -21,12 +21,12 @@
     {
       "source": "english_gonol/unicode_construction.py",
       "target": "human/english/english_gonol/unicode_construction.py",
-      "sha256": "eea05728a6868bc50a3cec530a9c8901d5253644146c39007caad1f402dffff4"
+      "sha256": "b39ed169f1d4b98014731e4750b5218ed3a5eba16c09441fe6ae55a73da02958"
     },
     {
       "source": "unicode_tests/test_unicode_recursive.py",
       "target": "tests/test_unicode_recursive.py",
-      "sha256": "875eddccc5cf6aeb2983425aeb1b324f5144324f46cf5521c0d6c65901e9cf50"
+      "sha256": "3836d6c884af4335da5be7670a189d754532aa2249175d92e588b76abebfa6c9"
     }
   ],
   "hmmm": [

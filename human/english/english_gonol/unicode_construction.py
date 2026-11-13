@@ -1,4 +1,4 @@
-# ratios: loc_comments=96:47 imports_exports=8:9 calls_definitions=41:11
+# ratios: loc_comments=99:49 imports_exports=9:9 calls_definitions=42:11
 # === MODULE_BUILD ===
 # id: uchc_unicode_bit_radius_consumer
 #   module_name: unicode_construction
@@ -54,6 +54,7 @@ from hashlib import sha256
 import json
 from pathlib import Path
 import sys
+from threading import Lock
 from types import ModuleType
 
 UCNS_COMMIT = "0bbed0b3ca7ba507101ada6c8019f870499429fe"
@@ -67,6 +68,7 @@ NATIVE_SOURCES = {
 }
 PROFILE = "uchc.unicode-bit-radius/1"
 RECURSIVE_PROFILE = "uchc.unicode-recursive/1"
+_NATIVE_LOAD_LOCK = Lock()
 
 
 @lru_cache(maxsize=1)
@@ -103,7 +105,10 @@ def _native(ucns_source_root):
         if sha256(source).hexdigest() != expected:
             raise ValueError("UCNS_UNICODE_PRODUCER_DRIFT")
         sources.append((name, source))
-    return _load_native(tuple(sources))
+    # lru_cache alone allows concurrent cache misses. Serialize initialization
+    # so every returned object belongs to the same native class identities.
+    with _NATIVE_LOAD_LOCK:
+        return _load_native(tuple(sources))
 
 
 def authority():
@@ -172,4 +177,4 @@ def main(argv=None):
 
 if __name__ == "__main__":
     main()
-# ratios: loc_comments=96:47 imports_exports=8:9 calls_definitions=41:11
+# ratios: loc_comments=99:49 imports_exports=9:9 calls_definitions=42:11

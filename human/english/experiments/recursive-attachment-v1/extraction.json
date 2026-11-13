@@ -1,10 +1,10 @@
 {
   "schema": "uchc.recursive-attachment-extraction.v1",
   "source_repository": "The-Interdependency/stack",
-  "source_commit": "9bc6172c3450bcd6bf6a16040c19389aaeda3133",
+  "source_commit": "ffd6e52eb1a50291cb48e2168d82e9bc236ceef4",
   "source_root": "research/english-gonol",
   "authority_transfer": false,
-  "work_graph_sha256": "082812e4111f20844c149cfedf9b989c6391ce17fa02223de336dac0e2e6db57",
+  "work_graph_sha256": "588f89c1fc75b7b469e54a2716a46ea6549e0ed545a0d9a6293a1fa80ca242e1",
   "geometry_authority": {
     "repository": "The-Interdependency/ucns",
     "commit": "9cc00771e54336d58ee377faeec87a3a33dbd4bf",

@@ -1,4 +1,4 @@
-# ratios: loc_comments=73:23 imports_exports=7:4 calls_definitions=42:5
+# ratios: loc_comments=88:30 imports_exports=9:5 calls_definitions=52:7
 # === CHECKS ===
 # id: uchc_unicode_recursive_completion_check
 #   proves: uchc_unicode_recursive_completion
@@ -21,12 +21,21 @@
 #   timeout: 60
 #   mutates: filesystem
 #   cleanup: tmp_path
+# id: uchc_unicode_concurrent_reentry_check
+#   proves: uchc_unicode_recursive_completion, uchc_unicode_native_integrity
+#   call: self::test_concurrent_first_use_objects_can_be_reused
+#   requires: python3, pytest, pinned_ucns
+#   timeout: 60
+#   mutates: in-process native loader cache
+#   cleanup: thread_pool_exit
 # === END CHECKS ===
+from concurrent.futures import ThreadPoolExecutor
 from copy import deepcopy
 from fractions import Fraction
 import json
 import os
 from pathlib import Path
+from threading import Barrier
 
 import pytest
 
@@ -105,4 +114,19 @@ def test_complete_source_closure_is_checked_before_execution(native_root, tmp_pa
     monkeypatch.setattr(consumer, '_load_native', forbidden)
     with pytest.raises(ValueError, match='UCNS_UNICODE_PRODUCER_DRIFT'):
         consumer.construct_text('A', ucns_source_root=tmp_path)
-# ratios: loc_comments=73:23 imports_exports=7:4 calls_definitions=42:5
+
+
+def test_concurrent_first_use_objects_can_be_reused(native_root):
+    consumer._load_native.cache_clear()
+    barrier = Barrier(8)
+    def build(_):
+        barrier.wait()
+        return consumer.construct_text('Aë', ucns_source_root=native_root)
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        children = tuple(pool.map(build, range(8)))
+    parent = consumer.construct_sequence(children, bearings=tuple(Fraction(i, 8) for i in range(8)),
+                                         ucns_source_root=native_root)
+    assert parent.recover() == 'Aë' * 8
+    assert len({type(child) for child in children}) == 1
+    assert all(parent.participants[i] is child for i, child in enumerate(children))
+# ratios: loc_comments=88:30 imports_exports=9:5 calls_definitions=52:7

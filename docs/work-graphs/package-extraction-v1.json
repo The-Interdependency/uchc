@@ -1,7 +1,7 @@
 {
   "schema": "the-interdependency.stack-manifest",
   "version": "1.0.0",
-  "work_graph_sha256": "6a63a20b146c980e4691a7c9738d33054d3614f7318f71d0bc2a10585526e205",
+  "work_graph_sha256": "d514af435e7b2a2400e4cd4b5bf752ca5087ffff0fdafffb13623a2125590811",
   "repositories": [
     {
       "repository": "The-Interdependency/uchc",
@@ -11,7 +11,7 @@
     },
     {
       "repository": "The-Interdependency/stack",
-      "commit": "9bc6172c3450bcd6bf6a16040c19389aaeda3133",
+      "commit": "ffd6e52eb1a50291cb48e2168d82e9bc236ceef4",
       "authority": "current English/Python implementation and public-contract forge",
       "relation": "exact source for complete runtime extraction and declared test files; non-English runtime bytes are unchanged"
     },
