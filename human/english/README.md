@@ -1,4 +1,13 @@
-## Extracted recursive attachment profile
+## Recursive Unicode objects — active construction entrypoint
+
+Use [`unicode_construction`](docs/unicode-recursive.md) for exact 16 b rad Unicode
+glyphs, text frames and recursive closed objects. A completed result can be passed
+back to `construct_sequence` and can reenter after `closed_record`/`replay_closed`.
+Parent bearings are explicit; interiors, order, multiplicity, source and exact
+UTF-8/UTF-32BE anatomy remain retained. Stack owns the source; UCHC verifies this
+extraction and its installed package.
+
+## Historical recursive attachment profile
 
 Start with [recursive-stack.md](docs/recursive-stack.md) and the
 [exact extraction receipt](experiments/recursive-attachment-v1/extraction.json).
@@ -10,10 +19,10 @@ available. Stack retains implementation authority pending graduation.
 ---
 # English Gonol Construction
 
-## Structural profile v1 — new construction entrypoint
+## Historical structural profile v1
 
 The operator-ratified [structural profile](docs/structural-profile-v1.md) replaces
-non-whitespace runs for new structural work. It builds the complete pinned
+non-whitespace runs for that versioned corpus profile. It builds the complete pinned
 corpus, keeps punctuation outside word identity, preserves ordered shared
 participations, and exposes read-only query/replay through
 `english_gonol.structural_query.StructuralField`. Start with the commands in

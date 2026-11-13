@@ -1,10 +1,10 @@
 {
   "schema": "uchc.recursive-attachment-extraction.v1",
   "source_repository": "The-Interdependency/stack",
-  "source_commit": "251ba2290675a21154582f0b3fb0d7a9d509ed50",
+  "source_commit": "ffd6e52eb1a50291cb48e2168d82e9bc236ceef4",
   "source_root": "research/english-gonol",
   "authority_transfer": false,
-  "work_graph_sha256": "a17bdf8c1fda5fec60f7d1b819b48fa493b873c8e3f8997d83144b038fb14dd5",
+  "work_graph_sha256": "588f89c1fc75b7b469e54a2716a46ea6549e0ed545a0d9a6293a1fa80ca242e1",
   "geometry_authority": {
     "repository": "The-Interdependency/ucns",
     "commit": "9cc00771e54336d58ee377faeec87a3a33dbd4bf",
@@ -90,7 +90,7 @@
     {
       "source": "english_gonol/attachment_construction.py",
       "target": "human/english/english_gonol/attachment_construction.py",
-      "sha256": "7c754e6a8e0f860e1f645af88c4d48a8894a6dcfcde55ca5ae6af96b9378e7d1"
+      "sha256": "c8cba4fe76d320153a15cd6c1d7d6eea6c040e8d8709fc7f3fdf133fbe1c0d57"
     },
     {
       "source": "english_gonol/attachment_audit.py",
@@ -100,7 +100,7 @@
     {
       "source": "ordinal_tests/test_attachment_construction.py",
       "target": "tests/test_attachment_construction.py",
-      "sha256": "d58b367607a83336ea100afd2723de0359f6d38db58214e773fa89b303b0915c"
+      "sha256": "80f4c25634726f00ecf107b39fb3f17e4217843358c063e3072e9ebddd5d995b"
     },
     {
       "source": "ordinal_tests/test_attachment_corpus.py",

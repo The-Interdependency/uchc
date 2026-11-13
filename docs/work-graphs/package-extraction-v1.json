@@ -1,7 +1,7 @@
 {
   "schema": "the-interdependency.stack-manifest",
   "version": "1.0.0",
-  "work_graph_sha256": "8eaf4849f262e49f956aa9e43e3c4330669b368154e0f48ffa6dbc4d9c26252e",
+  "work_graph_sha256": "d514af435e7b2a2400e4cd4b5bf752ca5087ffff0fdafffb13623a2125590811",
   "repositories": [
     {
       "repository": "The-Interdependency/uchc",
@@ -11,15 +11,15 @@
     },
     {
       "repository": "The-Interdependency/stack",
-      "commit": "ca69c60032a079585ccb89d5cc7aba67f637df55",
+      "commit": "ffd6e52eb1a50291cb48e2168d82e9bc236ceef4",
       "authority": "current English/Python implementation and public-contract forge",
-      "relation": "exact source for the complete runtime extraction and eight migrated test files"
+      "relation": "exact source for complete runtime extraction and declared test files; non-English runtime bytes are unchanged"
     },
     {
       "repository": "The-Interdependency/ucns",
-      "commit": "9cc00771e54336d58ee377faeec87a3a33dbd4bf",
+      "commit": "0bbed0b3ca7ba507101ada6c8019f870499429fe",
       "authority": "geometry and mathematical representation",
-      "relation": "recursive geometry producer; older geometry profiles retain their own exact pins"
+      "relation": "Unicode recursive producer; historical attachment remains separately pinned at 9cc00771e54336d58ee377faeec87a3a33dbd4bf"
     },
     {
       "repository": "The-Interdependency/edcm",
@@ -35,7 +35,7 @@
     },
     {
       "repository": "The-Interdependency/skill-lib",
-      "commit": "38c64332b840b2bbe1c07e53aeee8996644548e9",
+      "commit": "7fdbdc4485431cb7f43a32089d10cf882c07ad0a",
       "authority": "reusable build and evidence discipline",
       "relation": "governs this graph's schema, digest and authority boundaries through the propagated interdependent-work-graph contract"
     }
@@ -50,7 +50,7 @@
       "Stable publication, published-artifact reconsumption and scoped authority transition remain incomplete.",
       "Canonical Hilbert scalar field and cross-origin geometry remain unresolved; callers must choose the existing explicit field.",
       "The input-frame bridge remains unimplemented.",
-      "GitHub hosted verification is blocked by account billing; local evidence is recorded separately."
+      "Automatic closed-object bearing selection and affixiation beyond caller-declared rigid placement remain unresolved."
     ]
   }
 }

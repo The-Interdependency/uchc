@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v7.0.1
         with:
           repository: The-Interdependency/stack
-          ref: ca69c60032a079585ccb89d5cc7aba67f637df55
+          ref: ffd6e52eb1a50291cb48e2168d82e9bc236ceef4
           path: forge
           persist-credentials: false
       - uses: actions/setup-python@v7.0.0

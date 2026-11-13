@@ -2,7 +2,7 @@
   "schema": "uchc.package-extraction",
   "version": "1.0.0",
   "source_repository": "The-Interdependency/stack",
-  "source_commit": "ca69c60032a079585ccb89d5cc7aba67f637df55",
+  "source_commit": "ffd6e52eb1a50291cb48e2168d82e9bc236ceef4",
   "authority_transfer": false,
   "files": [
     {
@@ -17,8 +17,8 @@
       "source": "research/english-gonol/english_gonol/attachment_construction.py",
       "target": "human/english/english_gonol/attachment_construction.py",
       "kind": "runtime",
-      "source_sha256": "7c754e6a8e0f860e1f645af88c4d48a8894a6dcfcde55ca5ae6af96b9378e7d1",
-      "target_sha256": "7c754e6a8e0f860e1f645af88c4d48a8894a6dcfcde55ca5ae6af96b9378e7d1",
+      "source_sha256": "c8cba4fe76d320153a15cd6c1d7d6eea6c040e8d8709fc7f3fdf133fbe1c0d57",
+      "target_sha256": "c8cba4fe76d320153a15cd6c1d7d6eea6c040e8d8709fc7f3fdf133fbe1c0d57",
       "adaptation": null
     },
     {
@@ -396,6 +396,22 @@
       "source_sha256": "c5576e389191b43b073f61723104fa751c0522d63391bcc87dc1370c86234d83",
       "target_sha256": "ed668b374c718fa6fc41872ebebe78dba591492f2a9552f1508606803bf60b32",
       "adaptation": "Move exact Git source provenance assertion to the complete package extraction verifier; preserve all trajectory behavior assertions."
+    },
+    {
+      "source": "research/english-gonol/english_gonol/unicode_construction.py",
+      "target": "human/english/english_gonol/unicode_construction.py",
+      "kind": "runtime",
+      "adaptation": null,
+      "source_sha256": "b39ed169f1d4b98014731e4750b5218ed3a5eba16c09441fe6ae55a73da02958",
+      "target_sha256": "b39ed169f1d4b98014731e4750b5218ed3a5eba16c09441fe6ae55a73da02958"
+    },
+    {
+      "source": "research/english-gonol/unicode_tests/test_unicode_recursive.py",
+      "target": "tests/test_unicode_recursive.py",
+      "kind": "test",
+      "adaptation": null,
+      "source_sha256": "3836d6c884af4335da5be7670a189d754532aa2249175d92e588b76abebfa6c9",
+      "target_sha256": "3836d6c884af4335da5be7670a189d754532aa2249175d92e588b76abebfa6c9"
     }
   ],
   "forge_only": {

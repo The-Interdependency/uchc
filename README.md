@@ -4,7 +4,15 @@ UCHC is the implementation repository for **Unit Circle Hyperspace Constructs**.
 
 Applications consume UCHC; applications do not define UCHC.
 
-## Recursive English attachment
+## Recursive Unicode objects
+
+Start with [construction and installed-package verification](human/english/docs/unicode-recursive.md).
+The Unicode API now consumes its own completed objects recursively, retaining
+interiors, source provenance, occurrence order and exact 16 b rad scalar anatomy.
+Parent bearings are explicit; native equal-radius placement preserves child-local
+geometry. `closed_record` and `replay_closed` preserve complete object graphs.
+
+## Historical recursive English attachment
 
 Start with [candidate installation, use and acceptance](docs/RECURSIVE_INTEGRATION.md).
 
