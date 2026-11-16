@@ -3,7 +3,9 @@
 ## English dictionary response in 0.2.0a1
 
 Read the sampled definition and its three channel values from `evidence_card`.
-The response preserves source order, named refusals and the count of all candidate
+The English package inventory pins the shared runtime and tests to Stack
+`87025797abad4eba7bbcf7faf98275dab2ca8351`. The response preserves
+source order, named refusals and the count of all candidate
 bundles. English lookup needs only its verified construct database. Admission
 records now index glyph, word and definition occurrences. Regenerate older
 admission records from their original text and database before importing them.

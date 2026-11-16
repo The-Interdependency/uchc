@@ -10,9 +10,9 @@
     },
     {
       "repository": "The-Interdependency/stack",
-      "commit": "a1c063eed2100cb9a4da74ed7ac6cf80c2798573",
+      "commit": "87025797abad4eba7bbcf7faf98275dab2ca8351",
       "authority": "active language construction research forge",
-      "relation": "exact Unicode addition source and behavioral tests extracted into this increment"
+      "relation": "exact English source and tests for recursive Unicode construction"
     },
     {
       "repository": "The-Interdependency/uchc",
@@ -38,5 +38,5 @@
       "The general scale-transition law, stable publication and domain graduation remain separate."
     ]
   },
-  "work_graph_sha256": "6ab677cc750eaac8152eb1918585083809087bd20f4fd00c75be504a76e22e03"
+  "work_graph_sha256": "a3313938637b2d44e26f40365e194556a99388a74715573307530330ac3de03a"
 }

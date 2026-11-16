@@ -17,7 +17,7 @@ The current package (`0.2.0a1`) returns dictionary evidence for each candidate d
 The phone response exposes its first sample in `evidence_card`.
 
 The Unicode construction extracts the English addition source and test increment from
-Stack `a1c063eed2100cb9a4da74ed7ac6cf80c2798573`. The complete historical package
+Stack `87025797abad4eba7bbcf7faf98275dab2ca8351`. The complete historical package
 baseline and its non-English bytes retain their own exact source identities.
 
 ## Historical recursive English attachment

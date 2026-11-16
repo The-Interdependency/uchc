@@ -1,10 +1,10 @@
 {
   "schema": "uchc.unicode-recursive-extraction.v1",
   "source_repository": "The-Interdependency/stack",
-  "source_commit": "a1c063eed2100cb9a4da74ed7ac6cf80c2798573",
+  "source_commit": "87025797abad4eba7bbcf7faf98275dab2ca8351",
   "source_root": "research/english-gonol",
   "authority_transfer": false,
-  "work_graph_sha256": "6ab677cc750eaac8152eb1918585083809087bd20f4fd00c75be504a76e22e03",
+  "work_graph_sha256": "a3313938637b2d44e26f40365e194556a99388a74715573307530330ac3de03a",
   "geometry_authority": {
     "repository": "The-Interdependency/ucns",
     "commit": "300877066436a03d046b8951772c1e2aed2c5166",
@@ -21,9 +21,7 @@
     {
       "source": "english_gonol/unicode_construction.py",
       "target": "human/english/english_gonol/unicode_construction.py",
-      "sha256": "12e86e622b0bb72b9dfb5886f27696eeb32c096d7468393af76ae9d09d1e6bf3",
-      "target_sha256": "51bdfa5c4c02ba4a4409b9b148ba5bbdebbd8601d322deb21404f7d348c97350",
-      "adaptation": "Updated scope comment. Executable source is identical."
+      "sha256": "51bdfa5c4c02ba4a4409b9b148ba5bbdebbd8601d322deb21404f7d348c97350"
     },
     {
       "source": "unicode_tests/test_unicode_recursive.py",
