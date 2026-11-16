@@ -1,11 +1,11 @@
-# ratios: loc_comments=99:49 imports_exports=9:9 calls_definitions=42:11
+# ratios: loc_comments=101:50 imports_exports=9:10 calls_definitions=43:12
 # === MODULE_BUILD ===
 # id: uchc_unicode_bit_radius_consumer
 #   module_name: unicode_construction
 #   module_kind: adapter
-#   summary: UCHC Unicode text and recursive object completion through exact native UCNS geometry
+#   summary: UCHC Unicode text and recursive exact addition through native UCNS geometry
 #   owner: Erin Spencer
-#   public_surface: construct_glyph, construct_text, construct_sequence, closed_record, replay_closed, encode_text, decode_text, authority, main
+#   public_surface: construct_glyph, construct_text, construct_sequence, resultant, closed_record, replay_closed, encode_text, decode_text, authority, main
 #   auth_boundary: exact caller-supplied UCNS source bytes are verified before execution; integrity is not authentication
 #   storage_boundary: verifies the complete four-file native source closure before execution; constructed objects remain caller-owned
 #   network_boundary: none
@@ -15,7 +15,7 @@
 #   rollout: forward Unicode entrypoint; historical corpus receipts retain exact producers
 #   rollback: revert this entrypoint and its pin as one change
 #   requires: unicode_gonol_geometry, unicode_recursive_geometry
-#   unresolved: automatic closed-object bearings and affixiation beyond declared placement; corpus migration and domain graduation
+#   unresolved: physical sheet lift, general scale-transition law and domain graduation
 # === END MODULE_BUILD ===
 # === CONTRACTS ===
 # id: uchc_unicode_native_width
@@ -28,8 +28,8 @@
 #   given: missing or changed native source bytes
 #   then: fail before executing that source rather than guessing geometry or accepting an ambient installation
 # id: uchc_unicode_recursive_completion
-#   given: native Unicode glyphs, text frames or completed sequences with declared parent placements
-#   then: consume the actual objects recursively, preserve every interior and occurrence, and replay the complete native graph with exact provenance
+#   given: native Unicode glyphs, text frames or completed sequences
+#   then: add their exact geometric results without new bearings, retain every interior and occurrence, and replay the complete graph with exact provenance
 # === END CONTRACTS ===
 """UCHC's forward 16 b rad / 32-bit big-endian scalar entrypoint.
 
@@ -41,9 +41,9 @@ Usage::
 
 UCNS owns every returned gonol, bearing, bit representation and frame. This
 adapter admits exact scalar text without normalizing or splitting it. A text
-frame preserves its constituents. construct_sequence consumes those objects or
-its own completed results with explicit parent bearings; no label is rebuilt as
-text. Automatic bearing selection and corpus migration remain separate.
+frame preserves its constituents. construct_sequence adds those objects or its
+own completed results without a new angle. resultant returns the exact native
+vector, including zero. Explicit bearings retain the historical placement API.
 No network access occurs at runtime.
 """
 from __future__ import annotations
@@ -57,17 +57,17 @@ import sys
 from threading import Lock
 from types import ModuleType
 
-UCNS_COMMIT = "0bbed0b3ca7ba507101ada6c8019f870499429fe"
+UCNS_COMMIT = "300877066436a03d046b8951772c1e2aed2c5166"
 UCNS_SOURCE = "src/ucns/unicode_gonol.py"
 UCNS_SOURCE_SHA256 = "302cdb12a1314b21a54a84e4263ec7da498b27c3ec3d82758e2b726a90e2252a"
 NATIVE_SOURCES = {
     "unicode_gonol": UCNS_SOURCE_SHA256,
     "ordinal_affixiation": "d76656ada0cd464b51e5f3b58041743f0a85ab07ffe5451a5d654c465034d213",
     "attachment_stack": "a68ce6c286345d8e94865ec73f0dff426a24fcba54738113e7a1713387c6c15f",
-    "unicode_recursive": "59adf68258324406c55ca5e93dbf4ae30ef6d0f94134a3702346d67d0fcf78d0",
+    "unicode_recursive": "69e420f98bbfd96d9717a0303d69570267cc1d3261897673052f41446109f0ea",
 }
 PROFILE = "uchc.unicode-bit-radius/1"
-RECURSIVE_PROFILE = "uchc.unicode-recursive/1"
+RECURSIVE_PROFILE = "uchc.unicode-recursive/2"
 _NATIVE_LOAD_LOCK = Lock()
 
 
@@ -127,10 +127,15 @@ def construct_text(text, *, ucns_source_root, placement_radius=1):
 
 def construct_sequence(objects, *, ucns_source_root, bearings=None, rotations=None,
                        placement_radius=1, relation='declared-sequence', source='uchc:declared-sequence'):
-    """Use the same native closure at each caller-declared consuming boundary."""
+    """Use native recursive addition; explicit bearings select declared placement."""
     return _native(ucns_source_root).unicode_recursive.close_unicode(
         objects, bearings=bearings, rotations=rotations, radius=placement_radius,
         relation=relation, source=source)
+
+
+def resultant(obj, *, ucns_source_root):
+    """Return the verified exact vector produced by a complete construction."""
+    return _native(ucns_source_root).unicode_recursive.unicode_resultant(obj)
 
 
 def closed_record(obj, *, ucns_source_root):
@@ -177,4 +182,4 @@ def main(argv=None):
 
 if __name__ == "__main__":
     main()
-# ratios: loc_comments=99:49 imports_exports=9:9 calls_definitions=42:11
+# ratios: loc_comments=101:50 imports_exports=9:10 calls_definitions=43:12

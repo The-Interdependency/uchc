@@ -1,4 +1,4 @@
-# ratios: loc_comments=56:32 imports_exports=7:1 calls_definitions=27:1
+# ratios: loc_comments=57:32 imports_exports=6:1 calls_definitions=29:1
 # === MODULE_BUILD ===
 # id: uchc_unicode_extraction_verifier
 #   module_name: verify_unicode_extraction
@@ -33,7 +33,6 @@ python tools/verify_unicode_extraction.py /path/to/stack --ucns-source-root /pat
 The resulting records must match byte for byte. No corpus or graduation claim.
 """
 import argparse
-from fractions import Fraction
 import hashlib
 import json
 from pathlib import Path
@@ -76,15 +75,17 @@ def main():
             assert Path(consumer.__file__).read_bytes() == committed
     text = 'Aë e\u0308!\n\x00'
     leaf = consumer.construct_text(text, ucns_source_root=args.ucns_source_root)
-    first = consumer.construct_sequence((leaf, leaf), bearings=(0, Fraction(1, 2)),
+    first = consumer.construct_sequence((leaf, leaf),
                                         source='extraction:first', ucns_source_root=args.ucns_source_root)
     record = consumer.closed_record(first, ucns_source_root=args.ucns_source_root)
     replay = consumer.replay_closed(json.loads(json.dumps(record)), ucns_source_root=args.ucns_source_root)
-    parent = consumer.construct_sequence((replay, replay), bearings=(0, Fraction(1, 2)),
+    parent = consumer.construct_sequence((replay, replay),
                                          source='extraction:parent', ucns_source_root=args.ucns_source_root)
     assert parent.recover() == text * 4
     assert parent.utf32_be == (text * 4).encode('utf-32-be')
     assert parent.participants[0] is replay and parent.participants[1] is replay
+    assert consumer.resultant(parent, ucns_source_root=args.ucns_source_root) == consumer.resultant(
+        leaf, ucns_source_root=args.ucns_source_root).scaled(4)
     print(json.dumps({'source_commit': source, 'files': len(expected),
                       'work_graph_sha256': graph['work_graph_sha256'],
                       'geometry_authority': consumer.authority(),
@@ -93,4 +94,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-# ratios: loc_comments=56:32 imports_exports=7:1 calls_definitions=27:1
+# ratios: loc_comments=57:32 imports_exports=6:1 calls_definitions=29:1

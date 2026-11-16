@@ -1,4 +1,4 @@
-# ratios: loc_comments=88:30 imports_exports=9:5 calls_definitions=52:7
+# ratios: loc_comments=95:30 imports_exports=9:5 calls_definitions=57:7
 # === CHECKS ===
 # id: uchc_unicode_recursive_completion_check
 #   proves: uchc_unicode_recursive_completion
@@ -75,15 +75,22 @@ def test_unicode_objects_reenter_after_replay(native_root):
                                         ucns_source_root=native_root, source='fixture:final')
     assert final.recover() == text * 5
     glyphs = tuple(consumer.construct_glyph(c, ucns_source_root=native_root) for c in 'eë')
-    leaf = consumer.construct_sequence(glyphs, ucns_source_root=native_root, source='fixture:glyphs')
+    leaf = consumer.construct_sequence(glyphs, bearings=tuple(g.turn for g in glyphs),
+                                       ucns_source_root=native_root, source='fixture:glyphs')
     assert leaf.recover() == 'eë'
     assert leaf.bearings == tuple(g.turn for g in glyphs)
 
 
 def test_object_and_provenance_refusals(native_root):
     word = consumer.construct_text('ab', ucns_source_root=native_root)
-    with pytest.raises(ValueError, match='CLOSED_OBJECT_BEARINGS_REQUIRED'):
-        consumer.construct_sequence((word,), ucns_source_root=native_root)
+    default = consumer.construct_sequence((word, word), ucns_source_root=native_root)
+    assert default.recover() == 'abab'
+    assert default.resultant == consumer.resultant(word, ucns_source_root=native_root).scaled(2)
+    restored = consumer.replay_closed(consumer.closed_record(default, ucns_source_root=native_root),
+                                     ucns_source_root=native_root)
+    continued = consumer.construct_sequence((restored, word), ucns_source_root=native_root)
+    assert continued.recover() == 'ababab'
+    assert continued.resultant == consumer.resultant(word, ucns_source_root=native_root).scaled(3)
     with pytest.raises(TypeError, match='NATIVE_UNICODE_OBJECT_REQUIRED'):
         consumer.construct_sequence(('ab',), bearings=(0,), ucns_source_root=native_root)
     parent = consumer.construct_sequence((word,), bearings=(0,), ucns_source_root=native_root)
@@ -129,4 +136,4 @@ def test_concurrent_first_use_objects_can_be_reused(native_root):
     assert parent.recover() == 'Aë' * 8
     assert len({type(child) for child in children}) == 1
     assert all(parent.participants[i] is child for i, child in enumerate(children))
-# ratios: loc_comments=88:30 imports_exports=9:5 calls_definitions=52:7
+# ratios: loc_comments=95:30 imports_exports=9:5 calls_definitions=57:7

@@ -18,6 +18,7 @@ jobs:
           repository: The-Interdependency/stack
           ref: ffd6e52eb1a50291cb48e2168d82e9bc236ceef4
           path: forge
+          fetch-depth: 0
           persist-credentials: false
       - uses: actions/setup-python@v7.0.0
         with:
@@ -32,8 +33,9 @@ jobs:
       - name: Verify complete extraction and build both distributions
         run: |
           set -euo pipefail
-          python -m pip install build==1.6.1 twine==6.2.0 setuptools==82.0.1 wheel==0.46.3 packaging==26.0
+          python -m pip install pytest==8.3.5 build==1.6.1 twine==6.2.0 setuptools==82.0.1 wheel==0.46.3 packaging==26.0
           python source/tools/verify_package_extraction.py forge
+          python -m pytest -c /dev/null -q source/tests/test_package_extraction.py
           mkdir evidence
           python source/tools/verify_installed_package.py evidence/source-manifest.json --source source
           SOURCE_DATE_EPOCH="$(git -C source log -1 --format=%ct)" python -m build --no-isolation --outdir evidence/dist source

@@ -1,0 +1,42 @@
+{
+  "schema": "the-interdependency.stack-manifest",
+  "version": "1.0.0",
+  "repositories": [
+    {
+      "repository": "The-Interdependency/ucns",
+      "commit": "0bbed0b3ca7ba507101ada6c8019f870499429fe",
+      "authority": "native Unicode gonol geometry, 16-bit-radius big-endian scalars and recursive declared-frame completion",
+      "relation": "exact native producer consumed by the Stack UCHC Unicode entrypoint"
+    },
+    {
+      "repository": "The-Interdependency/stack",
+      "commit": "ffd6e52eb1a50291cb48e2168d82e9bc236ceef4",
+      "authority": "active language construction research forge",
+      "relation": "exact Unicode and historical-recursion repair source extracted into this candidate"
+    },
+    {
+      "repository": "The-Interdependency/uchc",
+      "commit": "7e59f266655b7678b5443c8297c81094b806f36b",
+      "authority": "extracted language-hyperspace candidates pending graduation",
+      "relation": "historical extraction boundary; this forward Unicode entrypoint is not yet extracted"
+    },
+    {
+      "repository": "The-Interdependency/skill-lib",
+      "commit": "7fdbdc4485431cb7f43a32089d10cf882c07ad0a",
+      "authority": "construction, domain-claim and cross-repository evidence discipline",
+      "relation": "governing source for this scoped representation change"
+    }
+  ],
+  "boundaries": {
+    "authority_transfer": false,
+    "proof_status_transfer": false,
+    "measurement_status_transfer": false,
+    "semantic_mapping": "operator-declared UCHC encoding-width policy consumed through UCNS; no semantic mapping inferred from bits",
+    "agent_scope": "cross-repository-work-graph",
+    "hmmm": [
+      "Automatic closed-object bearing selection and affixiation beyond declared rigid placement remain unresolved.",
+      "Corpus replacement and extraction into the UCHC distribution remain separate from primitive width and transport."
+    ]
+  },
+  "work_graph_sha256": "5fd5e74641968450b11c965f7d9e40eaecc01b6cb94007b5a7ff42b77d7f7ce1"
+}

@@ -1,3 +1,4 @@
+# ratios: loc_comments=43:32 imports_exports=5:1 calls_definitions=22:1
 # SPDX-License-Identifier: FSL-1.1-ALv2
 # === MODULE_BUILD ===
 # id: uchc_package_extraction
@@ -26,6 +27,9 @@
 
 Usage: python tools/verify_package_extraction.py /path/to/stack
 Reads exact Git objects, so the forge may be checked out at a later commit.
+The complete baseline inventory remains pinned by source_commit. A file-level
+source_commit binds a separately scoped increment without silently migrating
+other runtime files or domains. Both source and target digests still verify.
 This proves byte provenance only; it does not transfer domain authority.
 """
 import argparse
@@ -48,9 +52,11 @@ def verify(forge: Path, root: Path) -> dict:
     excluded = set(record["forge_only"])
     if runtime != declared | excluded or declared & excluded:
         raise ValueError("runtime extraction inventory is incomplete or overlapping")
+    overrides = {}
     for item in record["files"]:
+        source_commit = item.get("source_commit", commit)
         original = subprocess.check_output(
-            ["git", "-C", str(forge), "show", commit + ":" + item["source"]]
+            ["git", "-C", str(forge), "show", source_commit + ":" + item["source"]]
         )
         target = (root / item["target"]).read_bytes()
         if hashlib.sha256(original).hexdigest() != item["source_sha256"]:
@@ -59,10 +65,12 @@ def verify(forge: Path, root: Path) -> dict:
             raise ValueError("extracted digest mismatch: " + item["target"])
         if item["adaptation"] is None and original != target:
             raise ValueError("unrecorded extraction change: " + item["target"])
+        if source_commit != commit:
+            overrides[item["target"]] = source_commit
     if record["authority_transfer"] is not False:
         raise ValueError("extraction cannot transfer authority")
     return {"source_commit": commit, "files": len(record["files"]),
-            "runtime_files": len(declared), "forge_only": len(excluded),
+            "runtime_files": len(declared), "forge_only": len(excluded), "source_commit_overrides": overrides,
             "standing": "exact extraction; graduation gates remain separate"}
 
 
@@ -71,3 +79,4 @@ if __name__ == "__main__":
     parser.add_argument("forge", type=Path)
     args = parser.parse_args()
     print(json.dumps(verify(args.forge, Path(__file__).resolve().parents[1]), sort_keys=True))
+# ratios: loc_comments=43:32 imports_exports=5:1 calls_definitions=22:1

@@ -1,6 +1,23 @@
 # UCHC migration record
 
-## Recursive Unicode completion repair
+## Recursive Unicode addition — candidate 0.1.1a1
+
+The English recursive API now carries complete native vector sums into the next
+addition without externally supplied bearings. Exact source/test overrides bind
+Stack `a1c063eed2100cb9a4da74ed7ac6cf80c2798573` and UCNS
+`300877066436a03d046b8951772c1e2aed2c5166`. The earlier complete package baseline
+remains `ffd6e52eb1a50291cb48e2168d82e9bc236ceef4`; this increment changes only the
+two files explicitly identified in the Unicode extraction receipt. The complete
+package verifier checks those per-file commits and both byte digests without
+migrating Python or unrelated runtime files.
+
+Source, clean wheel and source-archive checks must agree on recursive addition,
+exact replay, complete runtime inventory and the source graph. Historical graphs
+and extraction receipts remain archived. The newer Stack corpus is verified in
+its own forge; extracting that corpus, stable publication and domain graduation
+remain separate.
+
+## Historical recursive Unicode completion repair
 
 The [Unicode recursive entrypoint](../human/english/docs/unicode-recursive.md)
 extracts Stack `ffd6e52eb1a50291cb48e2168d82e9bc236ceef4` and consumes UCNS

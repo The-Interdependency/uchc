@@ -4,25 +4,25 @@
   "repositories": [
     {
       "repository": "The-Interdependency/ucns",
-      "commit": "0bbed0b3ca7ba507101ada6c8019f870499429fe",
+      "commit": "300877066436a03d046b8951772c1e2aed2c5166",
       "authority": "native Unicode gonol geometry, 16-bit-radius big-endian scalars and recursive declared-frame completion",
-      "relation": "exact native producer consumed by the Stack UCHC Unicode entrypoint"
+      "relation": "exact native recursive vector-addition producer; historical attachment remains separately pinned"
     },
     {
       "repository": "The-Interdependency/stack",
-      "commit": "ffd6e52eb1a50291cb48e2168d82e9bc236ceef4",
+      "commit": "a1c063eed2100cb9a4da74ed7ac6cf80c2798573",
       "authority": "active language construction research forge",
-      "relation": "exact Unicode and historical-recursion repair source extracted into this candidate"
+      "relation": "exact Unicode addition source and behavioral tests extracted into this increment"
     },
     {
       "repository": "The-Interdependency/uchc",
-      "commit": "7e59f266655b7678b5443c8297c81094b806f36b",
+      "commit": "b13e0e0614da34e0e47e38d65cfc3de0177514c7",
       "authority": "extracted language-hyperspace candidates pending graduation",
-      "relation": "historical extraction boundary; this forward Unicode entrypoint is not yet extracted"
+      "relation": "previous extracted candidate; this increment binds its changed files separately"
     },
     {
       "repository": "The-Interdependency/skill-lib",
-      "commit": "7fdbdc4485431cb7f43a32089d10cf882c07ad0a",
+      "commit": "9e76d5e509bc2ab2de74addaf9ca78d2a171d71f",
       "authority": "construction, domain-claim and cross-repository evidence discipline",
       "relation": "governing source for this scoped representation change"
     }
@@ -34,9 +34,9 @@
     "semantic_mapping": "operator-declared UCHC encoding-width policy consumed through UCNS; no semantic mapping inferred from bits",
     "agent_scope": "cross-repository-work-graph",
     "hmmm": [
-      "Automatic closed-object bearing selection and affixiation beyond declared rigid placement remain unresolved.",
-      "Corpus replacement and extraction into the UCHC distribution remain separate from primitive width and transport."
+      "Corpus replacement and extraction into the UCHC distribution remain separate from primitive width and transport.",
+      "Physical sheet lift, the general scale-transition law, stable publication and domain graduation remain separate."
     ]
   },
-  "work_graph_sha256": "5fd5e74641968450b11c965f7d9e40eaecc01b6cb94007b5a7ff42b77d7f7ce1"
+  "work_graph_sha256": "013cbad4af5d25e1b500f94f59b471f5ceb771dcf0804ca54cebc6a7df1eab5f"
 }
