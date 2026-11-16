@@ -21,7 +21,7 @@
 # === CONTRACTS ===
 # id: uchc_unicode_exact_extraction
 #   given: an exact Stack checkout, an explicit native producer and the extracted package
-#   then: require matching committed, copied and imported source bytes and replay a completed Unicode object recursively
+#   then: verify pinned source, approved comment adaptation and exact imported bytes and replay a completed Unicode object recursively
 # id: uchc_unicode_verification_not_optimized
 #   given: optimized Python disables verification assertions
 #   then: refuse before emitting an extraction claim
@@ -69,10 +69,22 @@ def main():
         original = args.forge / 'research/english-gonol' / item['source']
         committed = subprocess.check_output(['git', '-C', str(args.forge), 'show', source + ':research/english-gonol/' + item['source']])
         copied = root / item['target']
-        assert committed == original.read_bytes() == copied.read_bytes(), item['source']
+        assert committed == original.read_bytes(), item['source']
+        target = copied.read_bytes()
+        if 'target_sha256' in item:
+            assert item['source'] == 'english_gonol/unicode_construction.py'
+            assert hashlib.sha256(target).hexdigest() == item['target_sha256']
+            # Only the existing scope comment may differ from the pinned producer.
+            def without_scope_comment(data):
+                lines = data.splitlines(keepends=True)
+                assert sum(line.startswith(b'#   unresolved: ') for line in lines) == 1
+                return [line for line in lines if not line.startswith(b'#   unresolved: ')]
+            assert without_scope_comment(committed) == without_scope_comment(target)
+        else:
+            assert committed == target, item['source']
         assert hashlib.sha256(committed).hexdigest() == item['sha256']
         if item['source'].startswith('english_gonol/'):
-            assert Path(consumer.__file__).read_bytes() == committed
+            assert Path(consumer.__file__).read_bytes() == target
     text = 'Aë e\u0308!\n\x00'
     leaf = consumer.construct_text(text, ucns_source_root=args.ucns_source_root)
     first = consumer.construct_sequence((leaf, leaf),

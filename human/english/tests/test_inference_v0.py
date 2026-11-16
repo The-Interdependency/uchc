@@ -1,43 +1,4 @@
-# === CHECKS ===
-# id: check_inference_v0_option_preserving
-#   proves: inference_v0_option_preserving
-#   call: self::test_option_preserving
-#   requires: python3, git
-#   timeout: 60
-#   mutates: filesystem
-#   cleanup: tempdir_teardown
-# id: check_inference_v0_named_refusals
-#   proves: inference_v0_named_refusals
-#   call: self::test_named_refusals
-#   requires: python3, git
-#   timeout: 60
-#   mutates: filesystem
-#   cleanup: tempdir_teardown
-# id: check_inference_v0_receipts_record_both_angle_stories
-#   proves: inference_v0_receipts_record_both_angle_stories
-#   call: self::test_receipts_record_both_angle_stories
-#   requires: python3, git
-#   timeout: 60
-#   mutates: filesystem
-#   cleanup: tempdir_teardown
-# id: check_inference_v0_covering_recorded_not_searched
-#   proves: inference_v0_covering_recorded_not_searched
-#   call: self::test_covering_recorded_not_searched
-#   requires: python3, git
-#   timeout: 60
-#   mutates: filesystem
-#   cleanup: tempdir_teardown
-# id: check_inference_v0_zero_is_identity
-#   proves: inference_v0_zero_is_identity
-#   call: self::test_zero_is_identity
-#   requires: python3, git
-#   timeout: 60
-#   mutates: filesystem
-#   cleanup: tempdir_teardown
-# === END CHECKS ===
 from hashlib import sha256
-import os
-from pathlib import Path
 
 import pytest
 
@@ -48,11 +9,8 @@ from english_gonol.inference_v0 import (
     bundle_bytes,
     infer,
     infer_definition,
-    zero_channel_control,
 )
 from english_gonol.language.source import LexemeRecord, SenseRecord, SynsetRecord, WordnetSnapshot
-
-UCNS_SOURCE_ROOT = Path(os.environ.get("UCNS_SOURCE_ROOT", "/tmp/ucns-infer"))
 
 
 @pytest.fixture
@@ -86,8 +44,8 @@ def _open(artifact):
 def test_option_preserving(artifact):
     with _open(artifact) as corpus:
         frame = corpus.resolve_text("alpha letter alpha.", source_id="fixture:v0").require_complete()
-        bundles = infer(frame, corpus, UCNS_SOURCE_ROOT)
-        fired = [bundle for bundle in bundles if bundle.receipts is not None]
+        bundles = infer(frame, corpus)
+        fired = [bundle for bundle in bundles if bundle.channels is not None]
         expected = sum(len(word.definition_ids) for word in frame.words) * 4 * 4 * 3
         assert len(bundles) == expected  # defs * O * S * C
         assert fired
@@ -103,7 +61,7 @@ def test_named_refusals(artifact):
     with _open(artifact) as corpus:
         frame = corpus.resolve_text("another word", source_id="fixture:refusal").require_complete()
         alpha = corpus.word("alpha")
-        bundles = infer_definition(frame, corpus, alpha.definition_ids[0], UCNS_SOURCE_ROOT)
+        bundles = infer_definition(frame, corpus, alpha.definition_ids[0])
         refusals = [
             refusal
             for bundle in bundles
@@ -113,34 +71,32 @@ def test_named_refusals(artifact):
         clauses = {refusal.clause for refusal in refusals}
         assert "identity/occurrence collapse" in clauses
         refused_bundles = [bundle for bundle in bundles if bundle.refusals]
-        assert all(bundle.receipts is None for bundle in refused_bundles)
+        assert all(bundle.channels is None for bundle in refused_bundles)
         assert all(type(refusal) is Refusal for refusal in refusals)
 
 
-def test_receipts_record_both_angle_stories(artifact):
+def test_evidence_replays_in_definition_order(artifact):
     with _open(artifact) as corpus:
         frame = corpus.resolve_text("alpha letter alpha.", source_id="fixture:receipts").require_complete()
-        fired = [bundle for bundle in infer(frame, corpus, UCNS_SOURCE_ROOT) if bundle.receipts]
-        assert fired
-        bundle = fired[0]
-        assert "composite" in bundle.receipts
-        assert "lifted_unset" in bundle.receipts
-        assert "placement" in bundle.receipts
-        assert "readout" in bundle.receipts
-        assert "lifted + placement" in bundle.receipts["readout"]
-        # replay byte-stable
-        again = infer(frame, corpus, UCNS_SOURCE_ROOT)
-        assert bundle_bytes(again[0]) == bundle_bytes(bundle)
-        assert bundle_bytes(again[0]) == bundle.bytes()
+        bundles = infer(frame, corpus)
+        expected = [d for word in frame.words for d in word.definition_ids for _ in range(48)]
+        assert [bundle.definition_id for bundle in bundles] == expected
+        fired = next(bundle for bundle in bundles if bundle.channels is not None)
+        assert set(fired.as_dict()) == {"map_id", "definition_id", "channels", "refusals", "schema", "version"}
+        assert [bundle_bytes(b) for b in infer(frame, corpus)] == [b.bytes() for b in bundles]
 
 
-def test_covering_recorded_not_searched(artifact):
+def test_dictionary_inference_runs_with_native_imports_blocked(artifact, monkeypatch):
+    import builtins
+
+    original = builtins.__import__
+
+    def dictionary_import(name, *args, **kwargs):
+        if name.split(".")[0] == "ucns":
+            pytest.fail(f"dictionary inference imported {name}")
+        return original(name, *args, **kwargs)
+
     with _open(artifact) as corpus:
-        frame = corpus.resolve_text("alpha letter alpha.", source_id="fixture:covering").require_complete()
-        bundle = infer(frame, corpus, UCNS_SOURCE_ROOT)[0]
-        assert bundle.covering == {"unset": True, "bijective_d": 158, "searched": False}
-
-
-def test_zero_is_identity(artifact):
-    report = zero_channel_control(UCNS_SOURCE_ROOT)
-    assert report["identity_ok"] is True
+        frame = corpus.resolve_text("alpha letter alpha.", source_id="fixture:portable")
+        monkeypatch.setattr(builtins, "__import__", dictionary_import)
+        assert infer(frame, corpus)

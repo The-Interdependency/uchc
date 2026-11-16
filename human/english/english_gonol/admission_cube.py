@@ -1,66 +1,10 @@
-# === MODULE_BUILD ===
-# id: uchc_english_admission_cube
-#   module_name: admission_cube
-#   module_kind: candidate
-#   summary: the admission cube - one cube whose modes ARE the construct axes g, w, d, tau, pi; every mode present in every stored object, missing modes are named holes
-#   owner: Erin Spencer
-#   public_surface: SCHEMA, VERSION, MODES, AdmissionCubeError, HOLE, AdmissionCube, build_admission_cube, write_full_index_record, read_full_index_record, AdmissionWeights, admission_cube_phone_card
-#   internal_surface: full infer() consumption, named index spaces, circle-plus-cover tau, canonical full-index serialization
-#   auth_boundary: none
-#   storage_boundary: immutable records only; the full-index record is the stored object
-#   network_boundary: none
-#   user_data_boundary: read
-#   admin_only: false
-#   tests: tests.test_admission_cube
-#   rollout: candidate admission cube; weights live on the same modes; no harmonic T, no attention, no growth
-#   rollback: remove this module and its tests
-#   requires: uchc_english_inference_input, uchc_english_inference_v0
-#   since: 2026-09-28
-#   unresolved: no low-rank success is declared; no axis is deletable without breaking the record
-# === END MODULE_BUILD ===
-# === CONTRACTS ===
-# id: admission_cube_has_all_modes
-#   given: a built cube
-#   then: exactly the modes g, w, d, tau, pi are present in the axes and in every stored entry
-#   class: correctness
-# id: admission_cube_holes_are_named
-#   given: a missing mode
-#   then: the entry carries a named hole, never a dropped index
-#   class: doctrine
-# id: admission_cube_tau_is_circle_plus_cover
-#   given: a tau mode value
-#   then: the value is (cos 2πp/157, sin 2πp/157, epsilon), not a degree scalar
-#   class: correctness
-# id: admission_cube_flattening_forbidden
-#   given: the stored object
-#   then: the full-index record keeps named axes and five-mode entries; flattening happens only in a phone card after the cube exists
-#   class: doctrine
-# id: admission_cube_weights_share_modes
-#   given: a weights candidate
-#   then: every weight factor names only tensor modes and has no unnamed width
-#   class: doctrine
-# === END CONTRACTS ===
-"""The admission cube.
-
-Modes:
-  g    glyph origin
-  w    word origin
-  d    definition origin
-  tau  turn + Mobius frame, as circle plus cover (cos, sin, epsilon)
-  pi   placement angle, radius, layer
-
-Filled from the full admitted frame and unreduced definition_ids over the
-full O x S x C receipts. Missing modes are named holes in the construct,
-never dropped indices. Flattening is forbidden as representation; a phone
-card may contract only after the cube exists.
-"""
+"""Index glyph, word and definition occurrences for each dictionary channel combination."""
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from hashlib import sha256
 import json
-import math
 from pathlib import Path
 from typing import Any
 
@@ -68,9 +12,8 @@ from .inference_input import EnglishConstruct, InferenceFrame
 from .inference_v0 import Bundle, infer
 
 SCHEMA = "uchc.admission-cube-v0"
-VERSION = "0.1.0"
-MODES = ("g", "w", "d", "tau", "pi")
-_MODULUS = 157
+VERSION = "0.2.0"
+MODES = ("g", "w", "d")
 HOLE = "hole"
 
 _HMMM = "if you can delete an index and the code still runs, you did not build the cube"
@@ -83,32 +26,6 @@ class AdmissionCubeError(ValueError):
 def _canonical(value: object) -> bytes:
     return json.dumps(value, sort_keys=True, ensure_ascii=False,
                       separators=(",", ":"), allow_nan=False).encode("utf-8")
-
-
-def _frame_positive(frame: str) -> int:
-    return 1 if frame == "positive-local-frame" else -1
-
-
-def _phase_residue(phase_turns: str) -> int:
-    return int(phase_turns.split("/")[0]) % _MODULUS
-
-
-def _tau_value(phase_turns: str, frame: str) -> list[float]:
-    p = _phase_residue(phase_turns)
-    epsilon = _frame_positive(frame)
-    return [
-        round(math.cos(2 * math.pi * p / _MODULUS), 15),
-        round(math.sin(2 * math.pi * p / _MODULUS), 15),
-        epsilon,
-    ]
-
-
-def _pi_value(placement: dict[str, Any]) -> list[Any]:
-    return [
-        _phase_residue(placement["angle_turn"]),
-        placement["radius"],
-        placement["layer"],
-    ]
 
 
 def _first_word_occurrence(frame: InferenceFrame, word_id: int) -> int | None:
@@ -169,7 +86,7 @@ def _hole(axis: str, reason: str) -> dict[str, str]:
 def build_admission_cube(
     frame: InferenceFrame,
     corpus: EnglishConstruct,
-    ucns_source_root: Path,
+    ucns_source_root: Path | None = None,
     *,
     extra_definition_ids: tuple[int, ...] = (),
 ) -> AdmissionCube:
@@ -195,15 +112,13 @@ def build_admission_cube(
 
     entries: list[dict[str, Any]] = []
 
-    def add_entry(bundle: Bundle, g: Any, w: Any, d: Any, tau: Any, pi: Any) -> None:
+    def add_entry(bundle: Bundle, g: Any, w: Any, d: Any) -> None:
         entry = {
             "g": g,
             "w": w,
             "d": d,
-            "tau": tau,
-            "pi": pi,
             "map_id": bundle.map_id,
-            "fired": bundle.receipts is not None,
+            "fired": bundle.channels is not None,
         }
         entry["receipt_sha256"] = sha256(_canonical(entry)).hexdigest()
         entries.append(entry)
@@ -227,19 +142,7 @@ def build_admission_cube(
         else:
             g_index = index("g", glyph_occurrence)
 
-        if bundle.receipts is not None:
-            lifted = bundle.receipts["lifted_unset"]
-            placement = bundle.receipts["placement"]
-            tau_value = _tau_value(lifted["mobius"]["phase_turns"], lifted["mobius"]["frame"])
-            pi_value = _pi_value(placement)
-            tau_index = index("tau", tau_value)
-            pi_index = index("pi", pi_value)
-        else:
-            reasons = [refusal.clause for refusal in bundle.refusals] or ["not determined"]
-            tau_index = index("tau", None, "; ".join(reasons))
-            pi_index = index("pi", None, "; ".join(reasons))
-
-        add_entry(bundle, g_index, w_index, d_index, tau_index, pi_index)
+        add_entry(bundle, g_index, w_index, d_index)
 
     for definition_id in extra_definition_ids:
         record = corpus.definition(definition_id)
@@ -261,8 +164,6 @@ def build_admission_cube(
             "g": g_index,
             "w": w_index,
             "d": d_index,
-            "tau": _hole("tau", "not determined: no bundle receipts"),
-            "pi": _hole("pi", "not determined: no bundle receipts"),
             "map_id": "extra-definition",
             "fired": False,
         }
@@ -292,13 +193,20 @@ def read_full_index_record(data: bytes) -> AdmissionCube:
         value = json.loads(data.decode("utf-8"))
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise AdmissionCubeError("full-index record is not valid canonical JSON") from exc
-    if value.get("schema") != SCHEMA or value.get("version") != VERSION:
+    if not isinstance(value, dict) or value.get("schema") != SCHEMA or value.get("version") != VERSION:
         raise AdmissionCubeError("full-index record schema or version mismatch")
-    if set(value.get("axes", {})) != set(MODES):
-        raise AdmissionCubeError("full-index record is missing a tensor mode")
-    for entry in value.get("entries", []):
-        if set(entry) < {"g", "w", "d", "tau", "pi"}:
-            raise AdmissionCubeError("full-index record has an entry missing a mode")
+    fields = {"schema", "version", "axes", "axis_holes", "entries", "hmmm"}
+    if set(value) != fields or not isinstance(value["entries"], list):
+        raise AdmissionCubeError("invalid full-index record fields")
+    for field in ("axes", "axis_holes"):
+        if not isinstance(value[field], dict) or set(value[field]) != set(MODES):
+            raise AdmissionCubeError("full-index record is missing a tensor mode")
+    for entry in value["entries"]:
+        if not isinstance(entry, dict) or set(entry) != {*MODES, "map_id", "fired", "receipt_sha256"}:
+            raise AdmissionCubeError("full-index entry fields do not match its modes")
+        contents = {key: item for key, item in entry.items() if key != "receipt_sha256"}
+        if sha256(_canonical(contents)).hexdigest() != entry["receipt_sha256"]:
+            raise AdmissionCubeError("full-index entry receipt mismatch")
     tensor = AdmissionCube(
         axes=value["axes"],
         axis_holes=value["axis_holes"],
@@ -318,7 +226,7 @@ class AdmissionWeights:
     modes: tuple[str, ...] = MODES
 
     def __post_init__(self) -> None:
-        if set(self.factors) - set(MODES):
+        if self.modes != MODES or set(self.factors) - set(MODES):
             raise AdmissionCubeError("weight factors must name only tensor modes")
         if "unnamed" in self.factors or any(
             not isinstance(name, str) or name not in MODES for name in self.factors

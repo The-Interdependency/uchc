@@ -86,7 +86,6 @@ identities. Its success must be observed after the jobs actually execute.
 | Expanded carrier coverage | Blocks constructing the 26 refused corpus words. Does not block the admitted subset. |
 | Numerical definition attachment | Blocks definitions-as-geometry. Typed whole-word ownership and provenance remain usable. |
 | Punctuation function geometry | Source punctuation and sentence-closure evidence are retained; no punctuation geometry is claimed. |
-| Native Möbius/sheet lift | Outside this planar profile; it is not a prerequisite for its bounded use. |
 | Hosted verification | Current jobs never start: GitHub reports an account lock due to a billing issue. Local results do not constitute hosted success. |
 | Merge and stable publication | UCNS → Stack → UCHC review/merge, exact-candidate forge verification, authorized publication, released-artifact reconsumption and the scoped authority receipt remain separate gates. |
 

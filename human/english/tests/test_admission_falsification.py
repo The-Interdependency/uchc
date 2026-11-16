@@ -1,45 +1,12 @@
-# === CHECKS ===
-# id: check_where_stream_is_kept
-#   proves: where_stream_is_kept
-#   call: self::test_where_stream_is_kept
-#   requires: python3, git
-#   timeout: 60
-#   mutates: filesystem
-#   cleanup: tempdir_teardown
-# id: check_unused_where_has_zero_tau
-#   proves: unused_where_has_zero_tau
-#   call: self::test_unused_where_has_zero_tau
-#   requires: python3, git
-#   timeout: 60
-#   mutates: filesystem
-#   cleanup: tempdir_teardown
-# id: check_where_falsification_uses_infer_only
-#   proves: where_falsification_uses_infer_only
-#   call: self::test_uses_infer_only
-#   requires: python3, git
-#   timeout: 60
-#   mutates: filesystem
-#   cleanup: tempdir_teardown
-# id: check_where_falsification_standing
-#   proves: where_falsification_standing
-#   call: self::test_standing
-#   requires: python3, git
-#   timeout: 60
-#   mutates: filesystem
-#   cleanup: tempdir_teardown
-# === END CHECKS ===
 from hashlib import sha256
 
 import pytest
-import os
 from pathlib import Path
 
 from english_gonol.admission_falsification import run_where_falsification, where_positions
 from english_gonol.full_construct_run import build_construct
 from english_gonol.inference_input import EnglishConstruct
 from english_gonol.language.source import LexemeRecord, SenseRecord, SynsetRecord, WordnetSnapshot
-
-UCNS_SOURCE_ROOT = Path(os.environ.get("UCNS_SOURCE_ROOT", "/tmp/ucns-infer"))
 
 
 @pytest.fixture
@@ -79,30 +46,27 @@ def test_where_stream_is_kept(artifact):
         assert all(p.word_id is None for p in positions)
 
 
-def test_unused_where_has_zero_tau(artifact):
+def test_records_unused_whitespace(artifact):
     with _open(artifact) as corpus:
         frame = corpus.resolve_text("alpha letter alpha.", source_id="fixture:tau0").require_complete()
-        report = run_where_falsification(frame, corpus, UCNS_SOURCE_ROOT)
+        report = run_where_falsification(frame, corpus)
         assert report["unused_where"] == 2
-        assert report["tau_from_infer"] == 0
         assert report["clause"] == "not determined"
 
 
-def test_uses_infer_only(artifact):
+def test_whitespace_preserves_identity(artifact):
     with _open(artifact) as corpus:
         frame = corpus.resolve_text("alpha letter alpha.", source_id="fixture:inferonly").require_complete()
-        report = run_where_falsification(frame, corpus, UCNS_SOURCE_ROOT)
+        report = run_where_falsification(frame, corpus)
         assert report["no_invented_map_for_space"] is True
         assert report["no_word_id_for_space"] is True
-        assert report["no_qk"] is True
         assert all(entry["word_id"] is None for entry in report["where_positions"])
 
 
-def test_standing(artifact):
+def test_whitespace_report_replays(artifact):
     with _open(artifact) as corpus:
         frame = corpus.resolve_text("alpha letter alpha.", source_id="fixture:standing").require_complete()
-        report = run_where_falsification(frame, corpus, UCNS_SOURCE_ROOT)
+        report = run_where_falsification(frame, corpus)
         assert report["construct"] == "admission"
-        assert report["standing"] == "falsified as harmonic substrate"
-        again = run_where_falsification(frame, corpus, UCNS_SOURCE_ROOT)
+        again = run_where_falsification(frame, corpus)
         assert again["receipt_sha256"] == report["receipt_sha256"]

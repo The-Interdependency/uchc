@@ -94,9 +94,8 @@ an explicit scalar field. `frame_basis_state` is not implemented in either this
 UCHC tree or the pinned Stack candidate. Its exact implementation and migration
 replay remain `hmmm`; complete frame admission alone is not a Hilbert conversion.
 
-O/S/C displacement and epicyclic paths remain downstream candidate readouts.
-Their channel tuples do not define the language basis. No weights, phases,
-probabilities, sense choices, or learned operators are supplied by this contract.
+English inference records ordinal, semantic-evidence and context channels for
+each definition in the admitted input.
 
 ## Usage and verification
 

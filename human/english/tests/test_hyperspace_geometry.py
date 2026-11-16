@@ -1,42 +1,12 @@
-# === CHECKS ===
-# id: check_definition_inner_product_is_constructed_not_statistical
-#   proves: definition_inner_product_is_constructed_not_statistical
-#   call: self::test_definition_inner_product_is_constructed_not_statistical
-#   requires: python3
-#   timeout: 30
-#   mutates: none
-#   cleanup: none
-#
-# id: check_word_axis_angle_is_glyph_walk_terminal_phase
-#   proves: word_axis_angle_is_glyph_walk_terminal_phase
-#   call: self::test_word_axis_angle_is_glyph_walk_terminal_phase
-#   requires: python3, git
-#   timeout: 30
-#   mutates: none
-#   cleanup: none
-#
-# id: check_hyperspace_geometry_candidates_are_replayable
-#   proves: hyperspace_geometry_candidates_are_replayable
-#   call: self::test_candidates_are_replayable
-#   requires: python3, git
-#   timeout: 30
-#   mutates: none
-#   cleanup: none
-# === END CHECKS ===
-
 from __future__ import annotations
 
-import os
 import sqlite3
 from pathlib import Path
 
 from english_gonol.hyperspace_geometry import (
     definition_inner_product,
     run_hyperspace_geometry_controls,
-    word_axis_angle,
 )
-
-UCNS_SOURCE_ROOT = Path(os.environ.get("UCNS_SOURCE_ROOT", "/tmp/ucns-motion"))
 
 
 def _fixture_state(tmp_path: Path) -> Path:
@@ -114,20 +84,10 @@ def test_definition_inner_product_is_constructed_not_statistical(tmp_path: Path)
     db.close()
 
 
-def test_word_axis_angle_is_glyph_walk_terminal_phase(tmp_path: Path) -> None:
-    state_dir = _fixture_state(tmp_path)
-    db = sqlite3.connect(f"file:{state_dir / 'construct.db'}?mode=ro", uri=True)
-    first = word_axis_angle(db, 1, UCNS_SOURCE_ROOT)
-    second = word_axis_angle(db, 1, UCNS_SOURCE_ROOT)
-    assert first["receipt_sha256"] == second["receipt_sha256"]
-    assert first["glyph_walk"] == [[0, 1, 0], [1, 2, 0], [2, 3, 0]]
-    db.close()
-
-
 def test_candidates_are_replayable(tmp_path: Path) -> None:
     state_dir = _fixture_state(tmp_path)
-    report = run_hyperspace_geometry_controls(state_dir, UCNS_SOURCE_ROOT)
-    assert report["survivors"] == ["definition-inner-product", "word-axis-angle"]
+    report = run_hyperspace_geometry_controls(state_dir)
+    assert report["survivors"] == ["definition-inner-product"]
     assert report["selected"] == []
-    again = run_hyperspace_geometry_controls(state_dir, UCNS_SOURCE_ROOT)
+    again = run_hyperspace_geometry_controls(state_dir)
     assert again["receipt_sha256"] == report["receipt_sha256"]

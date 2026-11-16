@@ -35,8 +35,8 @@
     "agent_scope": "cross-repository-work-graph",
     "hmmm": [
       "Corpus replacement and extraction into the UCHC distribution remain separate from primitive width and transport.",
-      "Physical sheet lift, the general scale-transition law, stable publication and domain graduation remain separate."
+      "The general scale-transition law, stable publication and domain graduation remain separate."
     ]
   },
-  "work_graph_sha256": "013cbad4af5d25e1b500f94f59b471f5ceb771dcf0804ca54cebc6a7df1eab5f"
+  "work_graph_sha256": "6ab677cc750eaac8152eb1918585083809087bd20f4fd00c75be504a76e22e03"
 }

@@ -1,0 +1,289 @@
+{
+  "config": {
+    "angle_cells": 16,
+    "epicycle_levels": 1,
+    "max_carriers": 7,
+    "seed": "english-gonol.orthogonal-carrier-sweep/v0"
+  },
+  "diminishing_returns_carriers": null,
+  "first_zero_collision_carriers": 3,
+  "fixture": {
+    "primitives": 59,
+    "recursive_chains": 14,
+    "relations": 47,
+    "source": "development fixture; not OEWN evidence"
+  },
+  "hmmm": [
+    "what each carrier represents must emerge from evidence, not be imposed",
+    "the angle-cell discretization is an experimental convenience, not a geometric law",
+    "whether a larger OEWN-derived relation set changes the smallest useful carrier count"
+  ],
+  "nonclaims": [
+    "no carrier index is assigned a semantic meaning",
+    "not UCNS geometry canon",
+    "not an English lexical truth claim",
+    "not a word embedding",
+    "not a measurement of semantic quality"
+  ],
+  "report_digest": "7df9ce73901dee7fc2950446c0b1814531ecc588b1beceed6598c39b0efe1ccf",
+  "rows": [
+    {
+      "base_colliding_edges": 6,
+      "carrier_entropy": 0.0,
+      "carrier_occupancy": [
+        59
+      ],
+      "carriers": 1,
+      "colliding_edges": [
+        [
+          "animal",
+          "dog",
+          "hypernym"
+        ],
+        [
+          "child",
+          "toddler",
+          "hypernym"
+        ],
+        [
+          "dog",
+          "poodle",
+          "hypernym"
+        ],
+        [
+          "open",
+          "close",
+          "antonym"
+        ],
+        [
+          "poodle",
+          "dog",
+          "hyponym"
+        ],
+        [
+          "toddler",
+          "child",
+          "hyponym"
+        ]
+      ],
+      "epicycle_edges": 6,
+      "epicycle_preserved_edges": 47,
+      "marginal_rank_gain": 1.973739954919579,
+      "max_chain_epicycle_depth_needed": 1,
+      "primitives": 59,
+      "rank_gain_ratio": 0.0,
+      "recursive_chains": 14,
+      "recursive_chains_preserved": 14,
+      "relation_pairs_resolved_at_this_k": [],
+      "relations": 47,
+      "resolved_from_k1": 0,
+      "stable_rank": 1.973739954919579
+    },
+    {
+      "base_colliding_edges": 2,
+      "carrier_entropy": 0.9981341775041116,
+      "carrier_occupancy": [
+        28,
+        31
+      ],
+      "carriers": 2,
+      "colliding_edges": [
+        [
+          "dog",
+          "poodle",
+          "hypernym"
+        ],
+        [
+          "poodle",
+          "dog",
+          "hyponym"
+        ]
+      ],
+      "epicycle_edges": 2,
+      "epicycle_preserved_edges": 47,
+      "marginal_rank_gain": 1.8743416237354658,
+      "max_chain_epicycle_depth_needed": 1,
+      "primitives": 59,
+      "rank_gain_ratio": 0.9371708118677329,
+      "recursive_chains": 14,
+      "recursive_chains_preserved": 14,
+      "relation_pairs_resolved_at_this_k": [],
+      "relations": 47,
+      "resolved_from_k1": 4,
+      "stable_rank": 3.848081578655045
+    },
+    {
+      "base_colliding_edges": 0,
+      "carrier_entropy": 0.9890767241404287,
+      "carrier_occupancy": [
+        17,
+        24,
+        18
+      ],
+      "carriers": 3,
+      "colliding_edges": [],
+      "epicycle_edges": 0,
+      "epicycle_preserved_edges": 47,
+      "marginal_rank_gain": 1.7584887772898408,
+      "max_chain_epicycle_depth_needed": 0,
+      "primitives": 59,
+      "rank_gain_ratio": 0.8792443886449204,
+      "recursive_chains": 14,
+      "recursive_chains_preserved": 14,
+      "relation_pairs_resolved_at_this_k": [],
+      "relations": 47,
+      "resolved_from_k1": 6,
+      "stable_rank": 5.606570355944886
+    },
+    {
+      "base_colliding_edges": 2,
+      "carrier_entropy": 0.9909488548470746,
+      "carrier_occupancy": [
+        17,
+        15,
+        11,
+        16
+      ],
+      "carriers": 4,
+      "colliding_edges": [
+        [
+          "dog",
+          "poodle",
+          "hypernym"
+        ],
+        [
+          "poodle",
+          "dog",
+          "hyponym"
+        ]
+      ],
+      "epicycle_edges": 2,
+      "epicycle_preserved_edges": 47,
+      "marginal_rank_gain": 1.6507011062687367,
+      "max_chain_epicycle_depth_needed": 1,
+      "primitives": 59,
+      "rank_gain_ratio": 0.8253505531343683,
+      "recursive_chains": 14,
+      "recursive_chains_preserved": 14,
+      "relation_pairs_resolved_at_this_k": [
+        [
+          "dog",
+          "poodle",
+          "hypernym"
+        ],
+        [
+          "poodle",
+          "dog",
+          "hyponym"
+        ]
+      ],
+      "relations": 47,
+      "resolved_from_k1": 4,
+      "stable_rank": 7.257271462213622
+    },
+    {
+      "base_colliding_edges": 3,
+      "carrier_entropy": 0.99427262343334,
+      "carrier_occupancy": [
+        13,
+        14,
+        10,
+        12,
+        10
+      ],
+      "carriers": 5,
+      "colliding_edges": [
+        [
+          "animal",
+          "dog",
+          "hypernym"
+        ],
+        [
+          "dog",
+          "poodle",
+          "hypernym"
+        ],
+        [
+          "poodle",
+          "dog",
+          "hyponym"
+        ]
+      ],
+      "epicycle_edges": 3,
+      "epicycle_preserved_edges": 47,
+      "marginal_rank_gain": 1.9820968313441947,
+      "max_chain_epicycle_depth_needed": 1,
+      "primitives": 59,
+      "rank_gain_ratio": 0.9910484156720973,
+      "recursive_chains": 14,
+      "recursive_chains_preserved": 14,
+      "relation_pairs_resolved_at_this_k": [
+        [
+          "animal",
+          "dog",
+          "hypernym"
+        ]
+      ],
+      "relations": 47,
+      "resolved_from_k1": 3,
+      "stable_rank": 9.239368293557817
+    },
+    {
+      "base_colliding_edges": 0,
+      "carrier_entropy": 0.9739718743750694,
+      "carrier_occupancy": [
+        7,
+        15,
+        12,
+        10,
+        9,
+        6
+      ],
+      "carriers": 6,
+      "colliding_edges": [],
+      "epicycle_edges": 0,
+      "epicycle_preserved_edges": 47,
+      "marginal_rank_gain": 1.2702048474124368,
+      "max_chain_epicycle_depth_needed": 0,
+      "primitives": 59,
+      "rank_gain_ratio": 0.6351024237062184,
+      "recursive_chains": 14,
+      "recursive_chains_preserved": 14,
+      "relation_pairs_resolved_at_this_k": [],
+      "relations": 47,
+      "resolved_from_k1": 6,
+      "stable_rank": 10.509573140970254
+    },
+    {
+      "base_colliding_edges": 0,
+      "carrier_entropy": 0.9830091222754783,
+      "carrier_occupancy": [
+        9,
+        9,
+        12,
+        6,
+        5,
+        9,
+        9
+      ],
+      "carriers": 7,
+      "colliding_edges": [],
+      "epicycle_edges": 0,
+      "epicycle_preserved_edges": 47,
+      "marginal_rank_gain": 1.0957041742500895,
+      "max_chain_epicycle_depth_needed": 0,
+      "primitives": 59,
+      "rank_gain_ratio": 0.5478520871250447,
+      "recursive_chains": 14,
+      "recursive_chains_preserved": 14,
+      "relation_pairs_resolved_at_this_k": [],
+      "relations": 47,
+      "resolved_from_k1": 6,
+      "stable_rank": 11.605277315220343
+    }
+  ],
+  "schema": "english-gonol.orthogonal-carrier-sweep",
+  "smallest_useful_carriers": 6,
+  "sustained_zero_collision_carriers": 6,
+  "version": "0.1.0"
+}

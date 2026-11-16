@@ -35,8 +35,8 @@
     "agent_scope": "english-recursive-attachment",
     "hmmm": [
       "Closed bearing functional remains unselected; recursive stack operation is specified.",
-      "Numerical definition attachment, expanded carrier, sheet lift and graduation remain open."
+      "Numerical definition attachment, expanded carrier and graduation remain open."
     ]
   },
-  "work_graph_sha256": "588f89c1fc75b7b469e54a2716a46ea6549e0ed545a0d9a6293a1fa80ca242e1"
+  "work_graph_sha256": "dc018077a7a59f1a0f7c91b648b414aa92ca1824499c34a9b658f10078a91d8f"
 }

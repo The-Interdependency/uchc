@@ -5,6 +5,15 @@ candidate inside English Gonol Construction only. Nothing here is UCNS geometry
 canon, an English lexical truth claim, a word embedding, or a measurement of
 semantic quality.
 
+## Replay with UCHC 0.2.0a1
+
+The 59 words, 47 relations and placement rule are identical across runs. A
+word ID incorporates its characters' receipt hashes. Updating the constructor's
+scope notes changes those hashes for newly constructed words. On the new IDs
+the collision counts at K = 1 through 7 are 6, 2, 0, 2, 3, 0, 0. All 14
+recursive chains survive at each K. The original v0 results follow below.
+[Current replay](../experiments/orthogonal-carrier-sweep-0.2.0a1.json)
+
 ## Question
 
 Are semantic relationships between English primitives better represented by
@@ -43,12 +52,13 @@ placement, so the placement never substitutes for gonol identity.
 The source relation set is the module's development fixture (59 word gonols,
 47 relation edges, 14 recursive hypernym chains). It is **not** OEWN evidence.
 
-## Frozen run
+## Original frozen run
 
 - Module: `english_gonol.orthogonal_carrier_sweep`
 - Receipt: [`../experiments/orthogonal-carrier-sweep-v0.json`](../experiments/orthogonal-carrier-sweep-v0.json)
 - Replay:
-  `python -m english_gonol.orthogonal_carrier_sweep --out /tmp/orthogonal-carrier-sweep-v0.json`
+  run `python -m english_gonol.orthogonal_carrier_sweep` at UCHC commit
+  `8073aefb48391fd447295cf43b6f4e94c2f74948`.
 
 ## Results
 

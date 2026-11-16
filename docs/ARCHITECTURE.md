@@ -37,7 +37,6 @@ UCHC consumes UCNS geometry. It does not redefine:
 
 - the Public Gonol carrier;
 - gonol object identity or UCNS constructors;
-- Möbius return geometry;
 - unresolved Public Gonol function operations;
 - unresolved continuum lift-selection laws.
 
@@ -72,9 +71,8 @@ admitted word/glyph axes while preserving occurrence order and multiplicity.
 That bridge is not authoritative in this repository until the Stack candidate
 passes the remaining release/reconsumption/authority-transition gates.
 
-Candidate O/S/C displacement maps and epicyclic graph construction remain
-downstream candidate operators/readouts. Executability does not make their
-channel tuples the language-space coordinates.
+The English response records the definition ID, the channel maps and their
+values or refusals. The input reader supplies the dictionary evidence.
 
 ## Projection boundary
 

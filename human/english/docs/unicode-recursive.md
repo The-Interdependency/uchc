@@ -53,5 +53,5 @@ the source and installed JSON results must match. The workflow also tests the
 installed wheel outside source paths. Rollback reselects the prior pinned package
 and producer; historical extraction records remain archived.
 
-**hmmm:** physical sheet lift, the general scale-transition law, corpus extraction,
+**hmmm:** the general scale-transition law, corpus extraction,
 stable release and domain graduation remain separate. Addition needs no independent bearing selector.

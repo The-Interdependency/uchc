@@ -1,55 +1,4 @@
-# === MODULE_BUILD ===
-# id: english_gonol_hyperspace_geometry_candidates
-#   module_name: hyperspace_geometry
-#   module_kind: candidate
-#   summary: preregistered candidates resolving two English hmmms - the constructed definition inner product (orthogonality from shared constituents) and the word-axis angle (terminal phase of the ordered glyph walk)
-#   owner: Erin Spencer
-#   public_surface: SCHEMA, VERSION, HyperspaceGeometryError, definition_inner_product, word_axis_angle, run_hyperspace_geometry_controls
-#   internal_surface: shared-constituent intersection, glyph-walk motion over the selected lifted displacement, deterministic receipts
-#   auth_boundary: none
-#   storage_boundary: aggregate receipts only; per-word geometry recomputed on demand
-#   network_boundary: none
-#   user_data_boundary: none
-#   admin_only: false
-#   tests: tests.test_hyperspace_geometry
-#   rollout: candidate answers to English hmmm; survival is not selection
-#   rollback: remove this module, facade exports, tests, and candidate documentation
-#   requires: english_gonol_hyperspace_construct, english_gonol_motion_run (pinned ucns motion)
-#   since: 2026-09-21
-#   unresolved: candidates remain hmmm until preregistered controls pass and scoped selection receipts exist
-# === END MODULE_BUILD ===
-
-# === CONTRACTS ===
-# id: definition_inner_product_is_constructed_not_statistical
-#   given: two definitions of one word
-#   then: the inner product equals the count of shared distinct constituent word axes, with disjoint definitions orthogonal by construction
-#   class: correctness
-#   since: 2026-09-21
-#
-# id: word_axis_angle_is_glyph_walk_terminal_phase
-#   given: a word gonol with its ordered glyph construction
-#   then: the word-axis angle candidate is the terminal NativeMobiusState of the glyph walk under the selected lifted displacement
-#   class: correctness
-#   since: 2026-09-21
-#
-# id: hyperspace_geometry_candidates_are_replayable
-#   given: a candidate record
-#   then: the canonical receipt replays deterministically and tampering fails closed
-#   class: safety
-#   since: 2026-09-21
-# === END CONTRACTS ===
-
-"""Candidate geometry for two English hmmms.
-
-* H1-c4: the definition inner product counts shared distinct constituent
-  word axes between two definitions of the same word; disjoint definitions
-  are orthogonal by construction, and overlap is measured, not fitted.
-* H2-c2: the word-axis angle is the terminal NativeMobiusState of the
-  word's ordered glyph walk under the selected lifted ordered-concatenation
-  displacement.
-
-Candidates only; survival in the controls is not selection.
-"""
+"""Measure the overlap between the constituent word sets of two definitions."""
 
 from __future__ import annotations
 
@@ -59,8 +8,7 @@ import sqlite3
 from pathlib import Path
 from typing import Any
 
-from .hyperspace_construct import HyperspaceError, promote_definition
-from .motion_run import _load_verified_motion
+from .hyperspace_construct import promote_definition
 
 SCHEMA = "english-gonol.hyperspace-geometry-candidates"
 VERSION = "0.1.0"
@@ -126,42 +74,10 @@ def definition_inner_product(
     return payload
 
 
-def word_axis_angle(
-    db: sqlite3.Connection, word_id: int, ucns_source_root: Path
-) -> dict[str, Any]:
-    """The word-axis angle candidate: terminal phase of the glyph walk."""
-
-    row = db.execute("SELECT surface FROM words WHERE id = ?", (word_id,)).fetchone()
-    if row is None:
-        raise HyperspaceGeometryError(f"word {word_id} is not constructed")
-    glyph_rows = db.execute(
-        "SELECT ordinal, character_id FROM word_characters WHERE word_id = ? ORDER BY ordinal",
-        (word_id,),
-    ).fetchall()
-    if not glyph_rows:
-        raise HyperspaceGeometryError(f"word {word_id} has no glyph construction")
-    build_motion = _load_verified_motion(Path(ucns_source_root))
-    walk = tuple((ordinal, character_id, 0) for ordinal, character_id in glyph_rows)
-    motion = build_motion(walk)
-    payload = {
-        "schema": SCHEMA,
-        "version": VERSION,
-        "candidate": "word-axis-angle",
-        "word_id": word_id,
-        "surface": row[0],
-        "glyph_walk": [[o, g, 0] for o, g in glyph_rows],
-        "end_phase": f"{motion.end_phase.numerator}/{motion.end_phase.denominator}",
-        "end_frame": motion.end_frame,
-        "derivation": "terminal NativeMobiusState of the ordered glyph walk",
-    }
-    payload["receipt_sha256"] = _receipt(payload)
-    return payload
-
-
 def run_hyperspace_geometry_controls(
-    state_dir: Path, ucns_source_root: Path
+    state_dir: Path, ucns_source_root: Path | None = None
 ) -> dict[str, Any]:
-    """Run the preregistered controls for both candidates."""
+    """Run the preregistered controls for the definition inner product."""
 
     db = _open_db(state_dir)
     try:
@@ -201,25 +117,6 @@ def run_hyperspace_geometry_controls(
             "detail": "all preregistered inner-product controls pass" if inner_ok else "a control failed",
         }
 
-        # word-axis-angle controls
-        angle_cases: dict[str, dict[str, Any]] = {}
-        first = word_axis_angle(db, 1, ucns_source_root)
-        second = word_axis_angle(db, 1, ucns_source_root)
-        angle_cases["determinism"] = {
-            "ok": first["receipt_sha256"] == second["receipt_sha256"],
-            "detail": "word-axis angle is deterministic",
-        }
-        other = word_axis_angle(db, 2, ucns_source_root)
-        angle_cases["distinct-words-distinct-walks"] = {
-            "ok": first["receipt_sha256"] != other["receipt_sha256"],
-            "detail": "different glyph walks produce different records",
-        }
-        angle_ok = all(case["ok"] for case in angle_cases.values())
-        results["word-axis-angle"] = {
-            "ok": angle_ok,
-            "cases": angle_cases,
-            "detail": "all preregistered angle controls pass" if angle_ok else "a control failed",
-        }
     finally:
         db.close()
 
@@ -229,20 +126,7 @@ def run_hyperspace_geometry_controls(
         "results": results,
         "survivors": [name for name, result in results.items() if result["ok"]],
         "selected": [],
-        "hmmm": (
-            "surviving controls do not select these candidates; scoped "
-            "selection would require additional preregistered evidence"
-        ),
+        "hmmm": "the overlap counts shared constituent words",
     }
     payload["receipt_sha256"] = _receipt(payload)
     return payload
-
-
-__all__ = [
-    "SCHEMA",
-    "VERSION",
-    "HyperspaceGeometryError",
-    "definition_inner_product",
-    "word_axis_angle",
-    "run_hyperspace_geometry_controls",
-]

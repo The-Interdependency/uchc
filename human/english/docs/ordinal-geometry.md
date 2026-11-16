@@ -126,4 +126,4 @@ they do not mark the newer forward attachment/direction requirements complete.
 1. The expanded carrier still needs an exact inventory/order and implementation. Rebasing in a new version is authorized; unsupported glyphs continue to refuse in the current pinned implementation.
 2. Native inherited SPACE direction, origin-at-attachment transport and both-view recovery still need implementation and verification. Explicit SPACE storage is not required; its representation and the proposed disk-stack projection remain open. Sentence distance/angle operators remain candidates.
 3. Whole-lexical definition ownership is ratified; its typed-origin implementation and complete-corpus replay remain pending.
-4. Stable release, released-artifact reconsumption and Stack-to-UCHC graduation remain incomplete. Native Möbius lift, sheet-state transport and 360°/720° return tests are outside this English ordinal construction's scope.
+4. Stable release, released-artifact reconsumption and Stack-to-UCHC graduation remain incomplete.

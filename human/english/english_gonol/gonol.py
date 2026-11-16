@@ -49,7 +49,7 @@ Frozen choices for ``edcm.gonol/v1``:
   is resolved during suffixiation without reopening either gonol;
 - UCNS Public Gonol geometry is consumed only from an explicit supplied
   authority, and absence remains ``hmmm`` rather than a base-package failure;
-- no UCNS function operation or Mobius coupling law is invented.
+- no UCNS function operation is invented.
 """
 
 # === MODULE_BUILD ===
@@ -66,11 +66,11 @@ Frozen choices for ``edcm.gonol/v1``:
 #   user_data_boundary: caller-supplied source, relation, participants, and source_id remain in memory and are not transmitted
 #   admin_only: false
 #   tests: tests.test_gonol_constructor
-#   rollout: explicit candidate constructor; no canon selection, measurement activation, UCNS function operation, or Mobius coupling promotion
+#   rollout: explicit candidate constructor; no canon selection, measurement activation or UCNS function operation
 #   rollback: remove this module; historical lexical-floor and UCNS observation adapters remain unchanged
 #   requires: none
 #   since: 2026-08-22
-#   unresolved: exact UCNS geometric operation of Public Gonol function positions; Mobius-carrier affixiation/coupling law; which scales and relations are later selected; complete English morphology law
+#   unresolved: exact UCNS geometric operation of Public Gonol function positions; which scales and relations are later selected; complete English morphology law
 # === END MODULE_BUILD ===
 
 # === CONTRACTS ===
@@ -135,13 +135,11 @@ NONCLAIMS: tuple[str, ...] = (
     "not a mandatory character-word-definition-recursive ladder",
     "not complete English morphology law",
     "not a UCNS geometric function operation",
-    "not a UCNS Mobius coupling law",
     "not METAPAT canon promotion",
 )
 
 HMMM: tuple[str, ...] = (
     "exact UCNS geometric operation of each Public Gonol function position",
-    "UCNS Mobius-carrier affixiation/coupling law",
     "which scales and relations, if any, are later selected",
     "source-supported complete English morphology law",
 )
@@ -788,7 +786,10 @@ def _verify_receipt(receipt: GonolReceipt) -> GonolReceipt:
         raise GonolConstructionError("receipt constructor identity mismatch")
     if receipt.standing != STANDING or receipt.selection_effect != SELECTION_EFFECT:
         raise GonolConstructionError("receipt candidate status mismatch")
-    if receipt.nonclaims != NONCLAIMS or receipt.hmmm != HMMM:
+    boundary = {"nonclaims": receipt.nonclaims, "hmmm": receipt.hmmm}
+    if (receipt.nonclaims, receipt.hmmm) != (NONCLAIMS, HMMM) and _digest(boundary) != (
+        "919df6ca7dd0d7be645b3e5fa7944a2efc6ff5cf6184c336d8b6a25c6ed83d5a"  # original v1 boundary statements
+    ):
         raise GonolConstructionError("receipt nonclaim or hmmm boundary mismatch")
     options = _option_set(receipt.gonol.scale)
     if receipt.option_set != options:
@@ -806,6 +807,7 @@ def _verify_receipt(receipt: GonolReceipt) -> GonolReceipt:
         gonol=receipt.gonol,
         geometry=geometry,
     )
+    payload.update(boundary)
     expected_digest = _digest(payload)
     if receipt.receipt_digest != expected_digest or receipt.gonol.receipt_digest != expected_digest:
         raise GonolConstructionError("receipt digest does not match visible receipt fields")

@@ -31,23 +31,8 @@ constructed through them.
 
 ## Canon preserved upstream
 
-The UCNS public surface preserves:
-
-```text
-arity 157
-SPACE/ZERO at fixed position 0
-Möbius twist point / seam / system origin
-exact public arrangement
-faces, chirality, adjacency, and origin-fixed mirror
-private transforms that never move position 0
-lossless lifted text traversal
-full 157-step repeated-character revolution
-spaces as emitted seam events
-digit "0" as an ordinary nonzero glyph
-```
-
-No `k/157`, `2k/157`, arbitrary-origin, or removable-gauge interpretation is
-introduced as public-gonol canon.
+The lexical adapter reads the pinned 157-glyph arrangement, its fixed SPACE
+origin and its digest. The digit "0" has its own position.
 
 ## Current English Gonol behavior
 
@@ -83,10 +68,10 @@ Language-gonol construction may reopen only after Erin ratifies an explicit
 bridge from the UCNS-owned public gonol into the intended English Gonol language object.
 That bridge must state exactly what is preserved and must not silently:
 
-- move or normalize away the twist origin;
+- move the SPACE origin;
 - substitute hash-derived positions;
 - invent angle units or conversion formulas;
-- erase lifted-path order or seam crossings;
+- discard source order or SPACE occurrences;
 - convert dictionary semantics into carrier coordinates without an authorized
   mapping;
 - transfer UCNS proof status into EDCM measurement validity.

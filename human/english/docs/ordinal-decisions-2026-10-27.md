@@ -167,7 +167,7 @@ receipts.
 A planar display can express a placement as
 `point_i = origin_i + local_radius_i * unit(placed_heading_i)`.
 This equation neither defines a depth projection nor supplies missing native
-cross-frame transport or further sheet/lift behavior. Origins, orientations and
+cross-frame transport. Origins, orientations and
 attachment sites must be available from the construction; this does not require
 storing each as a separate field.
 
@@ -275,7 +275,7 @@ it does not reverse this ratification or erase historical evidence.
 
 - Select the precise construction-derived closed-word bearing functional.
 - Numerical definition attachment, beyond the implemented typed lexical owner.
-- Native sheet/lift behavior and any physical observer projection.
+- Physical observer projection.
 - Exact expanded carrier inventory/order and versioned reconstruction.
 - Hosted verification, stable publication and domain graduation.
 

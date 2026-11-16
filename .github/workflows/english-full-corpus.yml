@@ -36,7 +36,6 @@ jobs:
           fetch_source globalwordnet/english-wordnet oewn dc343f2683279ecbb13fab4e2fd778d7b162d287
           fetch_source The-Interdependency/edcm edcm-metric 0873c105799681ea1f7ccb3e619d1f7aebbd85e0
           fetch_source The-Interdependency/ucns ucns 380ce7b7ec6b8b45ffa53ea4210070f0b3129747
-          git -C ucns fetch --quiet origin fc01e1f0323da45362704f92adbf6d3b8a008307
           git -C ucns fetch --quiet origin 4f863ad37096b7baab8f62820ad5cb937b62a3a7
           git -C ucns worktree add --detach ../ucns-build 4f863ad37096b7baab8f62820ad5cb937b62a3a7
           git -C ucns fetch --quiet origin d7c6f51304ed6c32d48badf63132bea6de8af497
@@ -68,8 +67,9 @@ jobs:
           .venv/bin/python -m pip wheel --no-deps --no-build-isolation ./source -w evidence/dist
           python3 -m venv .clean
           .clean/bin/python -m pip install pytest==8.3.5 PyYAML==6.0.2
-          .clean/bin/python -m pip install --no-index --no-deps evidence/dist/uchc-0.1.1a1-py3-none-any.whl
+          .clean/bin/python -m pip install --no-index --no-deps evidence/dist/uchc-0.2.0a1-py3-none-any.whl
           mkdir -p isolated-tests
+          cp source/human/english/tests/test_{inference_v0,respond_v0,infer_phone,admission_cube}.py isolated-tests/
           cp source/human/english/tests/test_inference_input.py isolated-tests/test_input.py
           cp source/human/english/tests/test_structural_profile.py isolated-tests/test_structural_profile.py
           cp source/programming/python/tests/test_construct.py isolated-tests/test_python.py
@@ -133,7 +133,7 @@ jobs:
               counts = {key: sum(int(s.get(key, 0)) for s in suites) for key in ('tests', 'failures', 'errors', 'skipped')}
               assert counts['tests'] > 0 and not any(counts[k] for k in ('failures', 'errors', 'skipped')), counts
               tests[path.stem] = counts
-          wheel = Path('evidence/dist/uchc-0.1.1a1-py3-none-any.whl')
+          wheel = Path('evidence/dist/uchc-0.2.0a1-py3-none-any.whl')
           with wheel.open('rb') as stream:
               digest = hashlib.file_digest(stream, 'sha256').hexdigest()
           record = {'source_commit': os.environ['SOURCE_SHA'], 'wheel': wheel.name, 'wheel_sha256': digest, 'tests': tests, 'input_acceptance': json.loads(Path('evidence/input-acceptance.json').read_text())['receipt_sha256'], 'standing': 'verified release candidate; not neural inference or completed domain graduation'}

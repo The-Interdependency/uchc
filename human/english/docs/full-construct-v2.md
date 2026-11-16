@@ -80,7 +80,7 @@ unresolved_semantic_evidence
 
 The builder rejects the old architecture: sentence/sense/synset/n-gram
 singleton tables, occurrence-object ledgers, closure graphs, synthetic relation
-circles, tangency tables, attention/Möbius bookkeeping, and duplicate giant JSON
+circles, tangency tables, attention bookkeeping, and duplicate giant JSON
 serialization.
 
 ## Full-corpus evidence

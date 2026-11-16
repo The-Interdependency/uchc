@@ -15,7 +15,7 @@
 #   rollout: forward Unicode entrypoint; historical corpus receipts retain exact producers
 #   rollback: revert this entrypoint and its pin as one change
 #   requires: unicode_gonol_geometry, unicode_recursive_geometry
-#   unresolved: physical sheet lift, general scale-transition law and domain graduation
+#   unresolved: general scale-transition law and domain graduation
 # === END MODULE_BUILD ===
 # === CONTRACTS ===
 # id: uchc_unicode_native_width

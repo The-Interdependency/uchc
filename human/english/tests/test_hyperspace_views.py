@@ -1,46 +1,9 @@
-# === CHECKS ===
-# id: check_views_are_four_plus_synthesis
-#   proves: views_are_four_plus_synthesis
-#   call: self::test_views_are_four_plus_synthesis
-#   requires: python3, git
-#   timeout: 30
-#   mutates: none
-#   cleanup: none
-#
-# id: check_views_adjudication_counts_are_exact
-#   proves: views_adjudication_counts_are_exact
-#   call: self::test_adjudication_counts_are_exact
-#   requires: python3, git
-#   timeout: 30
-#   mutates: none
-#   cleanup: none
-#
-# id: check_synthesis_is_first_class_and_replayable
-#   proves: synthesis_is_first_class_and_replayable
-#   call: self::test_synthesis_is_first_class_and_replayable
-#   requires: python3, git
-#   timeout: 30
-#   mutates: none
-#   cleanup: none
-#
-# id: check_views_do_not_select
-#   proves: views_do_not_select
-#   call: self::test_views_do_not_select
-#   requires: python3, git
-#   timeout: 30
-#   mutates: none
-#   cleanup: none
-# === END CHECKS ===
-
 from __future__ import annotations
 
-import os
 import sqlite3
 from pathlib import Path
 
 from english_gonol.hyperspace_views import run_view_adjudication, word_views
-
-UCNS_SOURCE_ROOT = Path(os.environ.get("UCNS_SOURCE_ROOT", "/tmp/ucns-motion"))
 
 
 def _fixture_state(tmp_path: Path) -> Path:
@@ -113,70 +76,17 @@ def _fixture_state(tmp_path: Path) -> Path:
     return state_dir
 
 
-def test_views_are_four_plus_synthesis(tmp_path: Path) -> None:
-    state_dir = _fixture_state(tmp_path)
-    db = sqlite3.connect(f"file:{state_dir / 'construct.db'}?mode=ro", uri=True)
-    record = word_views(db, 1, UCNS_SOURCE_ROOT)
-    db.close()
-    assert set(record["views"]) == {
-        "view1_definition_inner_product_density",
-        "view2_word_axis_angle",
-        "view3_provenance_interval_lift",
-        "view4_canonical_witness_lift",
-    }
-    assert len(record["synthesis"]) == 3
-    assert record["synthesis_composition"] == "views one, two, and three together"
-    assert set(record["views"]["view2_word_axis_angle"]) == {
-        "glyph_walk",
-        "definition_walk",
-    }
-    assert record["views"]["view4_canonical_witness_lift"]["derived"] is True
-    assert record["views"]["view3_provenance_interval_lift"]["deck"] == 0
-    assert record["views"]["view4_canonical_witness_lift"]["lift"] == 157 + record["views"]["view4_canonical_witness_lift"]["residue"]
-
-
-def test_adjudication_counts_are_exact(tmp_path: Path) -> None:
-    state_dir = _fixture_state(tmp_path)
-    report = run_view_adjudication(state_dir, UCNS_SOURCE_ROOT)
+def test_view_measures_stored_definition_pairs(tmp_path: Path) -> None:
+    state = _fixture_state(tmp_path)
+    with sqlite3.connect(state / "construct.db") as db:
+        first = word_views(db, 1)
+        assert first["views"] == {"view1_definition_inner_product_density": {
+            "definition_count": 2, "pair_count": 1, "orthogonal_pair_count": 1, "shared_sum": 0,
+        }}
+        assert first == word_views(db, 1)
+        assert word_views(db, 2)["views"]["view1_definition_inner_product_density"] is None
+    report = run_view_adjudication(state)
     assert report["word_count"] == 3
-    assert set(report["distinct_values"]) == {
-        "view1_definition_inner_product_density",
-        "view2_word_axis_angle",
-        "view3_provenance_interval_lift",
-        "synthesis",
-    }
-    assert report["view4_canonical_witness_lift"]["derived"] is True
-    for name, distinct in report["distinct_values"].items():
-        assert distinct <= report["word_count"]
-
-
-def test_views_do_not_select(tmp_path: Path) -> None:
-    state_dir = _fixture_state(tmp_path)
-    report = run_view_adjudication(state_dir, UCNS_SOURCE_ROOT)
-    assert "ranking_by_distinctness" in report
-    assert "select" not in report or report.get("selected") is None
-    assert "view four reduces to derivation" in report["hmmm"]
-    again = run_view_adjudication(state_dir, UCNS_SOURCE_ROOT)
-    assert again["receipt_sha256"] == report["receipt_sha256"]
-
-
-def test_synthesis_is_first_class_and_replayable(tmp_path: Path) -> None:
-    from english_gonol.hyperspace_views import (
-        build_synthesis_record,
-        synthesis_corpus_receipt,
-        verify_synthesis_replay,
-    )
-    import json
-
-    state_dir = _fixture_state(tmp_path)
-    db = sqlite3.connect(f"file:{state_dir / 'construct.db'}?mode=ro", uri=True)
-    record = build_synthesis_record(db, 1, UCNS_SOURCE_ROOT)
-    db.close()
-    assert record.word_id == 1
-    assert record.surface == "ab"
-    assert "view1" in record.as_dict() and "view2" in record.as_dict()
-
-    report = synthesis_corpus_receipt(state_dir, UCNS_SOURCE_ROOT)
-    data = json.dumps(report, sort_keys=True, separators=(",", ":")).encode("utf-8")
-    replayed = verify_synthesis_replay(data, state_dir, UCNS_SOURCE_ROOT)
-    assert replayed["receipt_sha256"] == report["receipt_sha256"]
+    assert report["distinct_values"] == {"view1_definition_inner_product_density": 2}
+    assert report["collisions"] == {"view1_definition_inner_product_density": 1}
+    assert run_view_adjudication(state, limit=1)["word_count"] == 1

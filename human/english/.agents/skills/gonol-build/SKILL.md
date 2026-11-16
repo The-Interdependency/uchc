@@ -12,7 +12,7 @@ The governing split is:
 
 ```text
 METAPAT   -> conceptual meaning of affixiation and relational integration
-UCNS      -> gonol geometry, native Möbius/Public Gonol carrier, geometric operations
+UCNS      -> gonol geometry, Public Gonol carrier, geometric operations
 English Gonol Construction -> text-domain admission and linguistic/semantic gonol construction
 skill-lib -> construction, evidence, replay, and continuation discipline
 ```
@@ -234,7 +234,7 @@ A minimal routing example is:
 
 ```text
 METAPAT: affixiation preserves bounded participant identity/provenance
-UCNS:    realize that relation on the native Möbius/Public Gonol geometry
+UCNS:    realize that relation on the Public Gonol geometry
 English Gonol Construction: admit characters as gonols and construct text through affixiation
 ```
 
@@ -297,7 +297,6 @@ construction of a declared candidate.
 
 - which exact English Gonol character-admission unit applies where not already source-pinned;
 - the source-supported complete English morphology law;
-- the exact UCNS Möbius-carrier affixiation/coupling law exposed by implementation;
 - executable geometry for direct coupling across distant recursive scales;
 - quantitative compression and reconstruction behavior after recursive gonols exist;
 - which recursive-gonol candidate, if any, later becomes selected canon.

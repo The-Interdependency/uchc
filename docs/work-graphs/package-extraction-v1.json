@@ -1,7 +1,7 @@
 {
   "schema": "the-interdependency.stack-manifest",
   "version": "1.0.0",
-  "work_graph_sha256": "d0437f9dba6e2d678c3289fcfa9201c3bd7aa93f6b52109b26e4712320ad1428",
+  "work_graph_sha256": "f61aa0a46f4d6843ae9611e488aa0d22086217b2392b7d36b99e3061cbdff18f",
   "repositories": [
     {
       "repository": "The-Interdependency/uchc",
@@ -50,7 +50,7 @@
       "Stable publication, published-artifact reconsumption and scoped authority transition remain incomplete.",
       "Canonical Hilbert scalar field and cross-origin geometry remain unresolved; callers must choose the existing explicit field.",
       "The input-frame bridge remains unimplemented.",
-      "Physical sheet lift, the general scale-transition law, stable publication and domain graduation remain separate."
+      "The general scale-transition law, stable publication and domain graduation remain separate."
     ]
   }
 }

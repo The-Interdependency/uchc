@@ -63,11 +63,12 @@ C maps:
 - `(0,0,0) on real text`
 - `not determined`
 
-## Covering d
+## Response
 
-Recorded per receipt: unset (`None`) AND one bijective d (`158`, congruent to 1 mod 157). No search over d.
+Each bundle records the source definition ID, the three named maps, and
+either their integer evidence values or the exact reasons a map could not run.
+The phone response samples the first runnable bundle in dictionary order.
 
 ## hmmm
 
-- The dead visible ordered-concatenation turn stays inside the composite receipt; it is not the readout.
-- No map is declared The Law. Sense selection, learned angles, and canon ratification remain NOT DONE.
+Contextual sense selection remains open.

@@ -6,7 +6,7 @@ Status: `SURVIVED` only after the complete frozen run and independent replay agr
 
 The file and artifact name are retained because they identify a completed English Gonol OEWN evidence run (historically built inside EDCM). The stack-level **lexical-floor** premise is now DEPRECATED. This historical name does not define current UCNS or EDCM lexical architecture and must not be read forward as a fixed-list semantic closure requirement.
 
-Current text construction is recorded separately in [`GONOL_LANGUAGE_BOUNDARY.md`](GONOL_LANGUAGE_BOUNDARY.md): METAPAT owns affixiation semantics, UCNS owns gonol/Möbius/Public Gonol geometry, and English Gonol Construction owns text-domain admission and linguistic/semantic gonol construction, including the rule that every admitted character is a gonol.
+Current text construction is recorded separately in [`GONOL_LANGUAGE_BOUNDARY.md`](GONOL_LANGUAGE_BOUNDARY.md): METAPAT owns affixiation semantics, UCNS owns gonol and Public Gonol geometry, and English Gonol Construction owns text-domain admission and linguistic/semantic gonol construction, including the rule that every admitted character is a gonol.
 
 ## Work graph
 
@@ -52,7 +52,7 @@ This sealed run does **not** define the current text basis.
 
 For active English Gonol text construction, every admitted character is a gonol, and later closures use declared scale option sets rather than a mandatory adjacent-scale ladder.
 
-This construction is owned by English Gonol Construction. METAPAT supplies the conceptual affixiation contract. UCNS supplies the gonol/Möbius/Public Gonol geometry and only those function operations that geometry establishes. Once closed, a gonol is atomic at any scale. The precise English Gonol source/admission profile and unresolved UCNS coupling geometry remain explicit boundaries rather than being inferred from this historical OEWN experiment.
+This construction is owned by English Gonol Construction. METAPAT supplies the conceptual affixiation contract. UCNS supplies the gonol and Public Gonol geometry and only those function operations that geometry establishes. Once closed, a gonol is atomic at any scale. The precise English Gonol source/admission profile remain explicit boundaries rather than being inferred from this historical OEWN experiment.
 
 The former rule requiring definitions to close over a fixed NGSL word set is deprecated. OEWN definition strings loaded by this historical English Gonol run remain source prose and provenance evidence; they are not automatically promoted into current English Gonol semantics.
 
@@ -72,4 +72,4 @@ For new text construction, follow [`GONOL_LANGUAGE_BOUNDARY.md`](GONOL_LANGUAGE_
 
 ## hmmm
 
-The exact English Gonol character-admission unit remains profile-specific where not selected. Canonical English morphology, source/custody boundaries for future corpora, the exact UCNS native Möbius-carrier affixiation/coupling law, upstream signatures, phrase/sentence/discourse construction, and the EDCM measurement projection/metric/benchmark/falsifier for completed recursive text gonols remain unresolved. None are manufactured by this sealed OEWN run.
+The exact English Gonol character-admission unit remains profile-specific where not selected. Canonical English morphology, source/custody boundaries for future corpora, upstream signatures, phrase/sentence/discourse construction, and the EDCM measurement projection/metric/benchmark/falsifier for completed recursive text gonols remain unresolved. None are manufactured by this sealed OEWN run.
