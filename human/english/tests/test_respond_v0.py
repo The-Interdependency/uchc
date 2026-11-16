@@ -1,3 +1,33 @@
+# === CHECKS ===
+# id: check_respond_v0_uses_infer
+#   proves: respond_v0_uses_infer
+#   call: self::test_uses_infer
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
+# id: check_respond_v0_evidence_card
+#   proves: respond_v0_evidence_card
+#   call: self::test_one_evidence_card_no_winner
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
+# id: check_respond_v0_empty_is_not_an_answer
+#   proves: respond_v0_empty_is_not_an_answer
+#   call: self::test_empty_is_not_an_answer
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
+# id: check_respond_v0_named_refusals
+#   proves: respond_v0_named_refusals
+#   call: self::test_named_refusals
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
+# === END CHECKS ===
 from hashlib import sha256
 from pathlib import Path
 

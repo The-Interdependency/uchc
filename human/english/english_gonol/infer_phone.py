@@ -1,3 +1,37 @@
+# === MODULE_BUILD ===
+# id: uchc_english_infer_phone
+#   module_name: infer_phone
+#   module_kind: tool
+#   summary: Read candidate dictionary evidence from a verified construct.
+#   owner: Erin Spencer
+#   public_surface: SCHEMA, VERSION, InferPhoneError, run_phone, build_response_card
+#   internal_surface: CLI parsing, verified construct reader and response encoding
+#   auth_boundary: none
+#   storage_boundary: read only over the construct; no writes
+#   network_boundary: none
+#   user_data_boundary: read
+#   admin_only: false
+#   tests: tests.test_infer_phone
+#   rollout: verified English dictionary consumer
+#   rollback: remove this module and its tests
+#   requires: uchc_english_inference_input, uchc_english_respond_v0
+#   since: 2026-09-28
+#   unresolved: contextual sense selection
+# === END MODULE_BUILD ===
+# === CONTRACTS ===
+# id: infer_phone_calls_respond
+#   given: text and a verified dictionary
+#   then: emit the response as JSON
+#   class: correctness
+# id: infer_phone_empty_is_empty_card
+#   given: empty text
+#   then: emit an empty card with exit code zero
+#   class: correctness
+# id: infer_phone_fails_closed
+#   given: a failed admission
+#   then: return a diagnostic and exit with failure
+#   class: correctness
+# === END CONTRACTS ===
 """Read candidate dictionary evidence from a verified construct."""
 
 from __future__ import annotations

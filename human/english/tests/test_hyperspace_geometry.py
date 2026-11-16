@@ -1,3 +1,19 @@
+# === CHECKS ===
+# id: check_definition_inner_product_is_constructed_not_statistical
+#   proves: definition_inner_product_is_constructed_not_statistical
+#   call: self::test_definition_inner_product_is_constructed_not_statistical
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
+# id: check_hyperspace_geometry_candidates_are_replayable
+#   proves: hyperspace_geometry_candidates_are_replayable
+#   call: self::test_candidates_are_replayable
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
+# === END CHECKS ===
 from __future__ import annotations
 
 import sqlite3

@@ -1,3 +1,41 @@
+# === MODULE_BUILD ===
+# id: uchc_english_admission_falsification
+#   module_name: admission_falsification
+#   module_kind: falsification
+#   summary: Record whitespace occurrences preserved by admission.
+#   owner: Erin Spencer
+#   public_surface: SCHEMA, VERSION, AdmissionFalsificationError, WherePosition, where_positions, run_where_falsification
+#   internal_surface: whitespace occurrence inventory
+#   auth_boundary: none
+#   storage_boundary: immutable records only
+#   network_boundary: none
+#   user_data_boundary: read
+#   admin_only: false
+#   tests: tests.test_admission_falsification
+#   rollout: verified English dictionary consumer
+#   rollback: remove this module and its tests
+#   requires: uchc_english_inference_input
+#   since: 2026-09-29
+#   unresolved: contextual sense selection
+# === END MODULE_BUILD ===
+# === CONTRACTS ===
+# id: where_stream_is_kept
+#   given: whitespace occurrences
+#   then: preserve their source positions
+#   class: correctness
+# id: where_unused_count
+#   given: an admitted frame
+#   then: count the unused whitespace occurrences
+#   class: correctness
+# id: where_identity
+#   given: a whitespace character
+#   then: keep its occurrence separate from word identities
+#   class: correctness
+# id: where_replay
+#   given: an identical frame
+#   then: reproduce the same report digest
+#   class: correctness
+# === END CONTRACTS ===
 """Record whitespace occurrences preserved by admission."""
 
 from __future__ import annotations

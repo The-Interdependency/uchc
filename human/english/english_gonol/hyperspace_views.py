@@ -1,3 +1,29 @@
+# === MODULE_BUILD ===
+# id: english_gonol_hyperspace_views
+#   module_name: hyperspace_views
+#   module_kind: audit
+#   summary: Describe pairwise overlap among the stored definitions of a word.
+#   owner: Erin Spencer
+#   public_surface: SCHEMA, VERSION, ViewError, word_views, run_view_adjudication
+#   internal_surface: definition density and corpus count
+#   auth_boundary: none
+#   storage_boundary: aggregate receipts only; per-word views recomputed on demand
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: tests.test_hyperspace_views
+#   rollout: verified English dictionary consumer
+#   rollback: remove this module, facade exports, tests, and candidate documentation
+#   requires: english_gonol_hyperspace_geometry_candidates
+#   since: 2026-09-21
+#   unresolved: contextual sense selection
+# === END MODULE_BUILD ===
+# === CONTRACTS ===
+# id: views_adjudication_counts_are_exact
+#   given: stored definitions grouped by origin
+#   then: report pairwise overlap and count distinct values across words
+#   class: correctness
+# === END CONTRACTS ===
 """Describe pairwise overlap among the stored definitions of a word."""
 
 from __future__ import annotations

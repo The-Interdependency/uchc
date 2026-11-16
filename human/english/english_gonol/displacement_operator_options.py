@@ -1,3 +1,29 @@
+# === MODULE_BUILD ===
+# id: english_gonol_displacement_operator_options
+#   module_name: displacement_operator_options
+#   module_kind: adjudication
+#   summary: Read the two corpus-derived channel options for a word.
+#   owner: Erin Spencer
+#   public_surface: channel_option_a, channel_option_c
+#   internal_surface: dictionary source order and constituent density
+#   auth_boundary: none
+#   storage_boundary: aggregate receipts only; per-word options recomputed on demand
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: tests.test_displacement_operator_options
+#   rollout: verified English dictionary consumer
+#   rollback: remove this module, facade exports, tests, and candidate documentation
+#   requires: english_gonol_hyperspace_views
+#   since: 2026-09-27
+#   unresolved: contextual sense selection
+# === END MODULE_BUILD ===
+# === CONTRACTS ===
+# id: channel_options_are_built
+#   given: a word identity
+#   then: read its dictionary target and measured constituent overlap
+#   class: correctness
+# === END CONTRACTS ===
 """Read the two corpus-derived channel options for a word."""
 
 import sqlite3

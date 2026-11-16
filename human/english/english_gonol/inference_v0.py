@@ -1,3 +1,41 @@
+# === MODULE_BUILD ===
+# id: uchc_english_inference_v0
+#   module_name: inference_v0
+#   module_kind: candidate
+#   summary: Resolve every named channel combination against each stored definition in source order.
+#   owner: Erin Spencer
+#   public_surface: SCHEMA, VERSION, Refusal, Bundle, channel_map_ids, infer, infer_definition, bundle_bytes
+#   internal_surface: channel maps, dictionary enumeration and refusal clauses
+#   auth_boundary: none
+#   storage_boundary: read only over the construct; receipts are immutable records
+#   network_boundary: none
+#   user_data_boundary: read
+#   admin_only: false
+#   tests: tests.test_inference_v0
+#   rollout: verified English dictionary consumer
+#   rollback: remove this module and its tests
+#   requires: uchc_english_inference_input
+#   since: 2026-09-28
+#   unresolved: contextual sense selection
+# === END MODULE_BUILD ===
+# === CONTRACTS ===
+# id: inference_v0_option_preserving
+#   given: a complete text frame
+#   then: enumerate every channel combination for each source definition
+#   class: correctness
+# id: inference_v0_named_refusals
+#   given: a channel with missing evidence
+#   then: record its map and refusal clause
+#   class: correctness
+# id: inference_v0_evidence_replay
+#   given: the same input and construct
+#   then: replay all dictionary evidence in source order
+#   class: correctness
+# id: inference_v0_dictionary_only
+#   given: a verified construct and no native modules
+#   then: resolve evidence using only the dictionary
+#   class: correctness
+# === END CONTRACTS ===
 """Resolve every named channel combination against each stored definition in source order."""
 
 from __future__ import annotations

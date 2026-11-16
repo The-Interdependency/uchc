@@ -1,3 +1,40 @@
+# === CHECKS ===
+# id: check_admission_cube_has_all_modes
+#   proves: admission_cube_has_all_modes
+#   call: self::test_has_all_modes
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
+# id: check_admission_cube_holes_are_named
+#   proves: admission_cube_holes_are_named
+#   call: self::test_holes_are_named
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
+# id: check_admission_cube_verified_replay
+#   proves: admission_cube_verified_replay
+#   call: self::test_replay_refuses_old_schema_extra_mode_and_tampering
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
+# id: check_admission_cube_flattening_forbidden
+#   proves: admission_cube_flattening_forbidden
+#   call: self::test_flattening_forbidden
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
+# id: check_admission_cube_weights_share_modes
+#   proves: admission_cube_weights_share_modes
+#   call: self::test_weights_share_modes
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
+# === END CHECKS ===
 from hashlib import sha256
 from pathlib import Path
 

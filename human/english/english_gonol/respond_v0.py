@@ -1,3 +1,41 @@
+# === MODULE_BUILD ===
+# id: uchc_english_respond_v0
+#   module_name: respond_v0
+#   module_kind: surface
+#   summary: Sample the first available dictionary evidence bundle and retain candidate order.
+#   owner: Erin Spencer
+#   public_surface: SCHEMA, VERSION, RespondError, respond
+#   internal_surface: dictionary lookup, evidence sampling and response digest
+#   auth_boundary: none
+#   storage_boundary: read only over the construct; responses are immutable records
+#   network_boundary: none
+#   user_data_boundary: read
+#   admin_only: false
+#   tests: tests.test_respond_v0
+#   rollout: verified English dictionary consumer
+#   rollback: remove this module and its tests
+#   requires: uchc_english_inference_input, uchc_english_inference_v0
+#   since: 2026-09-28
+#   unresolved: contextual sense selection
+# === END MODULE_BUILD ===
+# === CONTRACTS ===
+# id: respond_v0_uses_infer
+#   given: an admitted text
+#   then: sample the bundles returned by infer
+#   class: correctness
+# id: respond_v0_evidence_card
+#   given: at least one runnable bundle
+#   then: identify its source construct and sample the first runnable bundle
+#   class: correctness
+# id: respond_v0_empty_is_not_an_answer
+#   given: empty input
+#   then: return an empty evidence card and zero candidates
+#   class: correctness
+# id: respond_v0_named_refusals
+#   given: an unsupported mode
+#   then: surface its refusal
+#   class: correctness
+# === END CONTRACTS ===
 """Sample the first available dictionary evidence bundle and retain candidate order."""
 
 from __future__ import annotations

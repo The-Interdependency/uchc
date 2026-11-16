@@ -1,3 +1,26 @@
+# === CHECKS ===
+# id: check_infer_phone_calls_respond
+#   proves: infer_phone_calls_respond
+#   call: self::test_calls_respond
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
+# id: check_infer_phone_empty_is_empty_card
+#   proves: infer_phone_empty_is_empty_card
+#   call: self::test_empty_is_empty_card
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
+# id: check_infer_phone_fails_closed
+#   proves: infer_phone_fails_closed
+#   call: self::test_fails_closed
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
+# === END CHECKS ===
 from hashlib import sha256
 import json
 from pathlib import Path

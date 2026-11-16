@@ -1,3 +1,12 @@
+# === CHECKS ===
+# id: check_channel_options_are_built
+#   proves: channel_options_are_built
+#   call: self::test_channel_options_are_built
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
+# === END CHECKS ===
 from __future__ import annotations
 
 import sqlite3

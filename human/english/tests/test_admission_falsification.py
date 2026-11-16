@@ -1,3 +1,33 @@
+# === CHECKS ===
+# id: check_where_stream_is_kept
+#   proves: where_stream_is_kept
+#   call: self::test_where_stream_is_kept
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
+# id: check_where_unused_count
+#   proves: where_unused_count
+#   call: self::test_records_unused_whitespace
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
+# id: check_where_identity
+#   proves: where_identity
+#   call: self::test_whitespace_preserves_identity
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
+# id: check_where_replay
+#   proves: where_replay
+#   call: self::test_whitespace_report_replays
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
+# === END CHECKS ===
 from hashlib import sha256
 
 import pytest

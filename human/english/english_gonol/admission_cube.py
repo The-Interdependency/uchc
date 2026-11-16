@@ -1,3 +1,45 @@
+# === MODULE_BUILD ===
+# id: uchc_english_admission_cube
+#   module_name: admission_cube
+#   module_kind: candidate
+#   summary: Index glyph, word and definition occurrences for each dictionary channel combination.
+#   owner: Erin Spencer
+#   public_surface: SCHEMA, VERSION, MODES, AdmissionCubeError, HOLE, AdmissionCube, build_admission_cube, write_full_index_record, read_full_index_record, AdmissionWeights, admission_cube_phone_card
+#   internal_surface: glyph, word and definition indices, named holes and replay
+#   auth_boundary: none
+#   storage_boundary: immutable records only; the full-index record is the stored object
+#   network_boundary: none
+#   user_data_boundary: read
+#   admin_only: false
+#   tests: tests.test_admission_cube
+#   rollout: verified English dictionary consumer
+#   rollback: remove this module and its tests
+#   requires: uchc_english_inference_input, uchc_english_inference_v0
+#   since: 2026-09-28
+#   unresolved: contextual sense selection
+# === END MODULE_BUILD ===
+# === CONTRACTS ===
+# id: admission_cube_has_all_modes
+#   given: a complete text frame
+#   then: index glyph, word and definition occurrences in every entry
+#   class: correctness
+# id: admission_cube_holes_are_named
+#   given: an absent occurrence
+#   then: retain its axis and reason
+#   class: correctness
+# id: admission_cube_verified_replay
+#   given: a legacy schema, unexpected field or changed entry
+#   then: refuse replay
+#   class: correctness
+# id: admission_cube_flattening_forbidden
+#   given: a serialized full index
+#   then: restore the same indices and allow contraction after replay
+#   class: correctness
+# id: admission_cube_weights_share_modes
+#   given: weights on named axes
+#   then: accept only the supported modes
+#   class: correctness
+# === END CONTRACTS ===
 """Index glyph, word and definition occurrences for each dictionary channel combination."""
 
 from __future__ import annotations

@@ -1,3 +1,12 @@
+# === CHECKS ===
+# id: check_views_adjudication_counts_are_exact
+#   proves: views_adjudication_counts_are_exact
+#   call: self::test_view_measures_stored_definition_pairs
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
+# === END CHECKS ===
 from __future__ import annotations
 
 import sqlite3

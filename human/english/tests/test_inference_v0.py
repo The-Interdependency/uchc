@@ -1,3 +1,33 @@
+# === CHECKS ===
+# id: check_inference_v0_option_preserving
+#   proves: inference_v0_option_preserving
+#   call: self::test_option_preserving
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
+# id: check_inference_v0_named_refusals
+#   proves: inference_v0_named_refusals
+#   call: self::test_named_refusals
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
+# id: check_inference_v0_evidence_replay
+#   proves: inference_v0_evidence_replay
+#   call: self::test_evidence_replays_in_definition_order
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
+# id: check_inference_v0_dictionary_only
+#   proves: inference_v0_dictionary_only
+#   call: self::test_dictionary_inference_runs_with_native_imports_blocked
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
+# === END CHECKS ===
 from hashlib import sha256
 
 import pytest

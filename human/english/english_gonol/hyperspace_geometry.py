@@ -1,3 +1,33 @@
+# === MODULE_BUILD ===
+# id: english_gonol_hyperspace_geometry_candidates
+#   module_name: hyperspace_geometry
+#   module_kind: candidate
+#   summary: Measure the overlap between the constituent word sets of two definitions.
+#   owner: Erin Spencer
+#   public_surface: SCHEMA, VERSION, HyperspaceGeometryError, definition_inner_product, run_hyperspace_geometry_controls
+#   internal_surface: constituent overlap and control cases
+#   auth_boundary: none
+#   storage_boundary: aggregate receipts only; per-word geometry recomputed on demand
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: tests.test_hyperspace_geometry
+#   rollout: verified English dictionary consumer
+#   rollback: remove this module, facade exports, tests, and candidate documentation
+#   requires: english_gonol_hyperspace_construct
+#   since: 2026-09-21
+#   unresolved: contextual sense selection
+# === END MODULE_BUILD ===
+# === CONTRACTS ===
+# id: definition_inner_product_is_constructed_not_statistical
+#   given: two definitions rooted at one word
+#   then: count their shared distinct constituent word axes
+#   class: correctness
+# id: hyperspace_geometry_candidates_are_replayable
+#   given: identical source records
+#   then: replay the inner-product controls
+#   class: correctness
+# === END CONTRACTS ===
 """Measure the overlap between the constituent word sets of two definitions."""
 
 from __future__ import annotations
