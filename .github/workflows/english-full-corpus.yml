@@ -78,11 +78,12 @@ jobs:
           .clean/bin/python -I - <<'PY'
           from pathlib import Path
           from importlib.metadata import version
+          import tomllib
           import english_gonol.inference_input as reader
           import python_gonol
           assert '/.clean/' in str(Path(reader.__file__).resolve())
           assert '/.clean/' in str(Path(python_gonol.__file__).resolve())
-          assert version('uchc') == '0.1.0'
+          assert version('uchc') == tomllib.loads(Path('source/pyproject.toml').read_text())['project']['version']
           PY
       - name: Build all pinned corpus rows through the installed artifact
         shell: bash
