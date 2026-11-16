@@ -7,10 +7,15 @@ Applications consume UCHC; applications do not define UCHC.
 ## Recursive Unicode objects
 
 Start with [construction and installed-package verification](human/english/docs/unicode-recursive.md).
-The Unicode API now consumes its own completed objects recursively, retaining
-interiors, source provenance, occurrence order and exact 16 b rad scalar anatomy.
-Parent bearings are explicit; native equal-radius placement preserves child-local
-geometry. `closed_record` and `replay_closed` preserve complete object graphs.
+The Unicode API adds its own completed objects recursively, retaining interiors,
+source provenance, occurrence order and exact 16 b rad scalar anatomy. The exact
+result enters the next addition without a new bearing. Zero sums retain their
+operands. `resultant` exposes the native vector; `closed_record` and `replay_closed`
+preserve complete object graphs. Explicit bearings retain declared-placement replay.
+
+Candidate `0.1.1a1` extracts the English addition source and test increment from
+Stack `a1c063eed2100cb9a4da74ed7ac6cf80c2798573`. The complete historical package
+baseline and its non-English bytes retain their own exact source identities.
 
 ## Historical recursive English attachment
 
