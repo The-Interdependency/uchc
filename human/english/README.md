@@ -45,7 +45,7 @@ and public-contract authority until graduation completes.
 
 ```text
 METAPAT  -> affixiation semantics
-UCNS     -> gonol / Möbius / Public Gonol geometry
+UCNS     -> gonol / Public Gonol geometry
 English  -> text admission and linguistic/semantic construction
 EDCM     -> measurement/evaluation only
 ```

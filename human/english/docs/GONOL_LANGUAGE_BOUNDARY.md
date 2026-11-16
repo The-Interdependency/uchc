@@ -1,7 +1,7 @@
 # English Gonol language boundary
 
 **Status:** active English Gonol Construction boundary; moved from EDCM without redesign.  
-**Authority split:** METAPAT owns affixiation semantics; UCNS owns gonol/Möbius/Public Gonol geometry; English Gonol Construction owns text-domain admission and linguistic/semantic gonol construction; EDCM owns measurement and may evaluate construction outputs.  
+**Authority split:** METAPAT owns affixiation semantics; UCNS owns gonol and Public Gonol geometry; English Gonol Construction owns text-domain admission and linguistic/semantic gonol construction; EDCM owns measurement and may evaluate construction outputs.
 **Corrected:** 2026-08-21 after UCNS geometry-only canon and skill-lib `gonol-build` authority repair.
 
 ## Governing authorities
@@ -13,7 +13,7 @@ METAPAT
     affixiation semantics and relational integration invariants
         ↓
 UCNS
-    gonol geometry, native Möbius/Public Gonol carrier,
+    gonol geometry, Public Gonol carrier,
     geometrically established operations
         ↓
 English Gonol Construction
@@ -63,7 +63,7 @@ Affixiation is not defined by English Gonol Construction and is not defined by U
 
 METAPAT defines affixiation as a declared relation among already-bounded participants that preserves their individual addressability, identities, and provenance while the relation may integrate as a higher-scale object-whole. An affixiated whole may participate recursively without erasing its constituents.
 
-UCNS owns any exact geometric realization of that operation. The native Möbius/Public Gonol carrier is the current geometric authority. Where the precise coupling operation has not yet been constructed, it remains `hmmm`; English Gonol Construction must not fill the gap with an invented carrier, topology, scale increment, arity rule, containment rule, or coupling law.
+UCNS owns any exact geometric realization of that operation. The Public Gonol carrier is the current geometric authority. Where the precise coupling operation has not yet been constructed, it remains `hmmm`; English Gonol Construction must not fill the gap with an invented carrier, topology, scale increment, arity rule, containment rule, or coupling law.
 
 English Gonol Construction applies affixiation to text-domain gonols. Linguistic prefixes and suffixes are one instance of affixiation; they do not define affixiation.
 
@@ -178,7 +178,6 @@ For UCNS geometry work, work in UCNS. For changes to the meaning of affixiation,
 
 - the exact English Gonol character-admission unit for any source/profile that has not yet selected one;
 - the source-supported complete English morphology law;
-- the exact UCNS Möbius-carrier affixiation/coupling law exposed by implementation;
 - which scale option sets and recursive relations, if any, are later selected, and the exact UCNS geometry for those relations;
 - executable direct coupling across distant recursive scales;
 - the EDCM projection, information-loss accounting, metric, benchmark, and falsifier for recursive text-gonol evaluation.

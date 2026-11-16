@@ -2,48 +2,41 @@
 # id: uchc_english_admission_falsification
 #   module_name: admission_falsification
 #   module_kind: falsification
-#   summary: where-stream falsification - unused whitespace positions receive tau 0 from infer; the admission cube is falsified as a harmonic substrate
+#   summary: Record whitespace occurrences preserved by admission.
 #   owner: Erin Spencer
-#   public_surface: SCHEMA, VERSION, AdmissionFalsificationError, where_positions, run_where_falsification
-#   internal_surface: EnglishConstruct/infer only, whitespace stream kept, named clause, receipt
+#   public_surface: SCHEMA, VERSION, AdmissionFalsificationError, WherePosition, where_positions, run_where_falsification
+#   internal_surface: whitespace occurrence inventory
 #   auth_boundary: none
 #   storage_boundary: immutable records only
 #   network_boundary: none
 #   user_data_boundary: read
 #   admin_only: false
 #   tests: tests.test_admission_falsification
-#   rollout: preregistered FAIL STEP; no invented map for space, no word-id for space, no QK
+#   rollout: verified English dictionary consumer
 #   rollback: remove this module and its tests
-#   requires: uchc_english_inference_input, uchc_english_inference_v0
+#   requires: uchc_english_inference_input
 #   since: 2026-09-29
-#   unresolved: the cube remains admission inventory; harmonic substrate is falsified, not repaired
+#   unresolved: contextual sense selection
 # === END MODULE_BUILD ===
 # === CONTRACTS ===
 # id: where_stream_is_kept
-#   given: one admitted sentence
-#   then: whitespace occurrences remain in the frame and are counted, never dropped
+#   given: whitespace occurrences
+#   then: preserve their source positions
 #   class: correctness
-# id: unused_where_has_zero_tau
-#   given: the where-stream falsification
-#   then: tau_from_infer equals 0 and the clause is not determined
+# id: where_unused_count
+#   given: an admitted frame
+#   then: count the unused whitespace occurrences
 #   class: correctness
-# id: where_falsification_uses_infer_only
-#   given: the falsification
-#   then: no invented map for space and no word-id for space are produced; only infer()/EnglishConstruct evidence is used
-#   class: doctrine
-# id: where_falsification_standing
-#   given: the falsification
-#   then: the admission cube is recorded as falsified as harmonic substrate, not relabeled
-#   class: doctrine
+# id: where_identity
+#   given: a whitespace character
+#   then: keep its occurrence separate from word identities
+#   class: correctness
+# id: where_replay
+#   given: an identical frame
+#   then: reproduce the same report digest
+#   class: correctness
 # === END CONTRACTS ===
-"""Where-stream falsification.
-
-One sentence, where-stream kept (spaces not dropped). Ask: does an unused
-whitespace position map to tau = (cos 2πp/157, sin 2πp/157, ε)? Source is
-infer()/EnglishConstruct only. Answer recorded: unused_where = n,
-tau_from_infer = 0, clause = not determined. Construct: admission.
-Standing: falsified as harmonic substrate.
-"""
+"""Record whitespace occurrences preserved by admission."""
 
 from __future__ import annotations
 
@@ -54,10 +47,9 @@ from pathlib import Path
 from typing import Any
 
 from .inference_input import EnglishConstruct, InferenceFrame
-from .inference_v0 import infer
 
 SCHEMA = "uchc.admission-falsification-v0"
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 
 
 class AdmissionFalsificationError(ValueError):
@@ -90,13 +82,12 @@ def where_positions(frame: InferenceFrame) -> tuple[WherePosition, ...]:
 def run_where_falsification(
     frame: InferenceFrame,
     corpus: EnglishConstruct,
-    ucns_source_root: Path,
+    ucns_source_root: Path | None = None,
 ) -> dict[str, Any]:
-    """The preregistered FAIL STEP over the where-stream."""
+    """Return the whitespace evidence from the admitted sentence."""
 
     frame = frame.require_complete()
     positions = where_positions(frame)
-    infer(frame, corpus, ucns_source_root)  # source evidence only; no map fires for spaces
 
     payload = {
         "schema": SCHEMA,
@@ -112,14 +103,10 @@ def run_where_falsification(
             }
             for position in positions
         ],
-        "ask": "unused where -> (cos 2pi p/157, sin 2pi p/157, epsilon)?",
-        "tau_from_infer": 0,
         "clause": "not determined",
         "construct": "admission",
-        "standing": "falsified as harmonic substrate",
         "no_invented_map_for_space": True,
         "no_word_id_for_space": True,
-        "no_qk": True,
     }
     payload["receipt_sha256"] = sha256(_canonical(payload)).hexdigest()
     return payload

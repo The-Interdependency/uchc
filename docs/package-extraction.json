@@ -62,20 +62,13 @@
       "adaptation": null
     },
     {
-      "source": "research/english-gonol/english_gonol/displacement_operator.py",
-      "target": "human/english/english_gonol/displacement_operator.py",
-      "kind": "runtime",
-      "source_sha256": "42a6f4b1d8e236e755eef9b6388011ac663d2596036cef270157d60847a003ca",
-      "target_sha256": "42a6f4b1d8e236e755eef9b6388011ac663d2596036cef270157d60847a003ca",
-      "adaptation": null
-    },
-    {
       "source": "research/english-gonol/english_gonol/displacement_operator_options.py",
       "target": "human/english/english_gonol/displacement_operator_options.py",
       "kind": "runtime",
-      "source_sha256": "319a08177c7d857bb50da34083782e49079cd6f5cc50bbc3b0455bbb14799785",
-      "target_sha256": "319a08177c7d857bb50da34083782e49079cd6f5cc50bbc3b0455bbb14799785",
-      "adaptation": null
+      "source_sha256": "1dbbedf49057c60b89512bdb770d35d0b8f46c3bfe41cf050c2d69dd95ae3f0d",
+      "target_sha256": "1dbbedf49057c60b89512bdb770d35d0b8f46c3bfe41cf050c2d69dd95ae3f0d",
+      "adaptation": null,
+      "source_commit": "87025797abad4eba7bbcf7faf98275dab2ca8351"
     },
     {
       "source": "research/english-gonol/english_gonol/edcm_metric_origins.py",
@@ -97,9 +90,10 @@
       "source": "research/english-gonol/english_gonol/gonol.py",
       "target": "human/english/english_gonol/gonol.py",
       "kind": "runtime",
-      "source_sha256": "8ac63d14154293a1212a363f6bb60ec8d408b12413332deec684496eed3ee1d2",
-      "target_sha256": "8ac63d14154293a1212a363f6bb60ec8d408b12413332deec684496eed3ee1d2",
-      "adaptation": null
+      "source_sha256": "8c5cfab8bbca86e2b9d9270bf3a32a146e68d7b64de1b287d9e6434e19832a17",
+      "target_sha256": "8c5cfab8bbca86e2b9d9270bf3a32a146e68d7b64de1b287d9e6434e19832a17",
+      "adaptation": null,
+      "source_commit": "87025797abad4eba7bbcf7faf98275dab2ca8351"
     },
     {
       "source": "research/english-gonol/english_gonol/gonol_relationship_run.py",
@@ -129,17 +123,19 @@
       "source": "research/english-gonol/english_gonol/hyperspace_geometry.py",
       "target": "human/english/english_gonol/hyperspace_geometry.py",
       "kind": "runtime",
-      "source_sha256": "0b9eb4a871a47175448c12807262c7747f99275fa0d937eb68697e4cedcd63f6",
-      "target_sha256": "0b9eb4a871a47175448c12807262c7747f99275fa0d937eb68697e4cedcd63f6",
-      "adaptation": null
+      "source_sha256": "1b4c4dd937ecdc732532f03ea47bd76ee1f96586261393448a4bcaddecf61456",
+      "target_sha256": "1b4c4dd937ecdc732532f03ea47bd76ee1f96586261393448a4bcaddecf61456",
+      "adaptation": null,
+      "source_commit": "87025797abad4eba7bbcf7faf98275dab2ca8351"
     },
     {
       "source": "research/english-gonol/english_gonol/hyperspace_views.py",
       "target": "human/english/english_gonol/hyperspace_views.py",
       "kind": "runtime",
-      "source_sha256": "529b536cb03a28d8e05c802b50997fb71f30d921c908a5e33fc07552e4f500fe",
-      "target_sha256": "529b536cb03a28d8e05c802b50997fb71f30d921c908a5e33fc07552e4f500fe",
-      "adaptation": null
+      "source_sha256": "dcf8537020a1c8d922f3545fa7713e9e742ebc32621ea504d4d2ce0aba4dcd9c",
+      "target_sha256": "dcf8537020a1c8d922f3545fa7713e9e742ebc32621ea504d4d2ce0aba4dcd9c",
+      "adaptation": null,
+      "source_commit": "87025797abad4eba7bbcf7faf98275dab2ca8351"
     },
     {
       "source": "research/english-gonol/english_gonol/language/__init__.py",
@@ -246,14 +242,6 @@
       "adaptation": null
     },
     {
-      "source": "research/english-gonol/english_gonol/motion_run.py",
-      "target": "human/english/english_gonol/motion_run.py",
-      "kind": "runtime",
-      "source_sha256": "cda7e65e0923782e3d78e88650522bc56dc95be8b2c9335ee705fa5080a050b3",
-      "target_sha256": "cda7e65e0923782e3d78e88650522bc56dc95be8b2c9335ee705fa5080a050b3",
-      "adaptation": null
-    },
-    {
       "source": "research/english-gonol/english_gonol/ordinal_construction.py",
       "target": "human/english/english_gonol/ordinal_construction.py",
       "kind": "runtime",
@@ -342,20 +330,13 @@
       "adaptation": null
     },
     {
-      "source": "research/english-gonol/tests/test_displacement_operator.py",
-      "target": "human/english/tests/test_displacement_operator.py",
-      "kind": "test",
-      "source_sha256": "90492723ad52787b7b457ba658abd3ec1e6293d1013a78f28b3f3bba67e0732d",
-      "target_sha256": "90492723ad52787b7b457ba658abd3ec1e6293d1013a78f28b3f3bba67e0732d",
-      "adaptation": null
-    },
-    {
       "source": "research/english-gonol/tests/test_displacement_operator_options.py",
       "target": "human/english/tests/test_displacement_operator_options.py",
       "kind": "test",
-      "source_sha256": "4c098a649a22ad82182ba17735a94d87b5e37446561270fae0fc5b7fb111e6e8",
-      "target_sha256": "4c098a649a22ad82182ba17735a94d87b5e37446561270fae0fc5b7fb111e6e8",
-      "adaptation": null
+      "source_sha256": "7d690d40c2c104ce7bd6151eaac82c2a5f0081d2478644faf72fdcf228988498",
+      "target_sha256": "7d690d40c2c104ce7bd6151eaac82c2a5f0081d2478644faf72fdcf228988498",
+      "adaptation": null,
+      "source_commit": "87025797abad4eba7bbcf7faf98275dab2ca8351"
     },
     {
       "source": "research/english-gonol/tests/test_edcm_metric_origins.py",
@@ -377,17 +358,19 @@
       "source": "research/english-gonol/tests/test_hyperspace_geometry.py",
       "target": "human/english/tests/test_hyperspace_geometry.py",
       "kind": "test",
-      "source_sha256": "7a315eba74b1d2e705abb9ed8de8e7574edd1ec4eb81b8cd853138e2acbfb8ef",
-      "target_sha256": "7a315eba74b1d2e705abb9ed8de8e7574edd1ec4eb81b8cd853138e2acbfb8ef",
-      "adaptation": null
+      "source_sha256": "6e0ba2fba797f7358331b8eacc0651d1944af92077bdefe793c32805cee876ab",
+      "target_sha256": "6e0ba2fba797f7358331b8eacc0651d1944af92077bdefe793c32805cee876ab",
+      "adaptation": null,
+      "source_commit": "87025797abad4eba7bbcf7faf98275dab2ca8351"
     },
     {
       "source": "research/english-gonol/tests/test_hyperspace_views.py",
       "target": "human/english/tests/test_hyperspace_views.py",
       "kind": "test",
-      "source_sha256": "6ba59517422f5ac46e0213f65b6ba1b3bd902c83e41a7b388855b4e941f7c4b7",
-      "target_sha256": "6ba59517422f5ac46e0213f65b6ba1b3bd902c83e41a7b388855b4e941f7c4b7",
-      "adaptation": null
+      "source_sha256": "186d0605686d6d039b93c28b93ededd0a91068880d53e023f6b34c2578fac79e",
+      "target_sha256": "186d0605686d6d039b93c28b93ededd0a91068880d53e023f6b34c2578fac79e",
+      "adaptation": null,
+      "source_commit": "87025797abad4eba7bbcf7faf98275dab2ca8351"
     },
     {
       "source": "research/english-gonol/tests/test_system_set_trajectory.py",
@@ -402,9 +385,9 @@
       "target": "human/english/english_gonol/unicode_construction.py",
       "kind": "runtime",
       "adaptation": null,
-      "source_sha256": "12e86e622b0bb72b9dfb5886f27696eeb32c096d7468393af76ae9d09d1e6bf3",
-      "target_sha256": "12e86e622b0bb72b9dfb5886f27696eeb32c096d7468393af76ae9d09d1e6bf3",
-      "source_commit": "a1c063eed2100cb9a4da74ed7ac6cf80c2798573"
+      "source_sha256": "51bdfa5c4c02ba4a4409b9b148ba5bbdebbd8601d322deb21404f7d348c97350",
+      "target_sha256": "51bdfa5c4c02ba4a4409b9b148ba5bbdebbd8601d322deb21404f7d348c97350",
+      "source_commit": "87025797abad4eba7bbcf7faf98275dab2ca8351"
     },
     {
       "source": "research/english-gonol/unicode_tests/test_unicode_recursive.py",
@@ -413,11 +396,13 @@
       "adaptation": null,
       "source_sha256": "b0e3cefa4da5ddb8d2afc4aea73580bdfe58e0e228e04e94ac04ac37efecbd60",
       "target_sha256": "b0e3cefa4da5ddb8d2afc4aea73580bdfe58e0e228e04e94ac04ac37efecbd60",
-      "source_commit": "a1c063eed2100cb9a4da74ed7ac6cf80c2798573"
+      "source_commit": "87025797abad4eba7bbcf7faf98275dab2ca8351"
     }
   ],
   "forge_only": {
+    "research/english-gonol/english_gonol/displacement_operator.py": "Historical experiment omitted from the UCHC package.",
     "research/english-gonol/english_gonol/full_view_audit.py": "Frozen Stack audit runner; reads Stack protocol, graph and source inventory.",
+    "research/english-gonol/english_gonol/motion_run.py": "Historical experiment omitted from the UCHC package.",
     "research/english-gonol/english_gonol/view_replay.py": "Independent view reconstruction helper owned by the Stack audit."
   }
 }

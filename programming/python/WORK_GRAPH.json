@@ -4,7 +4,6 @@
     "authority_transfer": false,
     "hmmm": [
       "exact UCNS Public Gonol function operations remain unresolved",
-      "exact UCNS Mobius-carrier affixiation/coupling law remains unresolved",
       "deeper geometric functions and admission of arbitrary Unicode source characters remain unresolved; preserved without invention"
     ],
     "measurement_status_transfer": false,
@@ -45,5 +44,5 @@
   ],
   "schema": "the-interdependency.stack-manifest",
   "version": "1.0.0",
-  "work_graph_sha256": "1460f0b437d8edc68d91280d4e8fdbef63d68e410857af8ba92897d4681748f2"
+  "work_graph_sha256": "43a03b43ba6ddc4154930ed6a9cc27428a6d9239856f33e8a273754363f7d671"
 }

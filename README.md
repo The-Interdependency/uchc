@@ -13,8 +13,11 @@ result enters the next addition without a new bearing. Zero sums retain their
 operands. `resultant` exposes the native vector; `closed_record` and `replay_closed`
 preserve complete object graphs. Explicit bearings retain declared-placement replay.
 
-Candidate `0.1.1a1` extracts the English addition source and test increment from
-Stack `a1c063eed2100cb9a4da74ed7ac6cf80c2798573`. The complete historical package
+The current package (`0.2.0a1`) returns dictionary evidence for each candidate definition.
+The phone response exposes its first sample in `evidence_card`.
+
+The Unicode construction extracts the English addition source and test increment from
+Stack `87025797abad4eba7bbcf7faf98275dab2ca8351`. The complete historical package
 baseline and its non-English bytes retain their own exact source identities.
 
 ## Historical recursive English attachment
@@ -41,7 +44,7 @@ structural APIs remain versioned replay interfaces.
 
 **hmmm:** the closed-word bearing functional remains unselected; both named
 candidates are explicit. Numerical definition attachment, expanded glyph
-inventory, punctuation geometry, native sheet lift and graduation remain open.
+inventory, punctuation geometry and graduation remain open.
 
 ## Domains
 
@@ -63,7 +66,7 @@ The construct is the implementation. UCHC does not separate a nominal specificat
 
 ## Authority boundary
 
-- **UCNS** owns gonol objects, constructors, Public Gonol carrier geometry, Möbius geometry, and other UCNS geometry.
+- **UCNS** owns gonol objects, constructors, Public Gonol carrier geometry and other UCNS geometry.
 - **METAPAT** owns affixiation semantics where consumed.
 - **Stack** remains the current forge and implementation owner for the English and Python gonol workspaces until migration is verified.
 - **UCHC** is the intended independent implementation/public-contract boundary for the migrated hyperspace constructs.
@@ -130,9 +133,8 @@ See [the provisional migration contract](docs/HILBERT_INFERENCE.md); these
 Hilbert helpers are available as an extracted candidate in this package. The
 future frame bridge remains unimplemented.
 
-The current UCHC O/S/C inference and epicyclic graph paths remain downstream
-candidate operators/readouts. Their executable channel tuples do not define
-the Hilbert basis.
+The dictionary response records ordinal, semantic-evidence and context values for
+each definition. The definition ID links those values to their corpus source.
 
 ## Polyglot identity layer
 

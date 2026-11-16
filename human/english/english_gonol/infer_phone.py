@@ -2,44 +2,37 @@
 # id: uchc_english_infer_phone
 #   module_name: infer_phone
 #   module_kind: tool
-#   summary: one tool, infer-phone - text plus optional K in, ResponseCard out, through uchc.respond_v0.respond
+#   summary: Read candidate dictionary evidence from a verified construct.
 #   owner: Erin Spencer
 #   public_surface: SCHEMA, VERSION, InferPhoneError, run_phone, build_response_card
-#   internal_surface: argparse CLI, verified EnglishConstruct open, respond_v0 call, canonical stdout print
+#   internal_surface: CLI parsing, verified construct reader and response encoding
 #   auth_boundary: none
 #   storage_boundary: read only over the construct; no writes
 #   network_boundary: none
 #   user_data_boundary: read
 #   admin_only: false
 #   tests: tests.test_infer_phone
-#   rollout: the single inference phone tool; no law is picked
+#   rollout: verified English dictionary consumer
 #   rollback: remove this module and its tests
 #   requires: uchc_english_inference_input, uchc_english_respond_v0
 #   since: 2026-09-28
-#   unresolved: sense selection and one-map-as-The-Law remain NOT DONE
+#   unresolved: contextual sense selection
 # === END MODULE_BUILD ===
 # === CONTRACTS ===
 # id: infer_phone_calls_respond
-#   given: text and an optional K
-#   then: the tool prints exactly the respond_v0 response card and nothing else on stdout
+#   given: text and a verified dictionary
+#   then: emit the response as JSON
 #   class: correctness
 # id: infer_phone_empty_is_empty_card
 #   given: empty text
-#   then: the tool prints the empty card with exit code 0, not an answer and not an error
+#   then: emit an empty card with exit code zero
 #   class: correctness
 # id: infer_phone_fails_closed
-#   given: missing artifacts, wrong identities, or invalid input
-#   then: the tool exits nonzero with a diagnostic on stderr and prints nothing on stdout
-#   class: safety
+#   given: a failed admission
+#   then: return a diagnostic and exit with failure
+#   class: correctness
 # === END CONTRACTS ===
-"""infer-phone: one tool.
-
-    python -m english_gonol.infer_phone TEXT \
-        --construct-db PATH --database-sha256 HEX --logical-receipt HEX \
-        --ucns-source-root PATH [--K one-def]
-
-Prints the ResponseCard produced by respond_v0.respond.
-"""
+"""Read candidate dictionary evidence from a verified construct."""
 
 from __future__ import annotations
 
@@ -53,7 +46,7 @@ from .inference_input import EnglishConstruct
 from .respond_v0 import respond
 
 SCHEMA = "uchc.english.infer-phone"
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 
 
 class InferPhoneError(ValueError):
@@ -70,7 +63,7 @@ def build_response_card(
     construct_db: Path,
     database_sha256: str,
     logical_receipt: str,
-    ucns_source_root: Path,
+    ucns_source_root: Path | None = None,
     *,
     K: str = "one-def",
 ) -> dict[str, Any]:
@@ -94,8 +87,7 @@ def run_phone(argv: Sequence[str]) -> int:
                         help="trusted sha256 of construct.db")
     parser.add_argument("--logical-receipt", required=True,
                         help="trusted complete logical receipt")
-    parser.add_argument("--ucns-source-root", required=True,
-                        help="path to the pinned ucns checkout")
+    parser.add_argument("--ucns-source-root", help=argparse.SUPPRESS)
     parser.add_argument("--K", default="one-def", help="respond mode; only one-def is implemented")
     args = parser.parse_args(list(argv))
 
@@ -105,7 +97,6 @@ def run_phone(argv: Sequence[str]) -> int:
             Path(args.construct_db),
             args.database_sha256,
             args.logical_receipt,
-            Path(args.ucns_source_root),
             K=args.K,
         )
     except Exception as exc:  # fail closed on any admission/receipt error

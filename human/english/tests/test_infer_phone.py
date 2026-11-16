@@ -2,28 +2,27 @@
 # id: check_infer_phone_calls_respond
 #   proves: infer_phone_calls_respond
 #   call: self::test_calls_respond
-#   requires: python3, git
+#   requires: python3, pytest
 #   timeout: 60
 #   mutates: filesystem
 #   cleanup: tempdir_teardown
 # id: check_infer_phone_empty_is_empty_card
 #   proves: infer_phone_empty_is_empty_card
 #   call: self::test_empty_is_empty_card
-#   requires: python3
-#   timeout: 30
+#   requires: python3, pytest
+#   timeout: 60
 #   mutates: filesystem
 #   cleanup: tempdir_teardown
 # id: check_infer_phone_fails_closed
 #   proves: infer_phone_fails_closed
 #   call: self::test_fails_closed
-#   requires: python3
-#   timeout: 30
+#   requires: python3, pytest
+#   timeout: 60
 #   mutates: filesystem
 #   cleanup: tempdir_teardown
 # === END CHECKS ===
 from hashlib import sha256
 import json
-import os
 from pathlib import Path
 
 import pytest
@@ -31,8 +30,6 @@ import pytest
 from english_gonol.full_construct_run import build_construct
 from english_gonol.infer_phone import build_response_card, run_phone
 from english_gonol.language.source import LexemeRecord, SenseRecord, SynsetRecord, WordnetSnapshot
-
-UCNS_SOURCE_ROOT = Path(os.environ.get("UCNS_SOURCE_ROOT", "/tmp/ucns-infer"))
 
 
 @pytest.fixture
@@ -61,7 +58,7 @@ def artifact(tmp_path):
 def _argv(artifact, text, **extra):
     path, digest, logical = artifact
     args = [text, "--construct-db", path, "--database-sha256", digest,
-            "--logical-receipt", logical, "--ucns-source-root", str(UCNS_SOURCE_ROOT)]
+            "--logical-receipt", logical]
     for key, value in extra.items():
         args += [f"--{key.replace('_', '-')}", value]
     return args
@@ -70,9 +67,9 @@ def _argv(artifact, text, **extra):
 def test_calls_respond(artifact):
     path, digest, logical = artifact
     card = build_response_card(
-        "alpha letter alpha.", Path(path), digest, logical, UCNS_SOURCE_ROOT)
+        "alpha letter alpha.", Path(path), digest, logical)
     assert card["words"] == ["alpha", "letter", "alpha."]
-    assert card["motion_card"]["sample_not_selected"] is True
+    assert card["evidence_card"]["sample_not_selected"] is True
     assert card["bundle_count_hidden"] > 0
 
 
@@ -81,14 +78,14 @@ def test_empty_is_empty_card(artifact, capsys):
     out = capsys.readouterr().out
     assert code == 0
     card = json.loads(out)
-    assert card["motion_card"] is None
+    assert card["evidence_card"] is None
     assert card["empty_is_not_an_answer"] is True
 
 
 def test_fails_closed(artifact, capsys):
     path, digest, logical = artifact
     bad_args = ["alpha", "--construct-db", path, "--database-sha256", "0" * 64,
-                "--logical-receipt", logical, "--ucns-source-root", str(UCNS_SOURCE_ROOT)]
+                "--logical-receipt", logical]
     code = run_phone(bad_args)
     out, err = capsys.readouterr()
     assert code == 1

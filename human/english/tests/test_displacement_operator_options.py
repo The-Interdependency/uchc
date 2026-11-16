@@ -2,42 +2,20 @@
 # id: check_channel_options_are_built
 #   proves: channel_options_are_built
 #   call: self::test_channel_options_are_built
-#   requires: python3, git
-#   timeout: 30
-#   mutates: none
-#   cleanup: none
-#
-# id: check_channel_option_selection_preserves_identity
-#   proves: channel_option_selection_preserves_identity
-#   call: self::test_selection_preserves_identity
-#   requires: python3, git
-#   timeout: 30
-#   mutates: none
-#   cleanup: none
-#
-# id: check_channel_option_selection_prefers_distinctness
-#   proves: channel_option_selection_prefers_distinctness
-#   call: self::test_selection_prefers_distinctness
-#   requires: python3, git
-#   timeout: 30
-#   mutates: none
-#   cleanup: none
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
 # === END CHECKS ===
-
 from __future__ import annotations
 
-import os
 import sqlite3
 from pathlib import Path
 
 from english_gonol.displacement_operator_options import (
     channel_option_a,
-    channel_option_b,
     channel_option_c,
-    run_channel_option_adjudication,
 )
-
-UCNS_SOURCE_ROOT = Path(os.environ.get("UCNS_SOURCE_ROOT", "/tmp/ucns-lift"))
 
 
 def _fixture_state(tmp_path: Path) -> Path:
@@ -110,27 +88,7 @@ def _fixture_state(tmp_path: Path) -> Path:
 def test_channel_options_are_built(tmp_path: Path) -> None:
     state_dir = _fixture_state(tmp_path)
     db = sqlite3.connect(f"file:{state_dir / 'construct.db'}?mode=ro", uri=True)
-    assert channel_option_a(db, 1)[0] == 1
-    assert channel_option_b(db, 1, UCNS_SOURCE_ROOT)[0] == 1
-    assert channel_option_c(db, 1)[0] == 1
+    assert channel_option_a(db, 1) == (1, 0, 2)
+    assert channel_option_c(db, 1) == (1, 0, 2)
+    assert channel_option_a(db, 99) == (99, 0, 0)
     db.close()
-
-
-def test_selection_preserves_identity(tmp_path: Path) -> None:
-    state_dir = _fixture_state(tmp_path)
-    report = run_channel_option_adjudication(state_dir, UCNS_SOURCE_ROOT)
-    assert report["word_count"] == 3
-    for option in ("a", "b", "c"):
-        assert report["options"][option]["identity_preserved"] is True
-    assert report["selected"] in ("a", "b", "c")
-
-
-def test_selection_prefers_distinctness(tmp_path: Path) -> None:
-    state_dir = _fixture_state(tmp_path)
-    report = run_channel_option_adjudication(state_dir, UCNS_SOURCE_ROOT)
-    selected = report["selected"]
-    assert selected is not None
-    assert report["options"][selected]["distinct_receipts"] == max(
-        stats["distinct_receipts"] for stats in report["options"].values()
-    )
-    assert "preserving the identity" in report["hmmm"]

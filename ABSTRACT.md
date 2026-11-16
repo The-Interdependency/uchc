@@ -14,7 +14,7 @@ UCHC also supports candidate cross-language attachments in which different lingu
 
 The proposed contribution is a reproducible language substrate whose composition and information retention can be inspected and independently replayed. Verification checks declared source coverage, angular assignments, ordinal placements, closure, and recovery. Such evidence establishes construction behavior; whether the resulting relations improve interpretation, inference, or other useful tasks requires separate evaluation. The ordinal replacement is selected development work, not yet a completed downstream UCHC release.
 
-**hmmm:** Nested-frame transport, compound-definition origins, native Möbius integration, executable operator meanings, and repertoire growth remain unresolved construction questions. Artifact publication, consumer migration, and demonstrated downstream utility remain distinct completion work.
+**hmmm:** Nested-frame transport, compound-definition origins, executable operator meanings, and repertoire growth remain unresolved construction questions. Artifact publication, consumer migration, and demonstrated downstream utility remain distinct completion work.
 
 **Usage guidance:** Read this abstract for the research question and intended contribution. Use the scope, evidence, commands, and limitations in the [project README](README.md) before relying on the work; retain the unresolved conditions above when quoting the description.
 

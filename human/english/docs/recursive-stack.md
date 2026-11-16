@@ -35,7 +35,6 @@ occurrence; it rejects receipt, root, carrier and relationship mutations.
 Native coordinates are exact constructive expressions. Expression identity is
 not a complete geometric-equivalence test. Floating display is explicitly lossy
 and refuses detected underflow/collapse; it does not supply construction receipts.
-No physical camera or sheet-lift law is asserted.
 
 ## Explicit bearing candidates
 
@@ -99,7 +98,7 @@ Acceptance also requires the complete report to match the preserved census via
 or `PYTHONOPTIMIZE`) is refused because it disables verification assertions.
 
 **hmmm:** select the closed-word bearing functional; numerical definition
-attachment; expanded carrier inventory/order; punctuation geometry and sheet
-lift; hosted CI, stable publication, released-artifact reconsumption and domain
+attachment; expanded carrier inventory/order; punctuation geometry;
+hosted CI, stable publication, released-artifact reconsumption and domain
 graduation. Historical ordinal and structural profiles remain explicit replay
 interfaces. Rollback selects those versioned profiles without changing receipts.

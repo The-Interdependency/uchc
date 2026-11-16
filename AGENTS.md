@@ -13,8 +13,8 @@ load every applicable skill. The scaffold baseline used
 
 - UCHC owns language-hyperspace implementation and public contracts only after a
   domain has been migrated here and verified.
-- UCNS owns gonol objects, constructors, Public Gonol carrier geometry, Möbius
-  geometry, and other UCNS geometry. Consume it; do not shadow it.
+- UCNS owns gonol objects, constructors, Public Gonol carrier geometry and other UCNS geometry.
+  UCHC consumes those primitives.
 - METAPAT owns affixiation semantics where consumed.
 - Stack is the current forge for English and Python until their migration gates pass.
 - EDCM measures/evaluates; it does not define UCHC construction.

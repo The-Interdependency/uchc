@@ -23,4 +23,4 @@ PyYAML 6.0.2. Its logical receipt reproduces the sealed profile; this is not a c
 that its physical SQLite bytes match a historical build on another runtime.
 
 hmmm: bearing functional, numerical definition attachment, expanded carrier,
-native sheet lift, hosted CI, stable publication and domain graduation.
+hosted CI, stable publication and domain graduation.

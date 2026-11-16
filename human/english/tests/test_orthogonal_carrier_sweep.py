@@ -38,9 +38,10 @@ def test_collisions_resolve_as_carriers_grow() -> None:
     assert rows[1].base_colliding_edges > 0
     assert rows[7].base_colliding_edges == 0
     assert rows[7].resolved_from_k1 == rows[1].base_colliding_edges
-    assert report.first_zero_collision_carriers == 5
-    assert report.sustained_zero_collision_carriers == 7
-    assert report.smallest_useful_carriers == 7
+    assert [row.base_colliding_edges for row in report.rows] == [6, 2, 0, 2, 3, 0, 0]
+    assert report.first_zero_collision_carriers == 3
+    assert report.sustained_zero_collision_carriers == 6
+    assert report.smallest_useful_carriers == 6
 
 
 def test_added_carriers_add_independent_structure() -> None:
