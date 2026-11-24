@@ -1,4 +1,4 @@
-# ratios: loc_comments=64:1 imports_exports=9:6 calls_definitions=39:6
+# ratios: loc_comments=80:1 imports_exports=12:7 calls_definitions=48:7
 """Run pytest tests/test_halving.py with the pinned producer installed or UCHC_HALVING_UCNS_ROOT set."""
 from concurrent.futures import ThreadPoolExecutor
 from copy import deepcopy
@@ -77,4 +77,23 @@ def test_previous_text_import_and_cli(capsys):
         args.extend(['--ucns-source-root', opts['ucns_source_root']])
     main(args)
     assert json.loads(capsys.readouterr().out)['radii'] == [[1,16],[1,8],[1,4],[1,2]]
-# ratios: loc_comments=64:1 imports_exports=9:6 calls_definitions=39:6
+
+
+def test_halving_runs_without_the_encoding_module_and_rejects_source_drift(tmp_path):
+    from importlib.metadata import distribution
+    from pathlib import Path
+    from shutil import copyfile
+
+    root = options()['ucns_source_root']
+    source = Path(root) / 'src/ucns' if root else Path(distribution('ucns').locate_file('ucns'))
+    target = tmp_path / 'src/ucns'
+    target.mkdir(parents=True)
+    for name in ('ordinal_affixiation', 'scalar_bearing', 'attachment_stack', 'attachment_codec'):
+        copyfile(source / (name + '.py'), target / (name + '.py'))
+    assert not (target / 'unicode_gonol.py').exists()
+    assert ''.join(h.construct_text('ë', ucns_source_root=tmp_path).recover()) == 'ë'
+    producer = target / 'scalar_bearing.py'
+    producer.write_bytes(producer.read_bytes() + b'\n')
+    with pytest.raises(ValueError, match='DRIFT'):
+        h.construct_text('ë', ucns_source_root=tmp_path)
+# ratios: loc_comments=80:1 imports_exports=12:7 calls_definitions=48:7

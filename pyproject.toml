@@ -17,7 +17,7 @@ dependencies = []
 uchc-halving = "uchc_halving.cli:main"
 
 [project.optional-dependencies]
-halving = ["ucns @ git+https://github.com/The-Interdependency/ucns.git@1be5d4608d7525ca006f8998dbf4db5c08fd8c1b"]
+halving = ["ucns @ git+https://github.com/The-Interdependency/ucns.git@b9685af7f32dcd0f60adff6ae0ed3b25b6fed877"]
 corpus-build = ["PyYAML==6.0.2"]
 test = ["pytest==8.3.5"]
 

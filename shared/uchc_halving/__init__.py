@@ -18,11 +18,11 @@ from threading import Lock
 from types import ModuleType
 
 PROFILE = 'uchc.ordinal-halving/1'
-UCNS_COMMIT = '1be5d4608d7525ca006f8998dbf4db5c08fd8c1b'
+UCNS_COMMIT = 'b9685af7f32dcd0f60adff6ae0ed3b25b6fed877'
 NATIVE_SOURCES = {
     'ordinal_affixiation': '35604a2d2226f97ff865ba26e03a0fe99b5062ba7e6e8645051cfcc096a0558d',
-    'unicode_gonol': '08eabe18939e775bdd9720538982815a63b300128d70a4cea538a21270f5a597',
-    'attachment_stack': 'f3672ae18c95fe17776355aa802b33729e185834006d0fc5d4dc93be304411c4',
+    'scalar_bearing': '7d7ff1e1ddbd4997cdbee4f5f17a7c6fa4b8f3d55e288c97f700f610f32be7ac',
+    'attachment_stack': '92b8cbf1510befe2a61c79e7217fecf15b6b257c46f1977b4e970c5c1e67095e',
     'attachment_codec': 'dc7dc62fda8ba087db1cddf4d2fb72147ec9ccadd694b48fc83d3f25471b9e04',
 }
 _NATIVE_LOAD_LOCK = Lock()
