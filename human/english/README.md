@@ -1,13 +1,8 @@
-## Recursive Unicode objects — active construction entrypoint
+## Ordinal disc stacks
 
-Use [`unicode_construction`](docs/unicode-recursive.md) for exact 16 b rad Unicode
-glyphs, text frames and recursive closed objects. A completed result can be passed
-back to `construct_sequence` and can reenter after `closed_record`/`replay_closed`.
-The complete geometric result enters the next addition without a new bearing.
-Interiors, order, multiplicity, source and exact UTF-8/UTF-32BE anatomy remain
-retained, including when the resultant is zero. Explicit bearings select
-declared-placement replay. Stack owns the source; UCHC verifies this extraction
-and its installed package.
+Use [ordinal radius-halving](docs/halving.md) to construct words from Unicode
+scalar bearings and stack the completed words at the next scale. Stack owns the
+separate 16 b rad representation experiment.
 
 ## Historical recursive attachment profile
 

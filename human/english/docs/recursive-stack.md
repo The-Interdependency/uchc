@@ -1,7 +1,7 @@
 # Recursive attachment profile
 
-Historical compatibility profile. Active Unicode object completion lives in
-[unicode-bit-radius.md](unicode-bit-radius.md). Completed sequences can reenter
+This is the earlier Public Gonol carrier profile. The active Unicode-bearing
+disc stack uses the [same ordinal halving](halving.md). Completed sequences can reenter
 this historical adapter too: validation now traverses their retained objects,
 including sequences inside compounds, without rebuilding labels as words.
 

@@ -1,5 +1,12 @@
 # UCHC migration record
 
+## Ordinal halving and Stack encoding, 2026-11-24
+
+Erin Spencer scoped ordinal geometric halving to UCHC and 16 b rad research to
+Stack. UCHC's public construction now consumes native UCNS disc stacks with
+Unicode scalar bearings. See the [working profile](../human/english/docs/halving.md).
+Historical evidence below stays bound to the stated revisions and package versions.
+
 ## English dictionary response in 0.2.0a1
 
 Read the sampled definition and its three channel values from `evidence_card`.

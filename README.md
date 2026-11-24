@@ -4,23 +4,21 @@ UCHC is the implementation repository for **Unit Circle Hyperspace Constructs**.
 
 Applications consume UCHC; applications do not define UCHC.
 
-## Recursive Unicode objects
+## Ordinal radius-halving
 
-Start with [construction and installed-package verification](human/english/docs/unicode-recursive.md).
-The Unicode API adds its own completed objects recursively, retaining interiors,
-source provenance, occurrence order and exact 16 b rad scalar anatomy. The exact
-result enters the next addition without a new bearing. Zero sums retain their
-operands. `resultant` exposes the native vector; `closed_record` and `replay_closed`
-preserve complete object graphs. Explicit bearings retain declared-placement replay.
+The public English construction stacks glyph occurrences into words and closed
+words into larger constructions using the same geometric radius-halving rule.
+At frame radius one, `bull` places its occurrences at 1/16, 1/8, 1/4 and 1/2.
+Each Unicode scalar retains its SPACE-relative bearing. See [installation,
+recursive use and replay](human/english/docs/halving.md).
 
-The current package (`0.2.0a1`) returns dictionary evidence for each candidate definition.
-The phone response exposes its first sample in `evidence_card`.
+The [Stack workspace](https://github.com/The-Interdependency/stack/tree/main/research/english-gonol)
+continues the 16 b rad encoding experiment. Its fixed-width records and
+equal-radius corpus replay are specific to that profile. UCHC 0.2.0a1 preserves
+the previous adapter at its exact revision. The dictionary response continues
+to expose source-ordered definition evidence through `evidence_card`.
 
-The Unicode construction extracts the English addition source and test increment from
-Stack `87025797abad4eba7bbcf7faf98275dab2ca8351`. The complete historical package
-baseline and its non-English bytes retain their own exact source identities.
-
-## Historical recursive English attachment
+## Earlier Public Gonol recursive English attachment
 
 Start with [candidate installation, use and acceptance](docs/RECURSIVE_INTEGRATION.md).
 
