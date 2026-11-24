@@ -4,7 +4,7 @@
 The previous fixed-width research API is available in the Stack workspace.
 """
 from uchc_halving import (
-    PROFILE, UCNS_COMMIT, authority, closed_record, construct_glyph, construct_text,
+    PROFILE, UCNS_COMMIT, additive_resultant, authority, closed_record, construct_glyph, construct_text,
     construct_sequence, replay_closed, resultant,
 )
 from uchc_halving.cli import main

@@ -23,7 +23,10 @@ load every applicable skill. The scaffold baseline used
 
 For UCHC ordinal affixiation, consume the native UCNS disc stack at both
 glyph and closed-word scales. UCHC owns this language entry point as a scoped
-graduation. The 16 b rad encoding and its equal-radius corpus remain in Stack.
+graduation. Carry each frame's radius, its ordered local rays and the full
+additive resultant of its operands through construction and replay. The placed
+endpoint can be nonzero even when the additive resultant is zero. The
+16 b rad encoding and its equal-radius corpus remain in Stack.
 Evidence for either profile always names the profile that produced it.
 
 ## Structure

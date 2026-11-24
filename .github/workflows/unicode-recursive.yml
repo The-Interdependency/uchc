@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v7.0.1
         with:
           repository: The-Interdependency/ucns
-          ref: b9685af7f32dcd0f60adff6ae0ed3b25b6fed877
+          ref: 1edfa593ae9d8c9ad394b5462638bcc717f99fbd
           path: _deps/native
           persist-credentials: false
       - uses: actions/setup-python@v7.0.0
@@ -29,6 +29,7 @@ jobs:
           _clean/bin/python -m pip install --no-deps _dist/*.whl
           mkdir _isolated
           cp tests/test_halving.py _isolated/
+          cp tests/ordinal-halving-v1-record.json _isolated/
           _clean/bin/python -I -m pytest -c /dev/null --noconftest -q _isolated
           _clean/bin/python -I -m english_gonol bull > _isolated/bull.json
           python -c "import json; assert json.load(open('_isolated/bull.json'))['radii'] == [[1,16],[1,8],[1,4],[1,2]]"
