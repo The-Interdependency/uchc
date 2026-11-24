@@ -169,7 +169,7 @@ Choose the record by the work being performed, not by its date:
 | [system-set-recurrence-v0.json](work-graphs/system-set-recurrence-v0.json) | Recurrence coordination and migration boundary; complements the other graphs and supersedes neither. |
 
 The recurrence graph pins its governing
-[skill-lib contract at `38c64332b840b2bbe1c07e53aeee8996644548e9`](https://github.com/The-Interdependency/skill-lib/blob/38c64332b840b2bbe1c07e53aeee8996644548e9/interdependent-work-graph/SKILL.md),
+[skill-lib contract at `33d2abe8748dd96aec3068e2997d9f73240c7c48`](https://github.com/The-Interdependency/skill-lib/blob/33d2abe8748dd96aec3068e2997d9f73240c7c48/interdependent-work-graph/SKILL.md),
 matching the [propagated skills record](../.agents/skills/README.md).
 Schema `the-interdependency.stack-manifest` version `1.0.0` hashes exactly
 `repositories` and `boundaries` as UTF-8 JSON with sorted object keys, compact
