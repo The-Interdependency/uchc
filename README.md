@@ -9,8 +9,10 @@ Applications consume UCHC; applications do not define UCHC.
 The public English construction stacks glyph occurrences into words and closed
 words into larger constructions using the same geometric radius-halving rule.
 At frame radius one, `bull` places its occurrences at 1/16, 1/8, 1/4 and 1/2.
-Each Unicode scalar retains its SPACE-relative bearing. See [installation,
-recursive use and replay](human/english/docs/halving.md).
+Each Unicode scalar retains its SPACE-relative bearing. A word is an epicycle
+relative to its glyphs. A sentence is an epicycle relative to its words.
+Each construction carries its ordinal rays and its exact additive resultant.
+See [installation, recursive use and replay](human/english/docs/halving.md).
 
 The [Stack workspace](https://github.com/The-Interdependency/stack/tree/main/research/english-gonol)
 continues the 16 b rad encoding experiment. Its fixed-width records and

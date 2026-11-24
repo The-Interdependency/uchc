@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "uchc"
-version = "0.2.0a2"
+version = "0.2.0a3"
 description = "Unit Circle Hyperspace Constructs: exact language construction and receipt-bound inference inputs"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -17,7 +17,7 @@ dependencies = []
 uchc-halving = "uchc_halving.cli:main"
 
 [project.optional-dependencies]
-halving = ["ucns @ git+https://github.com/The-Interdependency/ucns.git@b9685af7f32dcd0f60adff6ae0ed3b25b6fed877"]
+halving = ["ucns @ git+https://github.com/The-Interdependency/ucns.git@1edfa593ae9d8c9ad394b5462638bcc717f99fbd"]
 corpus-build = ["PyYAML==6.0.2"]
 test = ["pytest==8.3.5"]
 

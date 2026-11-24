@@ -1,0 +1,73 @@
+{
+  "geometry_authority": {
+    "commit": "b9685af7f32dcd0f60adff6ae0ed3b25b6fed877",
+    "repository": "The-Interdependency/ucns",
+    "source_sha256s": {
+      "attachment_codec": "dc7dc62fda8ba087db1cddf4d2fb72147ec9ccadd694b48fc83d3f25471b9e04",
+      "attachment_stack": "92b8cbf1510befe2a61c79e7217fecf15b6b257c46f1977b4e970c5c1e67095e",
+      "ordinal_affixiation": "35604a2d2226f97ff865ba26e03a0fe99b5062ba7e6e8645051cfcc096a0558d",
+      "scalar_bearing": "7d7ff1e1ddbd4997cdbee4f5f17a7c6fa4b8f3d55e288c97f700f610f32be7ac"
+    }
+  },
+  "graph": {
+    "carriers": [],
+    "nodes": [
+      {
+        "construction": {
+          "identity": "Aë",
+          "participants": [
+            {
+              "identity": "A",
+              "kind": "scalar"
+            },
+            {
+              "identity": "ë",
+              "kind": "scalar"
+            }
+          ],
+          "radius": [
+            1,
+            1
+          ],
+          "relation": "uchc.ordinal-halving/1:text",
+          "schema": "ucns.attachment-stack.v1",
+          "source": "fixture:v1-word"
+        },
+        "receipt": "2d0d90800d319996d8edd5d84079d23e59bfd1fe2323beb738df02f74bd87cd1"
+      },
+      {
+        "construction": {
+          "identity": "sequence",
+          "participants": [
+            {
+              "bearing": "root-endpoint-v1",
+              "interior": "2d0d90800d319996d8edd5d84079d23e59bfd1fe2323beb738df02f74bd87cd1",
+              "kind": "closed"
+            },
+            {
+              "bearing": "root-endpoint-v1",
+              "interior": "2d0d90800d319996d8edd5d84079d23e59bfd1fe2323beb738df02f74bd87cd1",
+              "kind": "closed"
+            }
+          ],
+          "radius": [
+            1,
+            1
+          ],
+          "relation": "uchc.ordinal-halving/1:sequence",
+          "schema": "ucns.attachment-stack.v1",
+          "source": "fixture:v1-sentence"
+        },
+        "receipt": "351f4d886fd7205c253f33e1259f8011bdcedbb91d232b26dc76ae0440f90184"
+      }
+    ],
+    "receipt": "a28dba1141ca91c034cceb3f8e4107e81c3a662eff0c028543e0b33e2d18c290",
+    "root": "351f4d886fd7205c253f33e1259f8011bdcedbb91d232b26dc76ae0440f90184",
+    "root_space": [
+      0,
+      1
+    ],
+    "schema": "ucns.attachment-graph.v1"
+  },
+  "profile": "uchc.ordinal-halving/1"
+}

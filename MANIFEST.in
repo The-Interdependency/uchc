@@ -1,4 +1,5 @@
 include NOTICE LICENSE
+include tests/test_halving.py tests/ordinal-halving-v1-record.json
 recursive-include docs *.md *.json
 recursive-include human/english/tests *.py
 recursive-include human/english/tools *.py

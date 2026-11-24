@@ -8,6 +8,14 @@ original source remain recoverable. The default closed-child direction uses
 its root-to-endpoint bearing. The caller can explicitly select the retained
 `exit-heading-v1` policy. Input text is literal, including spaces and NUL.
 
+A word is an epicycle relative to its glyphs. A sentence is an epicycle
+relative to its words. Each scale exposes two vectors from one set of ordered
+operands. `resultant` gives the endpoint of the placed ordinal rays.
+`additive_resultant` gives the frame radius times the sum of the children's
+complete additive vectors. A scalar contributes a unit vector at its own
+SPACE-relative bearing. An additive sum of zero retains its complete ordinal
+construction and participates in the next addition.
+
 Install the UCHC package with the `halving` extra, or install the wheel and
 supply the exact UCNS checkout via `--ucns-source-root`.
 
@@ -26,7 +34,15 @@ phrase = construct_sequence((word, word), source="example:phrase")
 copy = replay_closed(closed_record(phrase))
 assert copy.participants[0].interior is copy.participants[1].interior
 assert "".join(copy.recover()) == "bullbull"
+assert copy.additive_resultant == word.additive_resultant.scaled(2)
 ```
+
+The CLI's `closed.vectors` contains `placement_endpoint` and
+`additive_resultant`. Record version 2 replays the graph and checks both
+values. Records from UCHC 0.2.0a2 replay with their original graph identity.
+At unit frame radius, grouping `AB | C` or `A | BC` gives the same additive
+result. Their exact glyph-ray lengths are respectively `(1/4, 1/2) | (1/2)`
+and `(1/2) | (1/4, 1/2)`.
 
 The UCNS scalar turn supplies the glyph bearing, measured from SPACE. Its
 UTF-8 spelling follows exactly from the retained scalar. Encoding width never
