@@ -21,6 +21,11 @@ load every applicable skill. The scaffold baseline used
 - Consumer apps remain separate repositories. They may project UCHC; they may not
   manufacture canonical UCHC relations.
 
+For UCHC ordinal affixiation, consume the native UCNS disc stack at both
+glyph and closed-word scales. UCHC owns this language entry point as a scoped
+graduation. The 16 b rad encoding and its equal-radius corpus remain in Stack.
+Evidence for either profile always names the profile that produced it.
+
 ## Structure
 
 `human/<language>/` and `programming/<language>/` are implementations, not

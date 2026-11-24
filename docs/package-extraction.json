@@ -379,30 +379,13 @@
       "source_sha256": "c5576e389191b43b073f61723104fa751c0522d63391bcc87dc1370c86234d83",
       "target_sha256": "ed668b374c718fa6fc41872ebebe78dba591492f2a9552f1508606803bf60b32",
       "adaptation": "Move exact Git source provenance assertion to the complete package extraction verifier; preserve all trajectory behavior assertions."
-    },
-    {
-      "source": "research/english-gonol/english_gonol/unicode_construction.py",
-      "target": "human/english/english_gonol/unicode_construction.py",
-      "kind": "runtime",
-      "adaptation": null,
-      "source_sha256": "51bdfa5c4c02ba4a4409b9b148ba5bbdebbd8601d322deb21404f7d348c97350",
-      "target_sha256": "51bdfa5c4c02ba4a4409b9b148ba5bbdebbd8601d322deb21404f7d348c97350",
-      "source_commit": "87025797abad4eba7bbcf7faf98275dab2ca8351"
-    },
-    {
-      "source": "research/english-gonol/unicode_tests/test_unicode_recursive.py",
-      "target": "tests/test_unicode_recursive.py",
-      "kind": "test",
-      "adaptation": null,
-      "source_sha256": "b0e3cefa4da5ddb8d2afc4aea73580bdfe58e0e228e04e94ac04ac37efecbd60",
-      "target_sha256": "b0e3cefa4da5ddb8d2afc4aea73580bdfe58e0e228e04e94ac04ac37efecbd60",
-      "source_commit": "87025797abad4eba7bbcf7faf98275dab2ca8351"
     }
   ],
   "forge_only": {
     "research/english-gonol/english_gonol/displacement_operator.py": "Historical experiment omitted from the UCHC package.",
     "research/english-gonol/english_gonol/full_view_audit.py": "Frozen Stack audit runner; reads Stack protocol, graph and source inventory.",
     "research/english-gonol/english_gonol/motion_run.py": "Historical experiment omitted from the UCHC package.",
-    "research/english-gonol/english_gonol/view_replay.py": "Independent view reconstruction helper owned by the Stack audit."
+    "research/english-gonol/english_gonol/view_replay.py": "Independent view reconstruction helper owned by the Stack audit.",
+    "research/english-gonol/english_gonol/unicode_construction.py": "16 b rad encoding and equal-radius Unicode sum, retained in Stack. UCHC supplies its own ordinal halving API."
   }
 }
