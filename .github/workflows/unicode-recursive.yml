@@ -28,7 +28,7 @@ jobs:
           _clean/bin/python -m pip install pytest==8.3.5
           _clean/bin/python -m pip install --no-deps _dist/*.whl
           mkdir _isolated
-          cp tests/test_halving.py _isolated/
+          cp tests/test_halving.py tests/test_numerology.py _isolated/
           cp tests/ordinal-halving-v1-record.json _isolated/
           _clean/bin/python -I -m pytest -c /dev/null --noconftest -q _isolated
           _clean/bin/python -I -m english_gonol bull > _isolated/bull.json
