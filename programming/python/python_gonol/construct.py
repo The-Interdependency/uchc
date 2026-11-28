@@ -1,11 +1,12 @@
+# ratios: loc_comments=613:108 imports_exports=16:10 calls_definitions=165:20
 # === MODULE_BUILD ===
 # id: python_gonol_construct
 #   module_name: python_gonol.construct
 #   module_kind: engine
-#   summary: exact Python 3.12 source construction with shared glyph identities, ordered occurrence references, compact SQLite materialization, and logical replay; consumes the pinned UCNS Public Gonol carrier without copying or extending it
+#   summary: exact Python 3.12 source construction with shared glyph identities, ordered occurrence references, compact SQLite materialization, and logical replay; consumes native UCNS Unicode glyphs and optional Public Gonol positions
 #   owner: Python Gonol Construction (stack-local research)
 #   public_surface: SCHEMA, VERSION, UCNS_PUBLIC_GONOL_COMMIT, PUBLIC_GONOL_SHA256, PythonGonolConstructionError, ConstructResult, build_construct, affixiate_python_source, affixiate_python_bytes, verify_construct, reconstruct_source
-#   internal_surface: verified UCNS Public Gonol loader, encoding detection, control construction, logical newline construction, canonical receipt
+#   internal_surface: verified UCNS Unicode and Public Gonol loader, encoding detection, control construction, logical newline construction, canonical receipt
 #   auth_boundary: UCNS owns geometry and Public Gonol positions; METAPAT owns affixiation semantics; Python Gonol Construction owns source admission and Python relation construction
 #   storage_boundary: one caller-selected construct directory with construct.db and manifest.json
 #   network_boundary: none
@@ -16,10 +17,20 @@
 #   rollback: delete the python-gonol workspace before downstream binding
 #   requires: ucns_public_gonol_geometry (pinned checkout), Python 3.12 standard library
 #   since: 2026-09-15
-#   unresolved: deeper geometric functions and admission of arbitrary Unicode source characters remain hmmm; preserved without invention
+#   unresolved: Python grammar relations and runtime equivalence remain open
 # === END MODULE_BUILD ===
 
 # === CONTRACTS ===
+# id: python_construct_preserves_source_bytes
+#   given: admitted source bytes and their declared decoding
+#   then: original bytes remain recoverable including a byte-order mark and replay binds them to the complete constructed source
+#   class: provenance
+#
+# id: python_construct_physical_addresses
+#   given: exact decoded source with LF, CR, and CRLF physical line endings
+#   then: one-based scalar columns preserve both CRLF constituents and advance to the next physical line exactly once
+#   class: construction
+#
 # id: python_construct_consumes_pinned_public_gonol_exactly
 #   given: a UCNS checkout at the pinned commit
 #   then: the exact 157-position Public Gonol carrier and its digest are consumed; the builder never copies, extends, or reinterprets the carrier
@@ -27,7 +38,7 @@
 #
 # id: python_construct_one_shared_identity_per_glyph
 #   given: any admitted Python source
-#   then: each admitted carrier glyph has exactly one shared character identity and every source occurrence references it in exact order with address, line, column, and provenance
+#   then: each decoded scalar has its native Unicode identity and every source occurrence references it in exact order with address, line, column, and provenance
 #   class: construction
 #
 # id: python_construct_controls_are_constitutive
@@ -40,9 +51,9 @@
 #   then: each logical newline records its exact ordered source constituents and the three kinds remain distinct
 #   class: construction
 #
-# id: python_construct_off_carrier_is_hmmm_not_invented
-#   given: a source scalar outside the pinned carrier and outside the four declared control scalars
-#   then: it is recorded as hmmm with exact address and never assigned an invented Public Gonol position
+# id: python_construct_unicode_identity
+#   given: any decoded Unicode scalar, including controls and supplementary-plane characters
+#   then: its native glyph, UTF-32BE diameter, UTF-8 spelling and exact bearing are retained, with an optional Public Gonol position
 #   class: safety
 #
 # id: python_construct_replay_fails_closed_on_tamper
@@ -58,7 +69,7 @@
 
 """Exact Python 3.12 source construction using the English method.
 
-Every admitted Public Gonol glyph has one shared character identity. Each
+Every Unicode scalar has one native identity, including control characters. Each
 source occurrence keeps its own address, order, multiplicity, relation, and
 provenance, and references the shared identity. The materialized artifact is
 one compact SQLite database plus a small manifest, never a giant JSON
@@ -82,6 +93,7 @@ substitute for it.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from functools import lru_cache
 from hashlib import sha256
 import io
 import json
@@ -89,18 +101,28 @@ from pathlib import Path
 import sqlite3
 import subprocess
 import sys
+import tempfile
 import tokenize
+from threading import Lock
 from types import ModuleType
 from typing import Any
 
 SCHEMA = "python-gonol.full-construct"
-VERSION = "1.0.0"
+VERSION = "3.0.0"
 
-UCNS_PUBLIC_GONOL_COMMIT = "62e08ee1cf3b5d7b6e48c927b1047509e6328b5c"
+UCNS_COMMIT = "ee8addc0af36f02b64b42cb355734cb72a126ea5"
+UCNS_PUBLIC_GONOL_COMMIT = UCNS_COMMIT
 UCNS_PUBLIC_GONOL_MODULE_SHA256 = (
     "2da287ce9691b494fc921d14684a3bf7e0633f3a579ea040e3b6ddbaf0d92f27"
 )
 PUBLIC_GONOL_SHA256 = "55d10c84529a4d7bc7714786357e977b68d9df2ac3f73d20e229580b552c2ef5"
+
+_NATIVE_SOURCES = {
+    "public_gonol": UCNS_PUBLIC_GONOL_MODULE_SHA256,
+    "scalar_bearing": "7d7ff1e1ddbd4997cdbee4f5f17a7c6fa4b8f3d55e288c97f700f610f32be7ac",
+    "unicode_gonol": "5360325a51418835f6a4a3c037253ed79b35b2820073cf080ccda9d52cff0c5c",
+}
+_NATIVE_LOAD_LOCK = Lock()
 
 _CONTROLS = {
     "\t": ("TAB", "CHARACTER TABULATION", "U+0009"),
@@ -109,10 +131,7 @@ _CONTROLS = {
     "\r": ("CR", "CARRIAGE RETURN", "U+000D"),
 }
 
-_HMMM = (
-    "deeper geometric functions and admission of arbitrary Unicode source "
-    "characters remain unresolved; preserved without invention"
-)
+_HMMM = "Python grammar relations and runtime equivalence remain open."
 
 
 class PythonGonolConstructionError(ValueError):
@@ -131,7 +150,6 @@ class ConstructResult:
     occurrence_count: int
     control_count: int
     newline_count: int
-    not_on_pinned_carrier: tuple[str, ...]
     tokenize_ok: bool
     ast_ok: bool
     preflight_storage_bytes: int
@@ -149,49 +167,54 @@ def _git(repo: Path, *arguments: str) -> str:
         raise PythonGonolConstructionError(f"UCNS checkout verification failed: {exc}") from exc
 
 
-def load_verified_public_gonol(ucns_source_root: str | Path) -> ModuleType:
-    """Load the pinned Public Gonol module without copying or extending it."""
+def producer_identity() -> dict:
+    return {"commit": UCNS_COMMIT, "module_sha256": dict(_NATIVE_SOURCES),
+            "public_gonol_sha256": PUBLIC_GONOL_SHA256, "scalar_encoding": "UTF-32BE"}
 
-    root = Path(ucns_source_root).resolve()
-    head = _git(root, "rev-parse", "HEAD")
-    try:
-        _git(root, "merge-base", "--is-ancestor", UCNS_PUBLIC_GONOL_COMMIT, head)
-    except PythonGonolConstructionError:
-        raise PythonGonolConstructionError(
-            "UCNS checkout does not contain the pinned Public Gonol authority "
-            f"{UCNS_PUBLIC_GONOL_COMMIT}"
-        ) from None
-    path = root / "src" / "ucns" / "public_gonol.py"
-    if not path.is_file():
-        raise PythonGonolConstructionError("UCNS public_gonol.py is missing")
-    working = path.read_bytes()
-    try:
-        committed = subprocess.check_output(
-            ["git", "-C", str(root), "show", "HEAD:src/ucns/public_gonol.py"],
-            stderr=subprocess.STDOUT,
-        )
-    except (subprocess.CalledProcessError, OSError) as exc:
-        raise PythonGonolConstructionError("cannot read committed UCNS Public Gonol bytes") from exc
-    if working != committed:
-        raise PythonGonolConstructionError("UCNS public_gonol.py has uncommitted changes")
-    if sha256(committed).hexdigest() != UCNS_PUBLIC_GONOL_MODULE_SHA256:
-        raise PythonGonolConstructionError("UCNS public_gonol.py module digest mismatch")
 
-    module = ModuleType("_python_gonol_verified_public_gonol")
-    module.__file__ = str(path)
-    previous = sys.modules.get(module.__name__)
-    sys.modules[module.__name__] = module
+@lru_cache(maxsize=1)
+def _load_modules(sources: tuple[tuple[str, bytes], ...]) -> ModuleType:
+    # Only the already-verified bytes can supply relative imports in this namespace.
+    package = ModuleType("_python_gonol_ucns_" + UCNS_COMMIT)
+    package.__path__ = []
+    sys.modules[package.__name__] = package
     try:
-        exec(compile(committed, str(path), "exec"), module.__dict__)
-    except Exception:
-        if previous is None:
-            sys.modules.pop(module.__name__, None)
-        else:
-            sys.modules[module.__name__] = previous
+        for name, source in sources:
+            module = ModuleType(f"{package.__name__}.{name}")
+            module.__package__ = package.__name__
+            module.__file__ = f"src/ucns/{name}.py"
+            sys.modules[module.__name__] = module
+            exec(compile(source, module.__file__, "exec"), module.__dict__)
+            setattr(package, name, module)
+    except BaseException:
+        for name, _ in sources:
+            sys.modules.pop(f"{package.__name__}.{name}", None)
+        sys.modules.pop(package.__name__, None)
         raise
-    if module.PUBLIC_GONOL_SHA256 != PUBLIC_GONOL_SHA256:
-        raise PythonGonolConstructionError("Public Gonol arrangement digest mismatch")
-    return module
+    return package
+
+
+def _verified_geometry(ucns_source_root: str | Path) -> ModuleType:
+    root = Path(ucns_source_root).resolve()
+    _git(root, "merge-base", "--is-ancestor", UCNS_COMMIT, "HEAD")
+    paths = {name: Path("src/ucns") / f"{name}.py" for name in _NATIVE_SOURCES}
+    _git(root, "diff", "--quiet", "HEAD", "--", *(str(path) for path in paths.values()))
+    sources = []
+    for name, path in paths.items():
+        try:
+            source = (root / path).read_bytes()
+        except OSError as exc:
+            raise PythonGonolConstructionError(f"missing UCNS source: {path}") from exc
+        if sha256(source).hexdigest() != _NATIVE_SOURCES[name]:
+            raise PythonGonolConstructionError(f"UCNS module digest mismatch: {path}")
+        sources.append((name, source))
+    with _NATIVE_LOAD_LOCK:
+        return _load_modules(tuple(sources))
+
+
+def load_verified_public_gonol(ucns_source_root: str | Path) -> ModuleType:
+    """Return the verified Public Gonol projection used by the constructor."""
+    return _verified_geometry(ucns_source_root).public_gonol
 
 
 _SCHEMA_SQL = """
@@ -204,17 +227,27 @@ CREATE TABLE meta (
     value TEXT NOT NULL
 ) WITHOUT ROWID;
 
+CREATE TABLE source_bytes (
+    id INTEGER PRIMARY KEY CHECK (id = 1),
+    data BLOB NOT NULL
+);
+
 CREATE TABLE characters (
     id INTEGER PRIMARY KEY,
     scalar TEXT NOT NULL UNIQUE,
-    public_position INTEGER NOT NULL
+    public_position INTEGER,
+    utf32_be BLOB NOT NULL CHECK(length(utf32_be) = 4),
+    utf8 BLOB NOT NULL,
+    turn_numerator INTEGER NOT NULL,
+    turn_denominator INTEGER NOT NULL,
+    glyph_receipt TEXT NOT NULL
 );
 
 CREATE TABLE occurrences (
     id INTEGER PRIMARY KEY,
     ordinal INTEGER NOT NULL UNIQUE,
     scalar TEXT NOT NULL,
-    character_id INTEGER REFERENCES characters(id),
+    character_id INTEGER NOT NULL REFERENCES characters(id),
     control_kind TEXT,
     address TEXT NOT NULL,
     start INTEGER NOT NULL,
@@ -252,6 +285,27 @@ def _canonical_bytes(value: Any) -> bytes:
     return json.dumps(value, sort_keys=True, separators=(",", ":")).encode("utf-8")
 
 
+def _logical_sha256(connection: sqlite3.Connection) -> str:
+    """Bind every constitutive row and metadata field except the self-receipt."""
+    tables = ("characters", "occurrences", "control_identities", "controls", "newlines", "source_bytes", "meta")
+    actual = {row[0] for row in connection.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+    if actual != set(tables):
+        raise PythonGonolConstructionError("construct table inventory mismatch")
+    digest = sha256()
+    schema = connection.execute("SELECT type, name, tbl_name, sql FROM sqlite_master ORDER BY type, name").fetchall()
+    digest.update(_canonical_bytes(schema))
+    for table in tables:
+        digest.update(_canonical_bytes(table))
+        query = ("SELECT * FROM meta WHERE key != 'receipt_sha256' ORDER BY key"
+                 if table == "meta" else f"SELECT * FROM {table} ORDER BY id")
+        cursor = connection.execute(query)
+        digest.update(_canonical_bytes([column[0] for column in cursor.description]))
+        for row in cursor:
+            digest.update(_canonical_bytes([{"bytes_hex": value.hex()} if isinstance(value, bytes) else value for value in row]))
+            digest.update(b"\n")
+    return digest.hexdigest()
+
+
 def _detect_encoding(source_bytes: bytes) -> str:
     try:
         encoding, _ = tokenize.detect_encoding(io.BytesIO(source_bytes).readline)
@@ -264,15 +318,22 @@ def _address(source_id: str, ordinal: int) -> str:
     return f"{source_id}#character:{ordinal}"
 
 
-def _line_column(source: str, index: int) -> tuple[int, int]:
-    line = source.count("\n", 0, index) + 1
-    previous = source.rfind("\n", 0, index)
-    column = index - previous
-    return line, column
+def _source_positions(source: str):
+    """Yield one-based physical addresses; CRLF retains both source scalars."""
+
+    line = column = 1
+    for index, scalar in enumerate(source):
+        yield line, column
+        if scalar == "\n" or (
+            scalar == "\r" and source[index + 1:index + 2] != "\n"
+        ):
+            line += 1
+            column = 1
+        else:
+            column += 1
 
 
 def _control_identity_rows(
-    public_gonol: ModuleType,
     character_id_by_scalar: dict[str, int],
 ) -> list[tuple[str, str, str, str]]:
     rows: list[tuple[str, str, str, str]] = []
@@ -281,7 +342,7 @@ def _control_identity_rows(
         for scalar in name_text + code_point_text:
             if scalar not in character_id_by_scalar:
                 raise PythonGonolConstructionError(
-                    f"control participant scalar is not on the pinned carrier: {scalar!r}"
+                    f"missing Unicode control participant: {scalar!r}"
                 )
             member_ids.append(character_id_by_scalar[scalar])
         rows.append((kind, name_text, code_point_text, json.dumps(member_ids, separators=(",", ":"))))
@@ -300,11 +361,13 @@ def _build_control_rows(
     index = 0
     length = len(source)
     space_character_id = character_id_by_scalar.get(" ")
+    expanded_column = 0
 
     while index < length:
         scalar = source[index]
         control = _CONTROLS.get(scalar)
         if control is None:
+            expanded_column += 1
             index += 1
             continue
         kind, _name, _code_point = control
@@ -312,7 +375,8 @@ def _build_control_rows(
         column = occurrence["column"]
 
         if kind == "TAB":
-            spaces = 8 - (column % 8)
+            spaces = 8 - (expanded_column % 8)
+            expanded_column += spaces
             control_rows.append(
                 (
                     occurrence["id"],
@@ -324,6 +388,7 @@ def _build_control_rows(
             )
             index += 1
         elif kind == "CR":
+            expanded_column = 0
             control_rows.append(
                 (
                     occurrence["id"],
@@ -352,6 +417,7 @@ def _build_control_rows(
                 newline_rows.append(("CR", json.dumps([occurrence["id"]], separators=(",", ":"))))
                 index += 1
         else:
+            expanded_column = expanded_column + 1 if kind == "FF" else 0
             control_rows.append(
                 (
                     occurrence["id"],
@@ -380,7 +446,14 @@ def build_construct(
 ) -> ConstructResult:
     """Build the compact SQLite construct and manifest."""
 
-    public_gonol = load_verified_public_gonol(ucns_source_root)
+    try:
+        if source_bytes.decode(encoding) != source:
+            raise PythonGonolConstructionError("source bytes and decoded source disagree")
+    except (UnicodeDecodeError, LookupError) as exc:
+        raise PythonGonolConstructionError("source bytes do not match the declared encoding") from exc
+
+    native = _verified_geometry(ucns_source_root)
+    public_gonol = native.public_gonol
     carrier = public_gonol.PUBLIC_GONOL_157
     carrier_set = set(carrier)
     position_by_scalar = public_gonol.public_gonol_position
@@ -390,15 +463,29 @@ def build_construct(
     if public_gonol.public_gonol_sha256() != PUBLIC_GONOL_SHA256:
         raise PythonGonolConstructionError("pinned Public Gonol arrangement digest mismatch")
 
+    try:
+        decoded_source_sha256 = sha256(source.encode("utf-8")).hexdigest()
+    except UnicodeEncodeError as exc:
+        raise PythonGonolConstructionError("decoded source contains a surrogate") from exc
+
     state_dir.mkdir(parents=True, exist_ok=True)
+    if overwrite:
+        # Stage both files first. Interrupted publication is rejected by replay
+        # and can be retried from the original source.
+        with tempfile.TemporaryDirectory(prefix=".python-gonol-", dir=state_dir) as tmp:
+            stage = Path(tmp)
+            result = build_construct(source, source_bytes=source_bytes, source_id=source_id,
+                                     encoding=encoding, state_dir=stage, ucns_source_root=ucns_source_root)
+            (stage / "construct.db").replace(state_dir / "construct.db")
+            (stage / "manifest.json").replace(state_dir / "manifest.json")
+            return result
     db_path = state_dir / "construct.db"
     manifest_path = state_dir / "manifest.json"
-    if not overwrite and (db_path.exists() or manifest_path.exists()):
+    if db_path.exists() or manifest_path.exists():
         raise PythonGonolConstructionError(
             f"construct output already exists in {state_dir}; pass --overwrite"
         )
 
-    decoded_source_sha256 = sha256(source.encode("utf-8")).hexdigest()
     source_bytes_sha256 = sha256(source_bytes).hexdigest()
 
     # Token/AST verification only; failures never block construction.
@@ -416,29 +503,21 @@ def build_construct(
         ast_ok = False
 
     occurrences: list[dict[str, Any]] = []
-    characters: list[tuple[int, str, int]] = []
-    character_id_by_scalar: dict[str, int] = {}
-    for character_id, scalar in enumerate(carrier, start=1):
-        character_id_by_scalar[scalar] = character_id
-        characters.append((character_id, scalar, position_by_scalar(scalar)))
-    not_on_carrier: list[str] = []
-    seen_not_on_carrier: set[str] = set()
+    characters = []
+    character_id_by_scalar = {}
+    for scalar in sorted(carrier_set.union(source)):
+        glyph = native.unicode_gonol.unicode_glyph_gonol(scalar)
+        character_id_by_scalar[scalar] = glyph.scalar
+        characters.append((glyph.scalar, scalar, position_by_scalar(scalar), glyph.utf32_be,
+                           glyph.utf8, glyph.turn.numerator, glyph.turn.denominator, glyph.receipt))
 
-    for ordinal, scalar in enumerate(source):
-        if scalar in carrier_set:
-            character_id = character_id_by_scalar[scalar]
-        else:
-            character_id = None
-            if scalar not in _CONTROLS and scalar not in seen_not_on_carrier:
-                seen_not_on_carrier.add(scalar)
-                not_on_carrier.append(scalar)
-        line, column = _line_column(source, ordinal)
+    for ordinal, (scalar, (line, column)) in enumerate(zip(source, _source_positions(source))):
         occurrences.append(
             {
                 "id": ordinal + 1,
                 "ordinal": ordinal,
                 "scalar": scalar,
-                "character_id": character_id,
+                "character_id": character_id_by_scalar[scalar],
                 "control_kind": _CONTROLS.get(scalar, (None,))[0],
                 "address": _address(source_id, ordinal),
                 "start": ordinal,
@@ -448,13 +527,14 @@ def build_construct(
             }
         )
 
-    control_identity_rows = _control_identity_rows(public_gonol, character_id_by_scalar)
+    control_identity_rows = _control_identity_rows(character_id_by_scalar)
 
     connection = sqlite3.connect(db_path)
     try:
         connection.executescript(_SCHEMA_SQL)
+        connection.execute("INSERT INTO source_bytes(id, data) VALUES(1, ?)", (source_bytes,))
         connection.executemany(
-            "INSERT INTO characters(id, scalar, public_position) VALUES(?, ?, ?)",
+            "INSERT INTO characters(id, scalar, public_position, utf32_be, utf8, turn_numerator, turn_denominator, glyph_receipt) VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
             characters,
         )
         connection.executemany(
@@ -510,18 +590,13 @@ def build_construct(
             "encoding": encoding,
             "source_bytes_sha256": source_bytes_sha256,
             "decoded_source_sha256": decoded_source_sha256,
-            "ucns": {
-                "commit": UCNS_PUBLIC_GONOL_COMMIT,
-                "public_gonol_module_sha256": UCNS_PUBLIC_GONOL_MODULE_SHA256,
-                "public_gonol_sha256": PUBLIC_GONOL_SHA256,
-            },
+            "ucns": producer_identity(),
             "counts": {
                 "characters": len(characters),
                 "occurrences": len(occurrences),
                 "controls": control_count,
                 "newlines": newline_count,
             },
-            "not_on_pinned_carrier": sorted(not_on_carrier),
             "verification": {"tokenize_ok": tokenize_ok, "ast_ok": ast_ok},
             "preflight_storage_bytes": 65536 + len(source) * 256,
             "hmmm": _HMMM,
@@ -543,6 +618,11 @@ def build_construct(
             ("receipt_sha256", receipt_sha256),
         ):
             connection.execute("INSERT INTO meta(key, value) VALUES(?, ?)", (key, value))
+        payload.pop("receipt_sha256")
+        payload["construct_sha256"] = _logical_sha256(connection)
+        receipt_sha256 = sha256(_canonical_bytes(payload)).hexdigest()
+        payload["receipt_sha256"] = receipt_sha256
+        connection.execute("UPDATE meta SET value=? WHERE key='receipt_sha256'", (receipt_sha256,))
         connection.commit()
     except Exception:
         connection.close()
@@ -566,7 +646,6 @@ def build_construct(
         occurrence_count=len(occurrences),
         control_count=control_count,
         newline_count=newline_count,
-        not_on_pinned_carrier=tuple(sorted(not_on_carrier)),
         tokenize_ok=tokenize_ok,
         ast_ok=ast_ok,
         preflight_storage_bytes=payload["preflight_storage_bytes"],
@@ -584,9 +663,13 @@ def affixiate_python_source(
 ) -> ConstructResult:
     """Construct an already-decoded Python 3.12 source string."""
 
+    try:
+        encoded = source.encode("utf-8")
+    except UnicodeEncodeError as exc:
+        raise PythonGonolConstructionError("source contains a surrogate") from exc
     return build_construct(
         source,
-        source_bytes=source.encode("utf-8"),
+        source_bytes=encoded,
         source_id=source_id,
         encoding="utf-8",
         state_dir=state_dir,
@@ -627,8 +710,9 @@ def reconstruct_source(state_dir: Path) -> str:
     db_path = state_dir / "construct.db"
     if not db_path.is_file():
         raise PythonGonolConstructionError(f"construct database does not exist: {db_path}")
-    connection = sqlite3.connect(f"file:{db_path}?mode=ro", uri=True)
+    connection = sqlite3.connect(db_path.resolve().as_uri() + "?mode=ro", uri=True)
     try:
+        connection.execute("PRAGMA temp_store=MEMORY")
         rows = connection.execute(
             """
             SELECT o.scalar
@@ -643,132 +727,78 @@ def reconstruct_source(state_dir: Path) -> str:
     return "".join(row[0] for row in rows)
 
 
+def _unique_json_object(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise PythonGonolConstructionError("duplicate manifest key")
+        result[key] = value
+    return result
+
+
 def verify_construct(
     state_dir: Path,
     ucns_source_root: str | Path,
 ) -> str:
-    """Replay the construct and fail closed on any drift or tamper."""
+    """Rebuild from preserved bytes in a temporary directory and compare all rows.
 
-    public_gonol = load_verified_public_gonol(ucns_source_root)
-    carrier = public_gonol.PUBLIC_GONOL_157
-    carrier_set = set(carrier)
-    position_by_scalar = public_gonol.public_gonol_position
-
+    The input construct stays read-only. Temporary replay output is removed on
+    success or failure. Earlier schemas require rebuilding from original source bytes.
+    """
+    state_dir = Path(state_dir)
     db_path = state_dir / "construct.db"
     manifest_path = state_dir / "manifest.json"
     if not db_path.is_file() or not manifest_path.is_file():
         raise PythonGonolConstructionError("construct database or manifest is missing")
     try:
-        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"), object_pairs_hook=_unique_json_object)
     except (OSError, json.JSONDecodeError) as exc:
         raise PythonGonolConstructionError("construct manifest is not readable JSON") from exc
-    if manifest.get("schema") != SCHEMA or manifest.get("version") != VERSION:
+    if not isinstance(manifest, dict) or manifest.get("schema") != SCHEMA or manifest.get("version") != VERSION:
         raise PythonGonolConstructionError("construct manifest schema or version mismatch")
-
-    connection = sqlite3.connect(f"file:{db_path}?mode=ro", uri=True)
+    connection = sqlite3.connect(db_path.resolve().as_uri() + "?mode=ro", uri=True)
     try:
-        meta = {key: value for key, value in connection.execute("SELECT key, value FROM meta")}
-        characters = {
-            scalar: (character_id, public_position)
-            for character_id, scalar, public_position in connection.execute(
-                "SELECT id, scalar, public_position FROM characters"
-            )
-        }
-        occurrences = list(
-            connection.execute(
-                "SELECT id, ordinal, scalar, character_id, control_kind, address, start, end, line, column "
-                "FROM occurrences ORDER BY ordinal"
-            )
-        )
-        stored_controls = list(
-            connection.execute(
-                "SELECT occurrence_id, control_identity_id, start_column, spaces_to_next_stop, space_character_id "
-                "FROM controls ORDER BY id"
-            )
-        )
-        stored_newlines = list(
-            connection.execute("SELECT kind, occurrence_ids FROM newlines ORDER BY id")
-        )
+        connection.execute("PRAGMA temp_store=MEMORY")
+        if connection.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
+            raise PythonGonolConstructionError("SQLite integrity failure")
+        if connection.execute("PRAGMA foreign_key_check").fetchone() is not None:
+            raise PythonGonolConstructionError("construct foreign-key failure")
+        observed = _logical_sha256(connection)
+        if observed != manifest.get("construct_sha256"):
+            raise PythonGonolConstructionError("construct content digest mismatch")
+        source_rows = list(connection.execute("SELECT data FROM source_bytes ORDER BY id"))
+        if len(source_rows) != 1 or not isinstance(source_rows[0][0], bytes):
+            raise PythonGonolConstructionError("source byte inventory mismatch")
+        raw = source_rows[0][0]
+        recorded_receipt = connection.execute("SELECT value FROM meta WHERE key='receipt_sha256'").fetchone()
+        if recorded_receipt != (manifest.get("receipt_sha256"),):
+            raise PythonGonolConstructionError("stored receipt digest mismatch")
     except sqlite3.Error as exc:
         raise PythonGonolConstructionError(f"construct database is not readable: {exc}") from exc
     finally:
         connection.close()
-
-    if meta.get("public_gonol_sha256") != PUBLIC_GONOL_SHA256:
-        raise PythonGonolConstructionError("stored Public Gonol digest mismatch")
-
-    source = "".join(row[2] for row in occurrences)
-    decoded_expected = sha256(source.encode("utf-8")).hexdigest()
-    if decoded_expected != meta.get("decoded_source_sha256"):
-        raise PythonGonolConstructionError("decoded source digest mismatch")
-
-    for index, row in enumerate(occurrences):
-        (occurrence_id, ordinal, scalar, character_id, control_kind, address, start, end, line, column) = row
-        if occurrence_id != ordinal + 1:
-            raise PythonGonolConstructionError("occurrence identity or order drift")
-        if address != _address(manifest["source_id"], ordinal):
-            raise PythonGonolConstructionError("occurrence address drift")
-        if start != ordinal or end != ordinal + 1:
-            raise PythonGonolConstructionError("occurrence span drift")
-        expected_line, expected_column = _line_column(source, ordinal)
-        if line != expected_line or column != expected_column:
-            raise PythonGonolConstructionError("occurrence line/column drift")
-        if scalar in carrier_set:
-            expected_position = position_by_scalar(scalar)
-            expected_character = characters.get(scalar)
-            if expected_character is None or expected_character[0] != character_id or expected_character[1] != expected_position:
-                raise PythonGonolConstructionError("carrier glyph identity or position drift")
-        else:
-            expected_control_kind = _CONTROLS.get(scalar, (None,))[0]
-            if character_id is not None or control_kind != expected_control_kind:
-                raise PythonGonolConstructionError("off-carrier occurrence identity drift")
-            if expected_control_kind is None:
-                continue
-
-    expected_controls, expected_newlines = _build_control_rows(
-        source,
-        [
-            {
-                "id": row[0],
-                "column": row[9],
-            }
-            for row in occurrences
-        ],
-        {scalar: character_id for scalar, (character_id, _position) in characters.items()},
-        {row[1]: row[0] for row in connection_execute_control_identities(state_dir)},
-    )
-    if expected_controls != [
-        (occurrence_id, control_identity_id, start_column, spaces, space_character_id)
-        for occurrence_id, control_identity_id, start_column, spaces, space_character_id in stored_controls
-    ]:
-        raise PythonGonolConstructionError("control construction drift")
-    if expected_newlines != [(kind, ids) for kind, ids in stored_newlines]:
-        raise PythonGonolConstructionError("logical newline drift")
-
-    expected_payload = dict(manifest)
-    expected_payload.pop("receipt_sha256", None)
-    expected_receipt = sha256(_canonical_bytes(expected_payload)).hexdigest()
-    if expected_receipt != manifest.get("receipt_sha256"):
-        raise PythonGonolConstructionError("receipt digest mismatch")
-    if meta.get("receipt_sha256") != manifest.get("receipt_sha256"):
-        raise PythonGonolConstructionError("stored receipt digest mismatch")
-
-    return manifest["receipt_sha256"]
-
-
-def connection_execute_control_identities(state_dir: Path) -> list[tuple[int, int]]:
-    """Return ``(id, kind)`` pairs for control identities."""
-
-    connection = sqlite3.connect(f"file:{state_dir / 'construct.db'}?mode=ro", uri=True)
     try:
-        return [(row[0], row[1]) for row in connection.execute("SELECT id, kind FROM control_identities")]
-    finally:
-        connection.close()
+        encoding = manifest["encoding"]
+        source_id = manifest["source_id"]
+        if not isinstance(encoding, str) or not isinstance(source_id, str):
+            raise PythonGonolConstructionError("source provenance types are invalid")
+        source = raw.decode(encoding)
+    except (KeyError, UnicodeDecodeError, LookupError) as exc:
+        raise PythonGonolConstructionError("source encoding/provenance mismatch") from exc
+    with tempfile.TemporaryDirectory(prefix="python-gonol-replay-") as temporary:
+        replay_dir = Path(temporary)
+        build_construct(source, source_bytes=raw, source_id=source_id, encoding=encoding,
+                        state_dir=replay_dir, ucns_source_root=ucns_source_root)
+        expected = json.loads((replay_dir / "manifest.json").read_text(encoding="utf-8"))
+    if expected != manifest:
+        raise PythonGonolConstructionError("independent reconstruction differs from construct or manifest")
+    return manifest["receipt_sha256"]
 
 
 __all__ = [
     "SCHEMA",
     "VERSION",
+    "UCNS_COMMIT",
     "UCNS_PUBLIC_GONOL_COMMIT",
     "PUBLIC_GONOL_SHA256",
     "PythonGonolConstructionError",
@@ -780,3 +810,4 @@ __all__ = [
     "reconstruct_source",
     "load_verified_public_gonol",
 ]
+# ratios: loc_comments=613:108 imports_exports=16:10 calls_definitions=165:20

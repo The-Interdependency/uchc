@@ -236,6 +236,12 @@ still require the separate full-corpus workflow and the lifecycle gates below.
 
 ## Python
 
+Candidate 0.2.0a4 extracts the schema 3 Python constructor and its regression
+suite from Stack `3dd568e4b40561c11146df789db972a4e789582e`. Its [profile](../programming/python/README.md)
+uses original-byte replay and full Unicode glyph admission. The package
+inventory records the exact source revision and digest for each migrated file.
+
+
 The pinned Stack Python implementation remains the active source. Migration must
 preserve exact decoded source occurrences, shared glyph identities, order,
 multiplicity, source addresses, control constructions, logical-newline distinctions,

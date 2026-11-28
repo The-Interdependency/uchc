@@ -1,3 +1,4 @@
+# ratios: loc_comments=52:26 imports_exports=5:1 calls_definitions=19:2
 """Command line entry point for Python Gonol Construction.
 
 Usage guidance::
@@ -82,11 +83,11 @@ def main(argv: list[str] | None = None) -> int:
     print(
         f"constructed {result.source_id} receipt={result.receipt_sha256} "
         f"occurrences={result.occurrence_count} characters={result.character_count} "
-        f"controls={result.control_count} newlines={result.newline_count} "
-        f"not_on_carrier={list(result.not_on_pinned_carrier)}"
+        f"controls={result.control_count} newlines={result.newline_count}"
     )
     return 0
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
+# ratios: loc_comments=52:26 imports_exports=5:1 calls_definitions=19:2

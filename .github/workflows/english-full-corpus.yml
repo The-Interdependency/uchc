@@ -36,6 +36,7 @@ jobs:
           fetch_source globalwordnet/english-wordnet oewn dc343f2683279ecbb13fab4e2fd778d7b162d287
           fetch_source The-Interdependency/edcm edcm-metric 0873c105799681ea1f7ccb3e619d1f7aebbd85e0
           fetch_source The-Interdependency/ucns ucns 380ce7b7ec6b8b45ffa53ea4210070f0b3129747
+          fetch_source The-Interdependency/ucns ucns-python ee8addc0af36f02b64b42cb355734cb72a126ea5
           git -C ucns fetch --quiet origin 4f863ad37096b7baab8f62820ad5cb937b62a3a7
           git -C ucns worktree add --detach ../ucns-build 4f863ad37096b7baab8f62820ad5cb937b62a3a7
           git -C ucns fetch --quiet origin d7c6f51304ed6c32d48badf63132bea6de8af497
@@ -55,7 +56,7 @@ jobs:
           export REQUIRE_METRIC_ORIGIN_SOURCES=1
           .venv/bin/python -m pytest -q source/human/english/tests --ignore=source/human/english/tests/test_language_relational_bridge.py -k 'not full_construct_origins' --junitxml=evidence/english.xml
           (cd source/human/english && ../../../.venv/bin/python -m pytest -q tests/test_language_relational_bridge.py --junitxml=../../../evidence/relational.xml)
-          PYTHONPATH="$PWD/source/programming/python" .venv/bin/python -m pytest -q source/programming/python/tests --junitxml=evidence/python.xml
+          PYTHON_GONOL_UCNS_ROOT="$PWD/ucns-python" PYTHONPATH="$PWD/source/programming/python" .venv/bin/python -m pytest -q source/programming/python/tests --junitxml=evidence/python.xml
           PYTHONPATH="$PWD/source/shared/polyglot" .venv/bin/python -m pytest -q source/shared/polyglot/tests --junitxml=evidence/polyglot.xml
           for file in source/human/english/english_gonol/inference_input.py source/human/english/tests/test_inference_input.py source/tools/verify_inference_corpus.py; do
             .venv/bin/python doctrine/ratios/ratios_check.py "$file"
@@ -74,7 +75,7 @@ jobs:
           cp source/human/english/tests/test_structural_profile.py isolated-tests/test_structural_profile.py
           cp source/programming/python/tests/test_construct.py isolated-tests/test_python.py
           cp source/shared/polyglot/tests/test_polyglot.py isolated-tests/test_polyglot.py
-          UCNS_SOURCE_ROOT="$PWD/ucns" .clean/bin/python -I -m pytest -q isolated-tests --junitxml=evidence/installed.xml
+          PYTHON_GONOL_UCNS_ROOT="$PWD/ucns-python" UCNS_SOURCE_ROOT="$PWD/ucns" .clean/bin/python -I -m pytest -q isolated-tests --junitxml=evidence/installed.xml
           .clean/bin/python -I - <<'PY'
           from pathlib import Path
           from importlib.metadata import version

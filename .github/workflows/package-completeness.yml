@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v7.0.1
         with:
           repository: The-Interdependency/stack
-          ref: 87025797abad4eba7bbcf7faf98275dab2ca8351
+          ref: 3dd568e4b40561c11146df789db972a4e789582e
           path: forge
           fetch-depth: 0
           persist-credentials: false
@@ -29,6 +29,12 @@ jobs:
           ref: 9cc00771e54336d58ee377faeec87a3a33dbd4bf
           path: ucns
           fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/checkout@v7.0.1
+        with:
+          repository: The-Interdependency/ucns
+          ref: ee8addc0af36f02b64b42cb355734cb72a126ea5
+          path: ucns-python
           persist-credentials: false
       - name: Verify complete extraction and build both distributions
         run: |
@@ -45,6 +51,7 @@ jobs:
         run: |
           set -euo pipefail
           export UCNS_SOURCE_ROOT="$PWD/ucns"
+          export PYTHON_GONOL_UCNS_ROOT="$PWD/ucns-python"
           mkdir isolated-tests
           cp source/shared/polyglot/tests/test_polyglot.py isolated-tests/
           cp source/human/english/tests/test_hilbert_inference.py isolated-tests/

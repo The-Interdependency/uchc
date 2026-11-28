@@ -6,45 +6,11 @@ Construction to canon.
 
 ## Construction contract
 
-Python source is constructed with the English method:
-
-```text
-source bytes
-  -> exact decoded source
-  -> one shared identity per pinned Public Gonol glyph
-  -> ordered occurrence references (address, line, column, provenance)
-  -> control constructions: TAB, LF, FF, CR
-  -> logical newlines: LF, CR, CR+LF
-```
-
-A parent may reference only an already-closed child. Closing a larger gonol
-never erases the child's identity, order, multiplicity, source span,
-relation, or provenance.
-
-## Carrier boundary
-
-UCNS owns geometry and the exact 157-position Public Gonol carrier. The
-builder consumes the pinned carrier (`ucns@62e08ee`) and digest; it never
-copies, extends, or reinterprets it. Every pinned glyph has one shared
-character identity.
-
-The four control scalars are constructed from the carrier glyphs of their
-Unicode names and code points:
-
-```text
-CHARACTER TABULATION + U+0009 -> TAB
-LINE FEED          + U+000A -> LF
-FORM FEED          + U+000C -> FF
-CARRIAGE RETURN    + U+000D -> CR
-```
-
-Names and code points are constitutive participants, not metadata. TAB
-affixiates with enough SPACE gonols to reach the next eight-column stop. CR,
-LF, and CR+LF construct logical newlines while preserving their exact source
-constituents and remaining source-distinct.
-
-Any other off-carrier source scalar is recorded as hmmm with its exact
-address and is never assigned an invented Public Gonol position.
+Source bytes are decoded using the Python file encoding. Every scalar has a
+native UCNS glyph, four UTF-32BE bytes and an exact bearing. Source occurrences
+retain order, multiplicity and provenance. The Public Gonol position is an
+optional projection. Four controls also construct named relations and physical
+line endings retain their original constituents. See the [Python profile](../README.md).
 
 ## Verification boundary
 
@@ -58,7 +24,7 @@ for source-built participants.
 One compact SQLite construct plus a small manifest:
 
 ```text
-construct.db   characters, occurrences, control_identities, controls, newlines, meta
+construct.db   characters, occurrences, control_identities, controls, newlines, source_bytes, meta
 manifest.json  schema, source digests, counts, carrier pin, receipt_sha256, hmmm
 ```
 
@@ -66,22 +32,11 @@ No giant JSON receipt.
 
 ## Replay
 
-Replay verifies, at minimum:
-
-1. pinned Public Gonol digest and module digest;
-2. exact source bytes and decoded-source digests;
-3. contiguous ordered occurrence coverage with exact address, span, line,
-   and column;
-4. every carrier glyph occurrence references its single shared identity and
-   exact pinned position;
-5. control constructions match the recomputed TAB/LF/FF/CR rows exactly;
-6. logical newlines match the recomputed LF/CR/CRLF rows exactly;
-7. off-carrier non-control scalars carry no invented identity or position;
-8. the canonical receipt digest matches.
-
-Replay proves this construction is internally reproducible. It does not
-establish semantic quality, runtime equivalence, measurement validity, or
-canon.
+Schema 3 binds every character, its native representations and receipt, every
+occurrence and all control, newline and provenance records. Verification rebuilds
+the complete artifact from the retained original source bytes and rejects a
+difference even if an altered database carries newly computed outer digests.
+Historical profiles replay with their recorded producers.
 
 ## Failure boundary
 
@@ -90,8 +45,8 @@ are recorded as verification flags and never block source construction.
 
 ## Geometry boundary
 
-UCNS owns geometry. The builder observes only the pinned Public Gonol
-positions and records deeper geometric function operations as hmmm.
+UCNS owns glyph identity, the SPACE-relative bearing and the Public Gonol projection.
+Higher-scale Python relations require their own construction evidence.
 
 ## Usage guidance
 
@@ -104,9 +59,5 @@ python -m python_gonol --verify construct --ucns-source-root ~/src/ucns
 
 ## hmmm
 
-- deeper geometric functions of Public Gonol positions remain unresolved;
-- admission of arbitrary Unicode source characters remains unresolved and is
-  preserved without invention;
-- full CPython 3.12 grammar/test-corpus parity replay;
-- language profiles after Python 3.12;
-- large-source streaming/checkpoint policy.
+Python grammar and runtime equivalence, language profiles after Python 3.12,
+and a large-source streaming policy remain open.

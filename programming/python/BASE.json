@@ -8,18 +8,18 @@
   },
   "project": "python-gonol",
   "python_language_profile": {
-    "commit": "2d7d957248038635334b62b27f650220213d8e5d",
+    "commit": "2abcf904b8dac8c999d2b3aac76681abb333798a",
     "profile": "Python 3.12 file input",
     "repository": "python/cpython",
     "tag": "v3.12.14"
   },
   "schema": "the-interdependency.stack-research-base",
-  "source_commit": "d24b05bfbf6a893f7acf40c571dd9be280d37f2c",
+  "source_commit": "3dd568e4b40561c11146df789db972a4e789582e",
   "source_repository": "The-Interdependency/stack",
   "standing": "stack-local-research",
   "ucns_prerequisite": {
-    "commit": "62e08ee1cf3b5d7b6e48c927b1047509e6328b5c",
-    "relation": "UCNS owns geometry and Public Gonol positions; Python Gonol owns no UCNS operation",
+    "commit": "ee8addc0af36f02b64b42cb355734cb72a126ea5",
+    "relation": "UCNS supplies the native Unicode glyph, SPACE-relative bearing and optional Public Gonol position",
     "repository": "The-Interdependency/ucns"
   },
   "version": "1.0.0"

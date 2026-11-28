@@ -1,7 +1,8 @@
+# ratios: loc_comments=30:27 imports_exports=1:1 calls_definitions=0:0
 """Public surface for stack-local Python Gonol Construction.
 
-The builder consumes UCNS's exact 157-position Public Gonol carrier, gives
-every admitted glyph one shared identity, keeps every source occurrence
+The builder consumes UCNS Unicode glyphs and optional Public Gonol positions, gives
+every decoded scalar one shared identity, keeps every source occurrence
 addressable in exact order, materializes one compact SQLite construct plus a
 small manifest, and replays logically. Tokens and AST nodes verify the
 construction; they never substitute for it.
@@ -25,12 +26,13 @@ construction; they never substitute for it.
 #   rollback: remove package exports with the workspace
 #   requires: python_gonol_construct
 #   since: 2026-09-15
-#   unresolved: deeper geometric functions and arbitrary Unicode admission remain hmmm
+#   unresolved: Python grammar relations and runtime equivalence remain open
 # === END MODULE_BUILD ===
 
 from .construct import (
     PUBLIC_GONOL_SHA256,
     SCHEMA,
+    UCNS_COMMIT,
     UCNS_PUBLIC_GONOL_COMMIT,
     VERSION,
     ConstructResult,
@@ -46,6 +48,7 @@ from .construct import (
 __all__ = [
     "PUBLIC_GONOL_SHA256",
     "SCHEMA",
+    "UCNS_COMMIT",
     "UCNS_PUBLIC_GONOL_COMMIT",
     "VERSION",
     "ConstructResult",
@@ -57,3 +60,4 @@ __all__ = [
     "reconstruct_source",
     "verify_construct",
 ]
+# ratios: loc_comments=30:27 imports_exports=1:1 calls_definitions=0:0
