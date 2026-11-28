@@ -4,6 +4,37 @@ Use [ordinal radius-halving](docs/halving.md) to construct words from Unicode
 scalar bearings and stack the completed words at the next scale. Stack owns the
 separate 16 b rad representation experiment.
 
+## English numerology gonols
+
+`english_gonol.numerology.Numerology` constructs one gonol per integer, glyph,
+triangle or star on the 27-bearing English wheel. Integers retain their full
+value at bearing `n % 27`. The recorded digits of 27 are `[1, 0]`, at
+bearing zero. The front reads SPACE and a–z clockwise from the top.
+The back capitalizes each glyph at the same bearing, including SPACE,
+whose capital is the digit `0`.
+
+A star is one equidistant field. At parent radius `R`, all its letters sit at
+`R/2`, and the intrinsic distance between every two distinct letters is
+`R/2`. Circular bearings show angular order. Straight chords in that
+drawing have lengths determined by the angular gaps. The directed walk
+sets the edge order, and its closing edge returns to the first vertex.
+
+| Figure | Bearing order | Radius and distinct-pair distance |
+| --- | --- | --- |
+| Each of nine triangles | Start at the group number modulo 9. Advance 9 modulo 27. | `R` for all 3 |
+| Each of three nine-point stars | Start at 0, 1 or 2. Advance 12 modulo 27. | `R/2` for all 9 |
+| The 27-point star | Start at 0. Advance 13 modulo 27. | `R/2` for all 27 |
+
+For example, `wheel.star(9, 1).distance("a", "p")` returns `R/2`.
+To construct an explicit sequence of threes, `wheel.letter_trios("ajsbktclu")`
+places **a j s** at `R`, **b k t** at `R/2`, and **c l u** at `R/4`.
+SPACE and its capital occupy a slot whenever present. Each figure carries
+its letter gonols, exact rays and directed endpoint bytes.
+`wheel.replay(record)` reconstructs them at the same frame radius.
+The profile uses the UCNS revision pinned by
+`.[halving]`. After installing that extra, inspect a figure with
+`python -m english_gonol.numerology --radius 1 star 9 --family 1`.
+
 ## Historical recursive attachment profile
 
 Start with [recursive-stack.md](docs/recursive-stack.md) and the
