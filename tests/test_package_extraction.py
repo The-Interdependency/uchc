@@ -1,4 +1,4 @@
-# ratios: loc_comments=62:16 imports_exports=6:3 calls_definitions=31:4
+# ratios: loc_comments=88:16 imports_exports=6:4 calls_definitions=50:5
 # === CHECKS ===
 # id: scoped_package_extraction_check
 #   proves: uchc_package_extraction_complete, uchc_package_extraction_no_authority_transfer
@@ -85,4 +85,32 @@ def test_override_cannot_hide_wrong_source_or_target_bytes(package):
     (root/record['files'][0]['target']).write_text('forged = True\n')
     with pytest.raises(ValueError,match='extracted digest mismatch'):
         VERIFY(forge,root)
-# ratios: loc_comments=62:16 imports_exports=6:3 calls_definitions=31:4
+
+def test_cpp_runtime_must_exist_at_the_new_domain_pin(package):
+    forge, root, manifest, record, increment = package
+    record.update(version="1.2.0", cpp_source_commit=increment)
+    manifest.write_text(json.dumps(record))
+    with pytest.raises(ValueError, match=r"C\+\+ runtime"):
+        VERIFY(forge, root)
+
+    module = forge/"research/cpp-gonol/cpp_gonol/new.py"
+    module.parent.mkdir(parents=True)
+    module.write_text("cpp = True\n")
+    subprocess.run(["git", "-C", str(forge), "add", "."], check=True)
+    subprocess.run(["git", "-C", str(forge), "-c", "user.name=Fixture", "-c",
+                    "user.email=fixture@example.invalid", "commit", "-qm", "new language"], check=True)
+    record["cpp_source_commit"] = subprocess.check_output(
+        ["git", "-C", str(forge), "rev-parse", "HEAD"], text=True).strip()
+    manifest.write_text(json.dumps(record))
+    with pytest.raises(ValueError, match=r"C\+\+ runtime"):
+        VERIFY(forge, root)
+    dest = root/"programming/cpp/cpp_gonol/new.py"
+    dest.parent.mkdir(parents=True)
+    dest.write_bytes(module.read_bytes())
+    digest = sha256(dest.read_bytes()).hexdigest()
+    record["files"].append({"kind": "runtime", "source": str(module.relative_to(forge)),
+                            "target": str(dest.relative_to(root)), "source_commit": record["cpp_source_commit"],
+                            "source_sha256": digest, "target_sha256": digest, "adaptation": None})
+    manifest.write_text(json.dumps(record))
+    assert VERIFY(forge, root)["runtime_files"] == 3
+# ratios: loc_comments=88:16 imports_exports=6:4 calls_definitions=50:5

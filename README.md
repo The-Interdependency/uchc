@@ -4,6 +4,13 @@ UCHC is the implementation repository for **Unit Circle Hyperspace Constructs**.
 
 Applications consume UCHC; applications do not define UCHC.
 
+## C++23 source construction
+
+UCHC 0.2.0a5 constructs UTF-8 C++ source with native UTF-32BE glyphs. Its
+optional integer program profile closes tokens, statements, lexical blocks and
+the function with ordinal halving. Each read identifies the declaration and
+the write supplying its value. [Construct and replay C++](programming/cpp/README.md).
+
 ## Python source construction
 
 The Python constructor in 0.2.0a4 assigns one native UCNS identity to every
@@ -63,6 +70,7 @@ human/
   spanish/       forthcoming
 
 programming/
+  cpp/           UTF-8 source and scoped integer bindings
   python/        extracted from Stack; see migration gate evidence
   typescript/    forthcoming
   rust/          forthcoming
