@@ -234,6 +234,15 @@ the doctrine pin, migration discovery and non-transfer flags at the exact PR
 head. It does not run construction or certify migration; implementation changes
 still require the separate full-corpus workflow and the lifecycle gates below.
 
+## C++23
+
+The 0.2.0a5 C++ candidate extracts four runtime modules and their tests
+byte-for-byte from Stack at `7160e8d7cfcb9d237f22427f58121e4772661241`. The
+[domain contract](../programming/cpp/README.md) describes the physical source
+profile, terminal integer program, native ordinal closure and rejection cases.
+The package inventory verifies the complete C++ runtime at this revision alongside
+the existing English and Python inventories at their own revisions.
+
 ## Python
 
 Candidate 0.2.0a4 extracts the schema 3 Python constructor and its regression

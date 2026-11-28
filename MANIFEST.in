@@ -7,5 +7,7 @@ recursive-include human/english/docs *.md *.json
 include human/english/README.md
 recursive-include human/english/experiments *.json
 recursive-include programming/python/tests *.py
+recursive-include programming/cpp/tests *.py
+include programming/cpp/README.md
 recursive-include shared/polyglot/tests *.py
 recursive-include tools *.py

@@ -1,4 +1,4 @@
-# ratios: loc_comments=43:32 imports_exports=5:1 calls_definitions=22:1
+# ratios: loc_comments=60:32 imports_exports=5:1 calls_definitions=32:1
 # SPDX-License-Identifier: FSL-1.1-ALv2
 # === MODULE_BUILD ===
 # id: uchc_package_extraction
@@ -48,6 +48,23 @@ def verify(forge: Path, root: Path) -> dict:
         text=True,
     ).splitlines()
     runtime = {p for p in paths if p.endswith((".py", ".json"))}
+    if record["version"] == "1.2.0":
+        cpp_commit = record["cpp_source_commit"]
+        if len(cpp_commit) != 40 or any(c not in "0123456789abcdef" for c in cpp_commit):
+            raise ValueError("C++ source requires an exact forge commit")
+        cpp_root = "research/cpp-gonol/cpp_gonol/"
+        cpp_paths = subprocess.check_output(
+            ["git", "-C", str(forge), "ls-tree", "-r", "--name-only", cpp_commit, "--", cpp_root],
+            text=True,
+        ).splitlines()
+        cpp_runtime = {path for path in cpp_paths if path.endswith((".py", ".json"))}
+        cpp_declared = {item["source"] for item in record["files"] if item["kind"] == "runtime"
+                        and item.get("source_commit") == cpp_commit and item["source"].startswith(cpp_root)}
+        if not cpp_runtime or cpp_declared != cpp_runtime:
+            raise ValueError("C++ runtime extraction is incomplete or uses a different revision")
+        runtime.update(cpp_runtime)
+    elif record["version"] != "1.1.0":
+        raise ValueError("unsupported extraction inventory version")
     declared = {item["source"] for item in record["files"] if item["kind"] == "runtime"}
     excluded = set(record["forge_only"])
     if runtime != declared | excluded or declared & excluded:
@@ -79,4 +96,4 @@ if __name__ == "__main__":
     parser.add_argument("forge", type=Path)
     args = parser.parse_args()
     print(json.dumps(verify(args.forge, Path(__file__).resolve().parents[1]), sort_keys=True))
-# ratios: loc_comments=43:32 imports_exports=5:1 calls_definitions=22:1
+# ratios: loc_comments=60:32 imports_exports=5:1 calls_definitions=32:1

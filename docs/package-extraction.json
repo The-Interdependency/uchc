@@ -1,6 +1,6 @@
 {
   "schema": "uchc.package-extraction",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "source_repository": "The-Interdependency/stack",
   "source_commit": "ffd6e52eb1a50291cb48e2168d82e9bc236ceef4",
   "authority_transfer": false,
@@ -391,6 +391,51 @@
       "source_commit": "3dd568e4b40561c11146df789db972a4e789582e",
       "source_sha256": "6c9289aea15ae878b9442afae66a120583bd83efda95d6453b4f8234c4252ff7",
       "target_sha256": "6c9289aea15ae878b9442afae66a120583bd83efda95d6453b4f8234c4252ff7"
+    },
+    {
+      "source": "research/cpp-gonol/cpp_gonol/__init__.py",
+      "target": "programming/cpp/cpp_gonol/__init__.py",
+      "kind": "runtime",
+      "adaptation": null,
+      "source_commit": "7160e8d7cfcb9d237f22427f58121e4772661241",
+      "source_sha256": "60cc678975983ad10bdad03091e6ffe9b259783a4a983b4c26725abb891aea4e",
+      "target_sha256": "60cc678975983ad10bdad03091e6ffe9b259783a4a983b4c26725abb891aea4e"
+    },
+    {
+      "source": "research/cpp-gonol/cpp_gonol/__main__.py",
+      "target": "programming/cpp/cpp_gonol/__main__.py",
+      "kind": "runtime",
+      "adaptation": null,
+      "source_commit": "7160e8d7cfcb9d237f22427f58121e4772661241",
+      "source_sha256": "8711347c52253943c1730432b34b32b95e11cdc54476f97b44d02f6fb99e55be",
+      "target_sha256": "8711347c52253943c1730432b34b32b95e11cdc54476f97b44d02f6fb99e55be"
+    },
+    {
+      "source": "research/cpp-gonol/cpp_gonol/bindings.py",
+      "target": "programming/cpp/cpp_gonol/bindings.py",
+      "kind": "runtime",
+      "adaptation": null,
+      "source_commit": "7160e8d7cfcb9d237f22427f58121e4772661241",
+      "source_sha256": "83a0406777046faf0b83f3ea8e1dd0f7592fbbd47b43d72a22566c437f4aeec2",
+      "target_sha256": "83a0406777046faf0b83f3ea8e1dd0f7592fbbd47b43d72a22566c437f4aeec2"
+    },
+    {
+      "source": "research/cpp-gonol/cpp_gonol/source.py",
+      "target": "programming/cpp/cpp_gonol/source.py",
+      "kind": "runtime",
+      "adaptation": null,
+      "source_commit": "7160e8d7cfcb9d237f22427f58121e4772661241",
+      "source_sha256": "95fec1b4a526cfcfaab9a7fff06b35be11dd2ff10a8bf05f5bc4b154f7c343e2",
+      "target_sha256": "95fec1b4a526cfcfaab9a7fff06b35be11dd2ff10a8bf05f5bc4b154f7c343e2"
+    },
+    {
+      "source": "research/cpp-gonol/tests/test_cpp_gonol.py",
+      "target": "programming/cpp/tests/test_cpp_gonol.py",
+      "kind": "test",
+      "adaptation": null,
+      "source_commit": "7160e8d7cfcb9d237f22427f58121e4772661241",
+      "source_sha256": "adaad0be538679cd665e278a1f8e0d3f4ae79747750bb877b7b36ea30d0f5e29",
+      "target_sha256": "adaad0be538679cd665e278a1f8e0d3f4ae79747750bb877b7b36ea30d0f5e29"
     }
   ],
   "forge_only": {
@@ -399,5 +444,6 @@
     "research/english-gonol/english_gonol/motion_run.py": "Historical experiment omitted from the UCHC package.",
     "research/english-gonol/english_gonol/view_replay.py": "Independent view reconstruction helper owned by the Stack audit.",
     "research/english-gonol/english_gonol/unicode_construction.py": "16 b rad encoding and equal-radius Unicode sum, retained in Stack. UCHC supplies its own ordinal halving API."
-  }
+  },
+  "cpp_source_commit": "7160e8d7cfcb9d237f22427f58121e4772661241"
 }
