@@ -1,0 +1,83 @@
+name: Release UCHC 0.2.0a5
+on:
+  pull_request:
+    paths: ['releases/uchc-v0.2.0a5.sha256', '.github/workflows/release-uchc-v0.2.0a5.yml']
+  push:
+    branches: [main]
+    paths: ['releases/uchc-v0.2.0a5.sha256']
+permissions:
+  contents: read
+env:
+  RELEASE_SOURCE: 455c74cfab50f346380a7327feb01fe871b4c346
+  RELEASE_TAG: uchc-v0.2.0a5
+  RELEASE_WHEEL: uchc-0.2.0a5-py3-none-any.whl
+jobs:
+  verify-wheel:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ env.RELEASE_SOURCE }}
+          path: _source
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.12.14'
+      - name: Reproduce the Stack-verified wheel
+        run: |
+          test "$(git -C _source rev-parse HEAD)" = "$RELEASE_SOURCE"
+          export SOURCE_DATE_EPOCH=1790308800
+          python -m pip install setuptools==82.0.1 wheel==0.46.3 packaging==26.0
+          python -m pip wheel --no-deps --no-build-isolation ./_source -w _release
+          cd _release
+          sha256sum -c ../releases/uchc-v0.2.0a5.sha256
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: The-Interdependency/ucns
+          ref: 1edfa593ae9d8c9ad394b5462638bcc717f99fbd
+          path: _native
+          persist-credentials: false
+      - name: Run the C++23 compiler comparison from the hash-verified wheel
+        run: |
+          python -m venv "$RUNNER_TEMP/consumer"
+          consumer="$RUNNER_TEMP/consumer/bin/python"
+          "$consumer" -m pip install --no-deps ./_native _release/*.whl
+          "$consumer" -I -m unittest discover -s _source/programming/cpp/tests -v
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: verified-uchc-0.2.0a5-wheel
+          path: _release/${{ env.RELEASE_WHEEL }}
+          if-no-files-found: error
+  publish:
+    if: github.event_name == 'push'
+    needs: verify-wheel
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: verified-uchc-0.2.0a5-wheel
+          path: _release
+      - name: Publish the verified wheel
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd _release
+          sha256sum -c ../releases/uchc-v0.2.0a5.sha256
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            expected="$RELEASE_SOURCE"$'\t'"refs/tags/$RELEASE_TAG"
+            test "$(git ls-remote origin "refs/tags/$RELEASE_TAG")" = "$expected"
+            gh release download "$RELEASE_TAG" --pattern "$RELEASE_WHEEL" --dir _published
+            (cd _published && sha256sum -c ../../releases/uchc-v0.2.0a5.sha256)
+          else
+            gh release create "$RELEASE_TAG" "$RELEASE_WHEEL" ../releases/uchc-v0.2.0a5.sha256 \
+              --target "$RELEASE_SOURCE" --prerelease --title 'UCHC 0.2.0a5' \
+              --notes 'C++23 physical source replay and ordinal construction for local integer bindings. All Unicode scalars and the pinned fmt 11.2.0 source inventory were independently replayed. Eight fixed programs were checked against a C++ compiler. Install the wheel with its cpp extra to use python -m cpp_gonol.'
+          fi
