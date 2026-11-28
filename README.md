@@ -4,6 +4,15 @@ UCHC is the implementation repository for **Unit Circle Hyperspace Constructs**.
 
 Applications consume UCHC; applications do not define UCHC.
 
+## Python source construction
+
+The Python constructor in 0.2.0a4 assigns one native UCNS identity to every
+decoded Unicode scalar. Each occurrence retains its original source address.
+The character table stores the four UTF-32BE bytes, UTF-8 spelling, exact
+SPACE-relative bearing and optional Public Gonol position. Original file bytes,
+including encoding markers, replay independently of the Unicode encoding.
+See [Python construction and migration](programming/python/README.md).
+
 ## Ordinal radius-halving
 
 The public English construction stacks glyph occurrences into words and closed

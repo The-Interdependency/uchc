@@ -1,0 +1,71 @@
+name: Release UCHC 0.2.0a4
+on:
+  pull_request:
+    paths: ['releases/uchc-v0.2.0a4.sha256', '.github/workflows/release-uchc-v0.2.0a4.yml']
+  push:
+    branches: [main]
+    paths: ['releases/uchc-v0.2.0a4.sha256']
+permissions:
+  contents: read
+env:
+  RELEASE_SOURCE: 4776e293d88ef3e70c516e6b9d9b18a0874eb1ae
+  RELEASE_TAG: uchc-v0.2.0a4
+  RELEASE_WHEEL: uchc-0.2.0a4-py3-none-any.whl
+jobs:
+  verify-wheel:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ env.RELEASE_SOURCE }}
+          path: _source
+          persist-credentials: false
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.12.14'
+      - name: Reproduce the Stack-verified wheel
+        run: |
+          test "$(git -C _source rev-parse HEAD)" = "$RELEASE_SOURCE"
+          export SOURCE_DATE_EPOCH=1790308800
+          python -m pip install setuptools==82.0.1 wheel==0.46.3 packaging==26.0
+          python -m pip wheel --no-deps --no-build-isolation ./_source -w _release
+          cd _release
+          sha256sum -c ../releases/uchc-v0.2.0a4.sha256
+      - uses: actions/upload-artifact@v7.0.1
+        with:
+          name: verified-uchc-0.2.0a4-wheel
+          path: _release/${{ env.RELEASE_WHEEL }}
+          if-no-files-found: error
+  publish:
+    if: github.event_name == 'push'
+    needs: verify-wheel
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v8.0.1
+        with:
+          name: verified-uchc-0.2.0a4-wheel
+          path: _release
+      - name: Publish the verified wheel
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd _release
+          sha256sum -c ../releases/uchc-v0.2.0a4.sha256
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            expected="$RELEASE_SOURCE"$'\t'"refs/tags/$RELEASE_TAG"
+            test "$(git ls-remote origin "refs/tags/$RELEASE_TAG")" = "$expected"
+            gh release download "$RELEASE_TAG" --pattern "$RELEASE_WHEEL" --dir _published
+            (cd _published && sha256sum -c ../../releases/uchc-v0.2.0a4.sha256)
+          else
+            gh release create "$RELEASE_TAG" "$RELEASE_WHEEL" ../releases/uchc-v0.2.0a4.sha256 \
+              --target "$RELEASE_SOURCE" --prerelease --title 'UCHC 0.2.0a4' \
+              --notes 'Python schema 3 assigns every decoded Unicode scalar its UCNS identity, preserves the original source bytes and replays the complete construct. The detached wheel was exercised on the CPython 3.12.14 test corpus.'
+          fi
